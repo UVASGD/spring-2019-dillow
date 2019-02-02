@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour {
 	public static Dictionary<ulong, bool> obtainedCollectibles;
 
 	private void Awake () {
-		//print("Size: " + sizeof(CollectibleType));
+		print("Size: " + sizeof(CollectibleType));
 		obtainedCollectibles = new Dictionary<ulong, bool>();
 
 		if (null == instance) {
