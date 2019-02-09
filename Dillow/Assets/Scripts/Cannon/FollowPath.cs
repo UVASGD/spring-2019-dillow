@@ -112,7 +112,7 @@ public class FollowPath : MonoBehaviour {
 			}
 
 			if (Physics.CheckSphere(rb.position, GetComponent<SphereCollider>().radius * 1.1f, LayerMask.GetMask("Default")) && percentDone > 0.5f) {
-				GetComponent<Ball>().EnableGravity();
+				//GetComponent<Ball>().EnableGravity();
 				traversing = false;
 				Destroy(guide.gameObject);
 				Destroy(this);
