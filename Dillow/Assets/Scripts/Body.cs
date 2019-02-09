@@ -21,7 +21,7 @@ public class Body : MonoBehaviour
     {
         if (c.GetComponent<TagHandler>()) 
         {
-            CollisionEvent?.Invoke(c.GetComponent<TagHandler>());
+            Collide(c.GetComponent<TagHandler>());
         }
     }
 
@@ -29,7 +29,7 @@ public class Body : MonoBehaviour
     {
         if (c.collider.GetComponent<TagHandler>() )
         {
-            CollisionEvent?.Invoke(c.collider.GetComponent<TagHandler>());
+            Collide(c.GetComponent<TagHandler>());
         }
     }
     
@@ -37,7 +37,12 @@ public class Body : MonoBehaviour
     {
         if (c.GetComponent<TagHandler>()) 
         {
-            CollisionEvent?.Invoke(c.GetComponent<TagHandler>());
+            Collide(c.GetComponent<TagHandler>());
         }
+    }   
+
+    public virtual void Collide(TagHandler t)
+    {
+
     }
 }
