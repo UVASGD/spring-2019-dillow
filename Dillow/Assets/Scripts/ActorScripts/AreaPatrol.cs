@@ -2,12 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NodeArea : MonoBehaviour
+public class AreaPatrol : NodeArea
 {
-    public Node[] nodeList;
-
-    public bool canGoToSameNode;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +15,4 @@ public class NodeArea : MonoBehaviour
     {
         
     }
-
-
 }
