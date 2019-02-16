@@ -57,4 +57,11 @@ public class TerrainSurface
         }
         return maxIndex;
     }
+
+    public static string GetTextureName(int index)
+    {
+        Terrain terrain = Terrain.activeTerrain;
+        TerrainData terrainData = terrain.terrainData;
+        return terrainData.terrainLayers[index].name;
+    }
 }
