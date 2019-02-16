@@ -11,8 +11,8 @@ public class NodeArea : MonoBehaviour
         return current.transform.position;
     }
 
-    public Vector3 GetRandomNode()
+    public Vector3 GetRandomNode(GameObject seeker)
     {
-        return nodeList[Random.Range(0, nodeList.Length)].GoTo();
+        return nodeList[Random.Range(0, nodeList.Length)].GoTo(seeker);
     }
 }
