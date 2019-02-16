@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AreaPatrol : NodeArea
+public class LoopArea : NodeArea
 {
     public override Node GetNode(Node current)
     {
-        return current.GetAdjacent();
+        return current.GetNext();
     }
 }

@@ -6,19 +6,13 @@ public class NodeArea : MonoBehaviour
 {
     public Node[] nodeList;
 
-    public bool canGoToSameNode;
-
-    // Start is called before the first frame update
-    void Start()
+    public virtual Node GetNode(Node current)
     {
-        
+        return current;
     }
 
-    // Update is called once per frame
-    void Update()
+    public Node GetRandomNode()
     {
-        
+        return nodeList[Random.Range(0, nodeList.Length - 1)];
     }
-
-
 }
