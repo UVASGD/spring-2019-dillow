@@ -13,6 +13,6 @@ public class NodeArea : MonoBehaviour
 
     public Node GetRandomNode()
     {
-        return nodeList[Random.Range(0, nodeList.Length - 1)];
+        return nodeList[Random.Range(0, nodeList.Length)];
     }
 }
