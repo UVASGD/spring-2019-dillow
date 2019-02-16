@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
+using System.Linq;
 
 public class TerrainSurface
 {
@@ -25,6 +26,17 @@ public class TerrainSurface
             cellMix[n] = splatmapData[0, 0, n];
         }
         return cellMix;
+    }
+
+    public static List<int> GetTextures(Vector3 worldPos, float threshold = 0.2f)
+    {
+        float[] mix = GetTextureMix(worldPos);
+        var textures = new List<int>();
+        for (int i = 0; i < mix.Length; i++)
+        {
+            if (mix[i] >= threshold) textures.Add(i);
+        }
+        return textures;
     }
 
     public static int GetMainTexture(Vector3 worldPos)
