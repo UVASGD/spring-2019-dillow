@@ -6,13 +6,13 @@ public class NodeArea : MonoBehaviour
 {
     public Node[] nodeList;
 
-    public virtual Node GetNode(Node current)
+    public virtual Vector3 GetNode(Node current, GameObject seeker)
     {
-        return current;
+        return current.transform.position;
     }
 
-    public Node GetRandomNode()
+    public Vector3 GetRandomNode(GameObject seeker)
     {
-        return nodeList[Random.Range(0, nodeList.Length)];
+        return nodeList[Random.Range(0, nodeList.Length)].GoTo(seeker);
     }
 }

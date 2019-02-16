@@ -19,9 +19,6 @@ public class Node : MonoBehaviour
         if (manual_adjacents)
             return;
 
-        RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
-
         int curr_adj_count = 0;
         foreach (Node adj in nodeArea.nodeList)
         {
@@ -38,19 +35,42 @@ public class Node : MonoBehaviour
                 break;
         }
 
-        if (Physics.Raycast(transform.position, Vector3.down, out hit))
+        transform.position = GetGroundPoint(transform.position);
+    }
+
+    public Vector3 GetPosAround(Vector3 position)
+    {
+        position = new Vector3(position.x, position.y + radius, position.z);
+        position += Random.insideUnitSphere * radius;
+
+        return GetGroundPoint(position);
+    }
+
+    public Vector3 GetGroundPoint(Vector3 position) {
+        RaycastHit hit;
+        if (Physics.Raycast(position, Vector3.down, out hit))
         {
-            transform.position = hit.point;
+            position = hit.point;
         }
+
+        return position;
     }
 
-    public Node GetAdjacent()
+    public Vector3 GetAdjacent(GameObject _obj)
     {
-        return adjacents[Random.Range(0, adjacents.Count)];
+        Node ret_node = adjacents[Random.Range(0, adjacents.Count)];
+        return ret_node.GoTo(_obj);
     }
 
-    public Node GetNext()
+    public Vector3 GetNext(GameObject _obj)
     {
-        return adjacents[0];
+        return adjacents[0].GoTo(_obj);
+    }
+
+    public Vector3 GoTo(GameObject _obj)
+    {
+        Vector3 target = (!obj) ? transform.position : GetPosAround(transform.position);
+        obj = _obj;
+        return target;
     }
 }
