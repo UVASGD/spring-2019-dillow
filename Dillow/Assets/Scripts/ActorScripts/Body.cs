@@ -29,7 +29,7 @@ public class Body : MonoBehaviour
     {
         if (c.collider.GetComponent<TagHandler>() )
         {
-            Collide(c.GetComponent<TagHandler>());
+            Collide(c.collider.GetComponent<TagHandler>());
         }
     }
     
