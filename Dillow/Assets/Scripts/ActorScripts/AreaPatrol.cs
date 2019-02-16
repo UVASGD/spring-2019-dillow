@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class AreaPatrol : NodeArea
 {
-    public override Node GetNode(Node current)
+    public override Vector3 GetNode(Node current, GameObject seeker)
     {
-        return current.GetAdjacent();
+        return current.GetAdjacent(seeker);
     }
 }
