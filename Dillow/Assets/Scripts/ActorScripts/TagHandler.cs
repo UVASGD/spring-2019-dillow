@@ -3,7 +3,9 @@ using UnityEngine;
 public enum Tag
 {
     Player,
-    Enemy
+    Enemy,
+    Damage,
+    SuperDamage,
 }
 
 public class TagHandler : MonoBehaviour

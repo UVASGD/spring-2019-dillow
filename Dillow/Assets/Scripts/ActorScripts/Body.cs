@@ -29,7 +29,7 @@ public class Body : MonoBehaviour
     {
         if (c.collider.GetComponent<TagHandler>() )
         {
-            Collide(c.collider.GetComponent<TagHandler>());
+            Collide(c.collider.GetComponent<TagHandler>(), c.contacts[0].normal, c.impulse);
         }
     }
     
@@ -39,9 +39,19 @@ public class Body : MonoBehaviour
         {
             Collide(c.GetComponent<TagHandler>());
         }
-    }   
+    }
+
+    public virtual void Collide(TagHandler t, Vector3 normal, Vector3 impact) 
+    {
+
+    }
 
     public virtual void Collide(TagHandler t)
+    {
+
+    }
+
+    public virtual void Collide(List<Tag> tags)
     {
 
     }

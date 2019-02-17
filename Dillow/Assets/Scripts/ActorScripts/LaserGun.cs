@@ -4,24 +4,28 @@ using UnityEngine;
 
 public class LaserGun : MonoBehaviour
 {
-    public float range;
-    public float aimForce;
+    public float range = 50;
+    public float aimForce = 10;
 
     public GameObject barrel;
 
     public Rigidbody rb;
-    LineRenderer lineRenderer;
+    LineRenderer laser;
+
+    List<Tag> hit_tags;
+
+    float laser_time = 0.25f, laserCD = 5f;
+    bool can_fire = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        lineRenderer = barrel.GetComponent<LineRenderer>();
-    }
+        laser = barrel.GetComponent<LineRenderer>();
+        laser.enabled = false;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        hit_tags = new List<Tag>() { Tag.SuperDamage };
+
+        InvokeRepeating("Fire", 1f, 1f);
     }
 
     public void Aim(GameObject target)
@@ -32,27 +36,44 @@ public class LaserGun : MonoBehaviour
 
     public void Fire()
     {
+        if (!can_fire)
+            return;
+
         RaycastHit hit;
+
+        laser.SetPosition(0, barrel.transform.position);
 
         if (Physics.Raycast(barrel.transform.position, barrel.transform.forward, out hit, range))
         {
+            laser.SetPosition(1, hit.point);
             Hit(hit.collider.gameObject, hit.point, hit.normal);
         }
+        else
+        {
+            laser.SetPosition(1, barrel.transform.position + (barrel.transform.forward * range));
+        }
 
-        
-
-        lineRenderer.SetPositions();
+        StartCoroutine(LaserFlash());
     }
 
-    public void Hit(GameObject go, Vector3 position, Vector3 normal)
+    IEnumerator LaserFlash()
     {
-        if(CompareTag("Ground"))
+        can_fire = false;
+        laser.enabled = true;
+        yield return new WaitForSeconds(laser_time);
+        laser.enabled = false;
+        yield return new WaitForSeconds(laserCD);
+        can_fire = true;
+    }
+
+    public void Hit(GameObject hit, Vector3 position, Vector3 normal)
+    {
+        if(hit.CompareTag("Ground"))
         {
-            //Dink
         }
-        else if(CompareTag("Player"))
+        else if(hit.GetComponent<Body>())
         {
-            //Ouch
+            hit.GetComponent<Body>().Collide(hit_tags);
         }
     }
 }
