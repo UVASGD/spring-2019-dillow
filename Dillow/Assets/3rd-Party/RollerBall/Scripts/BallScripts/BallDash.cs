@@ -7,10 +7,8 @@ public class BallDash : BallAttackAbility
 
     public override void OnAction(bool move, Vector3 dir, int jump, int action)
     {
-		print("We actin" + action);
 		if (action == 2 && move && action_ready && body.CheckPriority(2))
         {
-			print("Help");
 			attack_dir = (Vector3.Angle(dir, body.rb.velocity.normalized) < 70f)
                 ? body.rb.velocity.normalized : dir;
 
@@ -28,7 +26,6 @@ public class BallDash : BallAttackAbility
 
     protected override void StartAction()
     {
-		print("UWU");
         body.rb.velocity = attack_dir * attack_speed;
         intensity = 1f;
         fx_anim?.SetTrigger("Start");
