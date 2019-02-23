@@ -12,6 +12,9 @@ public class LaserGun : MonoBehaviour
     public Rigidbody rb;
     LineRenderer laser;
 
+    public float aimAngleThreshold;
+    Vector3 aimDirection;
+
     List<Tag> hit_tags;
 
     float laser_time = 0.25f, laserCD = 5f;
@@ -20,6 +23,7 @@ public class LaserGun : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        aimDirection = barrel.transform.forward;
         laser = barrel.GetComponent<LineRenderer>();
         laser.enabled = false;
 
@@ -32,6 +36,17 @@ public class LaserGun : MonoBehaviour
     {
         Vector3 diff = (target.transform.position - barrel.transform.position).normalized;
         rb.AddForceAtPosition(diff * aimForce, barrel.transform.position);
+        float angleDiff = Vector3.Angle(barrel.transform.forward, diff);
+        print(angleDiff);
+        if (angleDiff < aimAngleThreshold)
+        {
+            aimDirection = diff;
+        }
+        else
+        {
+            aimDirection = barrel.transform.forward;
+        }
+        
     }
 
     public void Fire()
@@ -42,8 +57,9 @@ public class LaserGun : MonoBehaviour
         RaycastHit hit;
 
         laser.SetPosition(0, barrel.transform.position);
+        
 
-        if (Physics.Raycast(barrel.transform.position, barrel.transform.forward, out hit, range))
+        if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range))
         {
             laser.SetPosition(1, hit.point);
             Hit(hit.collider.gameObject, hit.point, hit.normal);
