@@ -24,7 +24,7 @@ public class TagHandler : MonoBehaviour
     }
 
 
-    public bool IsInEnum(Tag tag)
+    public bool HasTag(Tag tag)
     {
         return tagList.Contains(tag);
     }

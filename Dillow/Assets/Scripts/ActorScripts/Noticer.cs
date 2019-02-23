@@ -6,7 +6,6 @@ public delegate void CollisionDel(TagHandler handler);
 
 public class Noticer : MonoBehaviour
 {
-
     public CollisionDel CollisionEnterEvent, CollisionExitEvent;
 
     private void OnTriggerEnter(Collider other)

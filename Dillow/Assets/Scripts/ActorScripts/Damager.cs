@@ -27,6 +27,7 @@ public class Damager : MonoBehaviour
     public void Damage(Vector3 dir)
     {
         StartCoroutine(DamageCo());
+        StartCoroutine(Flash());
         Knockback(dir);
     }
 
