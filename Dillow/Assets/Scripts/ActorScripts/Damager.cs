@@ -19,7 +19,7 @@ public class Damager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         r = GetComponent<MeshRenderer>();
         normalColor = r.material.color;
     }
