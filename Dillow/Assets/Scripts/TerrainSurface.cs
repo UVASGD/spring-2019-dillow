@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 
 public class TerrainSurface
 {
@@ -63,5 +62,12 @@ public class TerrainSurface
         Terrain terrain = Terrain.activeTerrain;
         TerrainData terrainData = terrain.terrainData;
         return terrainData.terrainLayers[index].name;
+    }
+
+    public static int GetTextureIndex(string name)
+    {
+        Terrain terrain = Terrain.activeTerrain;
+        TerrainData terrainData = terrain.terrainData;
+        return Array.FindIndex(terrainData.terrainLayers, l => l.name == name);
     }
 }
