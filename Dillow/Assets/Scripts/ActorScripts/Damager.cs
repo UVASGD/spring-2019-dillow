@@ -48,7 +48,6 @@ public class Damager : MonoBehaviour
         force = new Vector3(force.x * push_force, 
                             dir.y * up_force,
                             force.z * push_force);
-        print(force);
         rb.AddForce(force);
     }
 
