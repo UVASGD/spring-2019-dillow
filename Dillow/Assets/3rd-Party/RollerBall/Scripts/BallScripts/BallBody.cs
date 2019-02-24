@@ -87,7 +87,7 @@ public class BallBody : Body
 
         if ( tags.Contains(Tag.SuperDamage) )
         {
-            damager.Damage(dir); //NOT PROPER DAMAGE VECTOR
+            damager.Damage(dir);
         }
     }
 
