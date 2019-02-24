@@ -44,11 +44,11 @@ public class Damager : MonoBehaviour
 
     void Knockback(Vector3 dir)
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
         var force = Vector3.ProjectOnPlane(dir, Vector3.up);
         force = new Vector3(force.x * push_force, 
-                            force.y * up_force,
+                            dir.y * up_force,
                             force.z * push_force);
+        print(force);
         rb.AddForce(force);
     }
 

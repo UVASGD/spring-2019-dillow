@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour {
 	public static Dictionary<ulong, bool> obtainedCollectibles;
 
 	private void Awake () {
-		print("Size: " + sizeof(CollectibleType));
+		//print("Size: " + sizeof(CollectibleType));
 		obtainedCollectibles = new Dictionary<ulong, bool>();
 
 		if (null == instance) {
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour {
 
 
 	public static void Save () {
-		print("Saving!");
+		//print("Saving!");
 		saveData.obtainedCollectibles = new List<ulong>();
 		foreach (ulong item in obtainedCollectibles.Keys) {
 			saveData.obtainedCollectibles.Add(item);
@@ -73,10 +73,10 @@ public class GameManager : MonoBehaviour {
 
 	public static void Load () {
 		string filePath = Application.dataPath + dataSubpath;
-		print("Loading to: " + filePath);
+		//print("Loading to: " + filePath);
 
 		if (File.Exists(filePath)) {
-			print("File found");
+			//print("File found");
 			string jsonData = File.ReadAllText(filePath);
 			saveData = JsonUtility.FromJson<SaveData>(jsonData);
 
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour {
 				obtainedCollectibles.Add(item, true);
 			}
 		} else {
-			print("New Game");
+			//print("New Game");
 			saveData = new SaveData();
 			saveData.obtainedCollectibles = new List<ulong>();
 			saveData.collectiblesCount = new List<int>();

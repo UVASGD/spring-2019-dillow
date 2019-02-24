@@ -12,7 +12,7 @@ public class LaserGun : MonoBehaviour
     public Rigidbody rb;
     LineRenderer laser;
 
-    public float aimAngleThreshold;
+    public float aimAngleThreshold = 15f;
     Vector3 aimDirection;
 
     List<Tag> hit_tags;
@@ -29,15 +29,14 @@ public class LaserGun : MonoBehaviour
 
         hit_tags = new List<Tag>() { Tag.SuperDamage };
 
-        InvokeRepeating("Fire", 1f, 1f);
+        InvokeRepeating("HipFire", 1f, 1f);
     }
 
     public void Aim(GameObject target)
     {
         Vector3 diff = (target.transform.position - barrel.transform.position).normalized;
-        rb.AddForceAtPosition(diff * aimForce, barrel.transform.position);
+        rb?.AddForceAtPosition(diff * aimForce, barrel.transform.position);
         float angleDiff = Vector3.Angle(barrel.transform.forward, diff);
-        print(angleDiff);
         if (angleDiff < aimAngleThreshold)
         {
             aimDirection = diff;
@@ -49,6 +48,12 @@ public class LaserGun : MonoBehaviour
         
     }
 
+    public void HipFire()
+    {
+        aimDirection = barrel.transform.forward;
+        Fire();
+    }
+
     public void Fire()
     {
         if (!can_fire)
@@ -57,7 +62,6 @@ public class LaserGun : MonoBehaviour
         RaycastHit hit;
 
         laser.SetPosition(0, barrel.transform.position);
-        
 
         if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range))
         {
@@ -84,7 +88,7 @@ public class LaserGun : MonoBehaviour
 
     public void Hit(GameObject hit, Vector3 position, Vector3 normal)
     {
-        if(hit.CompareTag("Ground"))
+        if (hit.CompareTag("Ground"))
         {
         }
         else if(hit.GetComponent<Body>())
