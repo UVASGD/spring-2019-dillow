@@ -41,18 +41,15 @@ public class Body : MonoBehaviour
         }
     }
 
-    public virtual void Collide(TagHandler t, Vector3 normal, Vector3 impact) 
+    public virtual void Collide(TagHandler t, Vector3? direction = null, Vector3? impact = null)
     {
-
+        Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
+        Vector3 imp = (Vector3)((impact == null) ? Vector3.zero : impact);
     }
 
-    public virtual void Collide(TagHandler t)
+    public virtual void Collide(List<Tag> tags, Vector3? direction = null, Vector3? impact = null)
     {
-
-    }
-
-    public virtual void Collide(List<Tag> tags)
-    {
-
+        Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
+        Vector3 imp = (Vector3)((impact == null) ? Vector3.zero : impact);
     }
 }

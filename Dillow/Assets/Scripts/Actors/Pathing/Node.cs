@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Node : MonoBehaviour
 {
@@ -35,15 +36,24 @@ public class Node : MonoBehaviour
                 break;
         }
 
-        transform.position = GetGroundPoint(transform.position);
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(transform.position, out hit, 10, NavMesh.AllAreas))
+        {
+            transform.position = hit.position;
+        }
     }
 
-    public Vector3 GetPosAround(Vector3 position)
+    public Vector3 RandomLocation(Vector3 position)
     {
-        position = new Vector3(position.x, position.y + radius, position.z);
-        position += Random.insideUnitSphere * radius;
-
-        return GetGroundPoint(position);
+        Vector3 randomDirection = Random.insideUnitSphere * radius;
+        randomDirection += position;
+        NavMeshHit hit;
+        Vector3 finalPosition = position;
+        if (NavMesh.SamplePosition(randomDirection, out hit, radius, NavMesh.AllAreas))
+        {
+            finalPosition = hit.position;
+        }
+        return finalPosition;
     }
 
     public Vector3 GetGroundPoint(Vector3 position) {
@@ -69,7 +79,7 @@ public class Node : MonoBehaviour
 
     public Vector3 GoTo(GameObject _obj)
     {
-        Vector3 target = (!obj) ? transform.position : GetPosAround(transform.position);
+        Vector3 target = (!obj) ? transform.position : RandomLocation(transform.position);
         obj = _obj;
         return target;
     }

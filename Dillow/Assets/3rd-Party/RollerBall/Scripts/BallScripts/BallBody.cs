@@ -80,11 +80,14 @@ public class BallBody : Body
 
     public void OnDamageEnd() { } //not written
 
-    public override void Collide(List<Tag> tags)
+    public override void Collide(List<Tag> tags, Vector3? direction = null, Vector3? impact = null)
     {
-        if( tags.Contains(Tag.SuperDamage) )
+        Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
+        Vector3 imp = (Vector3)((impact == null) ? Vector3.zero : impact);
+
+        if ( tags.Contains(Tag.SuperDamage) )
         {
-            damager.Damage(Vector3.up); //NOT PROPER DAMAGE VECTOR
+            damager.Damage(dir); //NOT PROPER DAMAGE VECTOR
         }
     }
 
