@@ -17,7 +17,7 @@ public class Body : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    public void OnTriggerEnter(Collider c)
+    public virtual void OnTriggerEnter(Collider c)
     {
         if (c.GetComponent<TagHandler>()) 
         {
@@ -25,7 +25,7 @@ public class Body : MonoBehaviour
         }
     }
 
-    public void OnCollisionEnter(Collision c)
+    public virtual void OnCollisionEnter(Collision c)
     {
         if (c.collider.GetComponent<TagHandler>() )
         {
@@ -33,7 +33,7 @@ public class Body : MonoBehaviour
         }
     }
     
-    public void OnParticleCollision(GameObject c)
+    public virtual void OnParticleCollision(GameObject c)
     {
         if (c.GetComponent<TagHandler>()) 
         {

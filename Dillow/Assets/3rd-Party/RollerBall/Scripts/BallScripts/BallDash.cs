@@ -26,7 +26,7 @@ public class BallDash : BallAttackAbility
 
     protected override void StartAction()
     {
-        body.rb.velocity = attack_dir * attack_speed;
+        body.rb.velocity += attack_dir * attack_speed;
         intensity = 1f;
         fx_anim?.SetTrigger("Start");
         //body.collision_state.AddState(CollisionState.attacking);
