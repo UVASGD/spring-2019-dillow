@@ -17,7 +17,7 @@ public class Body : MonoBehaviour
         tagH = GetComponent<TagHandler>();
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
-        damager.GetComponent<Damager>();
+        damager = GetComponent<Damager>();
     }
 
     public virtual void OnTriggerEnter(Collider c)
