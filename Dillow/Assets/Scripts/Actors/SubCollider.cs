@@ -10,7 +10,7 @@ public class SubCollider : MonoBehaviour
     {
         if (c.GetComponent<TagHandler>())
         {
-            body.Collide(c.GetComponent<TagHandler>());
+            body.Collide(t:c.GetComponent<TagHandler>());
         }
     }
 
@@ -18,7 +18,7 @@ public class SubCollider : MonoBehaviour
     {
         if (c.collider.GetComponent<TagHandler>())
         {
-            body.Collide(c.collider.GetComponent<TagHandler>(), c.contacts[0].normal, c.impulse);
+            body.Collide(t:c.collider.GetComponent<TagHandler>(), direction:c.contacts[0].normal, impact:c.impulse);
         }
     }
 
@@ -26,7 +26,7 @@ public class SubCollider : MonoBehaviour
     {
         if (c.GetComponent<TagHandler>())
         {
-            body.Collide(c.GetComponent<TagHandler>());
+            body.Collide(t:c.GetComponent<TagHandler>());
         }
     }
 }
