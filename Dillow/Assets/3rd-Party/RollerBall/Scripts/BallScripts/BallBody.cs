@@ -13,19 +13,24 @@ public class BallBody : Body
     [Header("Rolling")]
     public float roll_power = 200f;
     public float move_power = 10f;
+
     public float max_roll_speed = 50f;
     public float max_speed = 50f;
 
     [Header("Jumping")]
     public float jump_power = 5f;
-    public float jump_time = 0.5f;
-    private float jump_time_timer;
-    public float speed_jump_threshold = 20f;
-    private readonly float jump_leeway = 0.2f;
-    private float jump_leeway_timer;
-    private int collision_count;
 
-    private float jump_multiplier = 2f;
+    public float jump_hold_time = 0.5f;
+    private float jump_hold_timer;
+
+    private float jump_cooldown_time = 0.5f;
+    private bool jump_cooling_down;
+
+    public float speed_jump_threshold = 20f;
+
+    public BallJump jump_dectector;
+
+    private float jump_multiplier = 2f; 
     private float fall_multiplier = 2.5f;
     private Vector3 jump_vector;
     [HideInInspector] public Vector3 speed_vector;
@@ -36,12 +41,11 @@ public class BallBody : Body
     private int priority = 0;
 
     [HideInInspector] public bool jump_ready;
-    [HideInInspector] public bool just_jumped;
     [HideInInspector] public bool mid_air;
     [HideInInspector] public bool air_ready;
     #endregion
 
-    Damager damager;
+    protected Damager damager;
 
     [Header("Locking")]
     public GameObject lock_enemy;
@@ -52,11 +56,16 @@ public class BallBody : Body
         #region MOVEMENT_INITIALIZATION
         base.Start();
         rb.maxAngularVelocity = max_roll_speed;
+
         jump_vector = Vector3.up;
         speed_vector = Vector3.zero;
-        jump_leeway_timer = jump_leeway;
+
         MoveEvent += OnMove;
         MoveEvent += OnJump;
+
+        jump_dectector = transform.parent.GetComponentInChildren<BallJump>();
+        jump_dectector.CanJumpEvent += OnGround;
+        jump_dectector.StopJumpEvent += OnAir;
         #endregion
 
         damager = GetComponent<Damager>();
@@ -175,18 +184,18 @@ public class BallBody : Body
 
     private void OnJump(bool move, Vector3 dir, int jump, int action)
     {
-        if (jump == 2 && jump_ready && CheckPriority(1))
+        if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
         {
             rb.AddForce(jump_vector * jump_power, ForceMode.Impulse);
-            just_jumped = true;
             jump_ready = false;
+            StartCoroutine(JumpCD());
         }
 
         if (mid_air && !air_ready) {
-            if (jump == 1 && jump_time_timer > 0f && rb.velocity.y > 0f)
+            if (jump == 1 && jump_hold_timer > 0f && rb.velocity.y > 0f)
             {
                 rb.AddForce(jump_vector * jump_power);
-                jump_time_timer -= Time.deltaTime;
+                jump_hold_timer -= Time.deltaTime;
             }
             else if (jump == -1)
             {
@@ -195,63 +204,26 @@ public class BallBody : Body
         }
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.contacts[0].point.y < transform.position.y) {
-            if (just_jumped)
-            {
-                just_jumped = false;
-                mid_air = true;
-                StartCoroutine(JumpLeeway());
-            }
-            else if (!jump_ready)
-                OnGround();
-        }
-    }
-
     private void OnGround()
     {
         jump_ready = true;
-        jump_time_timer = jump_time;
+        jump_hold_timer = jump_hold_time;
         mid_air = false;
         air_ready = false;
     }
 
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnAir()
     {
-        collision_count++;
-        if (collision_count == 1 && collision.contacts[0].point.y < transform.position.y)
-        {
-            OnGround();
-        }
+        jump_ready = false;
+        mid_air = true;
+        air_ready = true;
     }
 
-    private void OnCollisionExit(Collision collision)
+    IEnumerator JumpCD()
     {
-        collision_count--;
-        if (collision_count < 0)
-            collision_count = 0;
-        if (collision_count == 0)
-        {
-            mid_air = true;
-            if (jump_ready)
-                StartCoroutine(JumpLeeway());
-        }
-    }
-
-    private IEnumerator JumpLeeway()
-    {
-        jump_leeway_timer = jump_leeway;
-        while (jump_leeway_timer > 0f && mid_air)
-        {
-            jump_leeway_timer -= Time.deltaTime;
-            yield return null;
-        }
-        if (mid_air && jump_ready) {
-            jump_ready = false;
-            air_ready = true;
-        }
+        jump_cooling_down = true;
+        yield return new WaitForSeconds(jump_cooldown_time);
+        jump_cooling_down = false;
     }
     #endregion
 }
