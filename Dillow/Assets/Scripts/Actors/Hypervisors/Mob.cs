@@ -16,6 +16,9 @@ public class Mob : Body
         base.Start();
 
         ragdoll = GetComponent<Ragdoll>();
+
+        damager = GetComponent<Damager>(); 
+        damager.DamageEndEvent += Destroy;
     }
 
     protected virtual void Die()
@@ -36,5 +39,10 @@ public class Mob : Body
         {
             Die();
         }
+    }
+
+    public void Destroy()
+    {
+        Destroy(gameObject);
     }
 }
