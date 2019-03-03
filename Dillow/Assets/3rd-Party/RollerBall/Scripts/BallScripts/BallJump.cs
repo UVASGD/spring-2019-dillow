@@ -27,7 +27,7 @@ public class BallJump : MonoBehaviour
 
             if (groundCount == 1)
             {
-                StopCoroutine("StopJump");
+                StopAllCoroutines();
                 CanJumpEvent?.Invoke();
             }
         }      

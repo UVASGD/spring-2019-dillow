@@ -73,6 +73,8 @@ public class BallBody : Body
         damager.StunEndEvent += OnStunEnd;
         damager.DamageAllowEvent += OnDamage;
         damager.DamageEndEvent += OnDamageEnd;
+
+        OnGround();
     }
 
     public void OnStun()
@@ -188,7 +190,7 @@ public class BallBody : Body
         {
             rb.AddForce(jump_vector * jump_power, ForceMode.Impulse);
             jump_ready = false;
-            StartCoroutine(JumpCD());
+            StartCoroutine("JumpCD");
         }
 
         if (mid_air && !air_ready) {
@@ -217,6 +219,8 @@ public class BallBody : Body
         jump_ready = false;
         mid_air = true;
         air_ready = true;
+        StopCoroutine("JumpCD");
+        jump_cooling_down = false;
     }
 
     IEnumerator JumpCD()
