@@ -29,7 +29,7 @@ public class BallBody : Body
 
     public float speed_jump_threshold = 20f;
 
-    public BallJump jump_dectector;
+    public JumpDetector jump_dectector;
 
     private float jump_multiplier = 2f; 
     private float fall_multiplier = 2.5f;
@@ -62,7 +62,7 @@ public class BallBody : Body
         MoveEvent += OnMove;
         MoveEvent += OnJump;
 
-        jump_dectector = transform.parent.GetComponentInChildren<BallJump>();
+        jump_dectector = transform.parent.GetComponentInChildren<JumpDetector>();
         jump_dectector.CanJumpEvent += OnGround;
         jump_dectector.StopJumpEvent += OnAir;
 
