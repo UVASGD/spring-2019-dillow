@@ -8,6 +8,7 @@ public class Rotator : MonoBehaviour
 
     public void Face(GameObject target)
     {
+        StopAllCoroutines();
         Vector3 direction =  (target.transform.position - transform.position).normalized;
         transform.rotation = Quaternion.Slerp(transform.rotation,
         Quaternion.LookRotation(direction), smooth_speed);
@@ -15,6 +16,7 @@ public class Rotator : MonoBehaviour
 
     public void Face(Vector3 dir)
     {
+        StopAllCoroutines();
         transform.rotation = Quaternion.Slerp(transform.rotation,
             Quaternion.LookRotation(dir), smooth_speed);
     }
