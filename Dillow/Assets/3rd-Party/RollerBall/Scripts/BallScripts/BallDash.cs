@@ -7,9 +7,9 @@ public class BallDash : BallAttackAbility
 
     public override void OnAction(bool move, Vector3 dir, int jump, int action)
     {
-        if (action == 2 && move && action_ready && body.CheckPriority(2))
+		if (action == 2 && move && action_ready && body.CheckPriority(2))
         {
-            attack_dir = (Vector3.Angle(dir, body.rb.velocity.normalized) < 70f)
+			attack_dir = (Vector3.Angle(dir, body.rb.velocity.normalized) < 70f)
                 ? body.rb.velocity.normalized : dir;
 
             if (body.lock_enemy)
