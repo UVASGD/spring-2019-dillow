@@ -11,6 +11,7 @@ public class BallBody : Body
 
     #region MOVEMENT VARIABLES
     [Header("Rolling")]
+
     public float roll_power = 200f;
     public float move_power = 10f;
 
@@ -45,8 +46,6 @@ public class BallBody : Body
     [HideInInspector] public bool air_ready;
     #endregion
 
-    protected Damager damager;
-
     [Header("Locking")]
     public GameObject lock_enemy;
 
@@ -66,6 +65,8 @@ public class BallBody : Body
         jump_dectector = transform.parent.GetComponentInChildren<BallJump>();
         jump_dectector.CanJumpEvent += OnGround;
         jump_dectector.StopJumpEvent += OnAir;
+
+        OnGround();
         #endregion
 
         damager = GetComponent<Damager>();
@@ -73,8 +74,6 @@ public class BallBody : Body
         damager.StunEndEvent += OnStunEnd;
         damager.DamageAllowEvent += OnDamage;
         damager.DamageEndEvent += OnDamageEnd;
-
-        OnGround();
     }
 
     public void OnStun()
