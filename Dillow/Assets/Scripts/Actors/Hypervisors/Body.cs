@@ -9,12 +9,15 @@ public class Body : MonoBehaviour
     [HideInInspector] public Animator anim;
     [HideInInspector] public TagHandler tagH;
 
+    [HideInInspector]public Damager damager;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
         tagH = GetComponent<TagHandler>();
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        damager.GetComponent<Damager>();
     }
 
     public virtual void OnTriggerEnter(Collider c)

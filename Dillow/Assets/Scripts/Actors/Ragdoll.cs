@@ -20,15 +20,12 @@ public class Ragdoll : MonoBehaviour
         ActivateRagdoll(false);
     }
     
-    void ActivateRagdoll(bool activate) { 
+    public void ActivateRagdoll(bool activate) { 
         foreach (Rigidbody r in rigidList)
         {
             r.isKinematic = !activate;
         }
         ani.enabled = !activate;
         rb.isKinematic = !activate;
-        
     }
-
-    
 }
