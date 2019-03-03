@@ -20,7 +20,8 @@ public class DialogueTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         GameObject go = other.gameObject;
 
-        if (go.CompareTag("Player") && BallController.interact == 2) {
+        if (go.CompareTag("Player") && BallController.interact == 2)
+        { // callcontroller.interact == 2 checks whether 'e' has been pressed
             DoTrigger();
         }
     }
@@ -28,7 +29,8 @@ public class DialogueTrigger : MonoBehaviour
     private void OnTriggerStay(Collider other) {
         GameObject go = other.gameObject;
 
-        if (go.CompareTag("Player") && BallController.interact == 2) {
+        if (go.CompareTag("Player") && BallController.interact == 2)
+        { // callcontroller.interact == 2 checks whether 'e' has been pressed
             DoTrigger();
         }
     }
@@ -46,6 +48,7 @@ public class DialogueTrigger : MonoBehaviour
 
         if (chart != null) {
             chart.ExecuteBlock("Trigger");
+            //string chatType = chart.GetStringVariable("type"); 
         }
     }
 }
