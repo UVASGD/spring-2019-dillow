@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public delegate void MoveDel(bool move, Vector3 dir, int jump, int action);
@@ -40,12 +41,15 @@ public class BallBody : Body
     [HideInInspector] public bool air_ready;
     #endregion
 
+    Damager damager;
+
     [Header("Locking")]
     public GameObject lock_enemy;
 
     // Start is called before the first frame update
     protected override void Start()
     {
+        #region MOVEMENT_INITIALIZATION
         base.Start();
         rb.maxAngularVelocity = max_roll_speed;
         jump_vector = Vector3.up;
@@ -53,6 +57,38 @@ public class BallBody : Body
         jump_leeway_timer = jump_leeway;
         MoveEvent += OnMove;
         MoveEvent += OnJump;
+        #endregion
+
+        damager = GetComponent<Damager>();
+        damager.StunEvent += OnStun;
+        damager.StunEndEvent += OnStunEnd;
+        damager.DamageAllowEvent += OnDamage;
+        damager.DamageEndEvent += OnDamageEnd;
+    }
+
+    public void OnStun()
+    {
+        can_move = false;
+    }
+
+    public void OnStunEnd()
+    {
+        can_move = true;
+    }
+
+    public void OnDamage() { } //not written
+
+    public void OnDamageEnd() { } //not written
+
+    public override void Collide(List<Tag> tags, Vector3? direction = null, Vector3? impact = null)
+    {
+        Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
+        Vector3 imp = (Vector3)((impact == null) ? Vector3.zero : impact);
+
+        if ( tags.Contains(Tag.SuperDamage) )
+        {
+            damager.Damage(dir);
+        }
     }
 
     #region MOVEMENT

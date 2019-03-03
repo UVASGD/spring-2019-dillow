@@ -13,6 +13,7 @@ public class BallController : MonoBehaviour
     private Vector3 camForward; // The current forward direction of the camera
     private int jump; // whether the jump button is currently pressed
     private int action;
+    public static int interact;
 
     public bool can_input = true;
 
@@ -41,6 +42,7 @@ public class BallController : MonoBehaviour
         float v = Input.GetAxis("Vertical");
         GetButton(ref jump, "Jump");
         GetButton(ref action, "Action");
+        GetButton(ref interact, "Interact");
 
         // calculate move direction
         if (cam != null)
