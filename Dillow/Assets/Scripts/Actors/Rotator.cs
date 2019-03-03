@@ -12,4 +12,24 @@ public class Rotator : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation,
         Quaternion.LookRotation(direction), smooth_speed);
     }
+
+    public void Face(Vector3 dir)
+    {
+        transform.rotation = Quaternion.Slerp(transform.rotation,
+            Quaternion.LookRotation(dir), smooth_speed);
+    }
+
+    public void TurnTo(Vector3 ogDirection)
+    {
+        StartCoroutine(turnOriginal(ogDirection));
+    }
+
+    private IEnumerator turnOriginal( Vector3 ogDirection )
+    {
+        while( Vector3.Angle(transform.forward,ogDirection) != 0 )
+        {
+            Face(ogDirection);
+            yield return null;
+        }
+    }
 }

@@ -6,8 +6,8 @@ public class Hypervisor : MonoBehaviour
 {
     public Rotator rotator;
     public Noticer noticer;
-
-    public Vector3 originalPosition;
+    
+    public Vector3 originalRotation;
 
     private bool noticed;
     private GameObject target;
@@ -19,7 +19,7 @@ public class Hypervisor : MonoBehaviour
         noticer.CollisionEnterEvent += OnNotice;
         noticer.CollisionExitEvent += OnUnnotice;
 
-        originalPosition = transform.position;
+        originalRotation = transform.forward;
     }
 
     // Update is called once per frame
@@ -45,9 +45,7 @@ public class Hypervisor : MonoBehaviour
         if (tagHandler.HasTag(Tag.Player))
         {
             noticed = false;
-            //Vector3 direction = (originalPosition - transform.position).normalized;
-            //transform.rotation = Quaternion.Slerp(transform.rotation,
-            //Quaternion.LookRotation(direction), 0.1f); ;
+            rotator.TurnTo(originalRotation);
         }
     }
 }
