@@ -8,12 +8,13 @@ public class Rotator : MonoBehaviour
 
     public void Face(GameObject target)
     {
+        StopAllCoroutines();
         Vector3 direction =  (target.transform.position - transform.position).normalized;
         transform.rotation = Quaternion.Slerp(transform.rotation,
         Quaternion.LookRotation(direction), smooth_speed);
     }
 
-    public void Face(Vector3 dir)
+    public void FaceOrig(Vector3 dir)
     {
         transform.rotation = Quaternion.Slerp(transform.rotation,
             Quaternion.LookRotation(dir), smooth_speed);
@@ -28,7 +29,7 @@ public class Rotator : MonoBehaviour
     {
         while( Vector3.Angle(transform.forward,ogDirection) != 0 )
         {
-            Face(ogDirection);
+            FaceOrig(ogDirection);
             yield return null;
         }
     }
