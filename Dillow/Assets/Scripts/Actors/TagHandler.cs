@@ -23,7 +23,6 @@ public class TagHandler : MonoBehaviour
         tagList.Remove(tag);
     }
 
-
     public bool HasTag(Tag tag)
     {
         return tagList.Contains(tag);

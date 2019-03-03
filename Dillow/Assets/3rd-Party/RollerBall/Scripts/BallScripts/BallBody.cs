@@ -23,7 +23,7 @@ public class BallBody : Body
     public float jump_hold_time = 0.5f;
     private float jump_hold_timer;
 
-    private float jump_cooldown_time = 0.5f;
+    private float jump_cooldown_time = 0.2f;
     private bool jump_cooling_down;
 
     public float speed_jump_threshold = 20f;
@@ -91,7 +91,7 @@ public class BallBody : Body
 
     public void OnDamageEnd() { } //not written
 
-    public override void Collide(List<Tag> tags, Vector3? direction = null, Vector3? impact = null)
+    public override void Collide(List<Tag> tags = null, TagHandler t = null, Vector3? direction = null, Vector3? impact = null)
     {
         Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
         Vector3 imp = (Vector3)((impact == null) ? Vector3.zero : impact);
@@ -190,7 +190,6 @@ public class BallBody : Body
         {
             rb.AddForce(jump_vector * jump_power, ForceMode.Impulse);
             jump_ready = false;
-            StartCoroutine("JumpCD");
         }
 
         if (mid_air && !air_ready) {
@@ -219,8 +218,6 @@ public class BallBody : Body
         jump_ready = false;
         mid_air = true;
         air_ready = true;
-        StopCoroutine("JumpCD");
-        jump_cooling_down = false;
     }
 
     IEnumerator JumpCD()
