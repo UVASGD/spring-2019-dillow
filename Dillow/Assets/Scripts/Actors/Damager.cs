@@ -13,21 +13,34 @@ public class Damager : MonoBehaviour
     public float StunTime, DamageTime, EndTime;
 
     public Color flashColor = Color.red;
-    private Color normalColor;
-    private MeshRenderer r;
+
+    List<Flasher> flashers;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        r = GetComponent<MeshRenderer>();
-        normalColor = r.material.color;
+
+        List<Renderer> re = new List<Renderer>(GetComponentsInChildren<Renderer>());
+        if (GetComponent<Renderer>())
+            re.Add(GetComponent<Renderer>());
+        flashers = new List<Flasher>();
+        foreach (Renderer r in re)
+        {
+            Flasher f = r.gameObject.AddComponent<Flasher>();
+            flashers.Add(f);
+            f.flashColor = flashColor;
+            f.flashTime = Mathf.Max(StunTime, 0.5f);
+        }
     }
 
     public void Damage(Vector3 dir)
     {
         StartCoroutine(DamageCo());
-        StartCoroutine(Flash());
+        foreach (Flasher f in flashers)
+        {
+            f.Flash();
+        }
         Knockback(dir);
     }
 
@@ -48,13 +61,7 @@ public class Damager : MonoBehaviour
         force = new Vector3(force.x * push_force, 
                             dir.y * up_force,
                             force.z * push_force);
-        rb.AddForce(force);
-    }
-
-    IEnumerator Flash(float flashTime = 0.5f)
-    {
-        r.material.color = flashColor;
-        yield return new WaitForSeconds(flashTime);
-        r.material.color = normalColor;
+        if (rb)
+            rb.AddForce(force);
     }
 }

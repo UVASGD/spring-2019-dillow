@@ -6,14 +6,6 @@ public class SubCollider : MonoBehaviour
 {
     public Body body;
 
-    public void OnTriggerEnter(Collider c)
-    {
-        if (c.GetComponent<TagHandler>())
-        {
-            body.Collide(t:c.GetComponent<TagHandler>());
-        }
-    }
-
     public void OnCollisionEnter(Collision c)
     {
         if (c.collider.GetComponent<TagHandler>())

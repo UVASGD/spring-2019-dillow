@@ -5,7 +5,7 @@ public class Ragdoll : MonoBehaviour
 {
     public List<Rigidbody> rigidList;
     Rigidbody rb;
-    public Animator ani;
+    Animator ani;
 
 
     void Start() {
@@ -26,6 +26,7 @@ public class Ragdoll : MonoBehaviour
             r.isKinematic = !activate;
         }
         ani.enabled = !activate;
-        rb.isKinematic = !activate;
+        if (rb)
+            rb.isKinematic = !activate;
     }
 }

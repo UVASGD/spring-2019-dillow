@@ -29,7 +29,7 @@ public class LaserGun : MonoBehaviour
 
         hit_tags = new List<Tag>() { Tag.SuperDamage };
 
-        InvokeRepeating("HipFire", 1f, 1f);
+        //InvokeRepeating("HipFire", 1f, 1f);
     }
 
     public void Aim(GameObject target)

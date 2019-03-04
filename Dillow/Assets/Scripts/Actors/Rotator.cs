@@ -6,30 +6,40 @@ public class Rotator : MonoBehaviour
 {
     public float smooth_speed = 0.1f;
 
-    public void Face(GameObject target)
+    public void Face(GameObject target, bool lockX = true, bool lockY = true, bool lockZ = true)
     {
-        StopAllCoroutines();
         Vector3 direction =  (target.transform.position - transform.position).normalized;
-        transform.rotation = Quaternion.Slerp(transform.rotation,
-        Quaternion.LookRotation(direction), smooth_speed);
+        Face(direction, lockZ, lockY, lockZ);
     }
 
-    public void FaceOrig(Vector3 dir)
+    public void Face(Vector3 dir, bool lockX = true, bool lockY = true, bool lockZ = true)
     {
+
+        float x = transform.rotation.x;
+        float y = transform.rotation.y;
+        float z = transform.rotation.z;
+
+        StopAllCoroutines();
         transform.rotation = Quaternion.Slerp(transform.rotation,
             Quaternion.LookRotation(dir), smooth_speed);
+
+        transform.rotation = new Quaternion((lockX) ? x : transform.rotation.x, 
+                                            (lockY) ? y : transform.rotation.y, 
+                                            (lockZ) ? z : transform.rotation.z,
+                                            transform.rotation.w);
     }
 
-    public void TurnTo(Vector3 ogDirection)
+    public void TurnTo(Vector3 direction, bool lockX = true, bool lockY = true, bool lockZ = true)
     {
-        StartCoroutine(turnOriginal(ogDirection));
+        StopAllCoroutines();
+        StartCoroutine(TurnToCo(direction, lockX, lockY, lockZ));
     }
 
-    private IEnumerator turnOriginal( Vector3 ogDirection )
+    private IEnumerator TurnToCo( Vector3 direction, bool lockX = true, bool lockY = true, bool lockZ = true)
     {
-        while( Vector3.Angle(transform.forward,ogDirection) != 0 )
+        while( Vector3.Angle(transform.forward, direction) != 0 )
         {
-            FaceOrig(ogDirection);
+            Face(direction, lockX, lockY, lockZ);
             yield return null;
         }
     }

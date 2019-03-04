@@ -8,8 +8,9 @@ public class Fx_Object : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject, Mathf.Max(gameObject.GetComponent<ParticleSystem>().main.duration, 
-            gameObject.GetComponent<AudioSource>().clip.length));
+        float audioLen = (GetComponent<AudioSource>()) ? GetComponent<AudioSource>().clip.length : 0f;
+        float partLen = (GetComponent<ParticleSystem>()) ? GetComponent<ParticleSystem>().main.duration : 0f;
+        Destroy(gameObject, Mathf.Max(audioLen, partLen));
     }
 
     // Update is called once per frame

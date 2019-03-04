@@ -16,8 +16,8 @@ public class Hypervisor : MonoBehaviour
     {
         rotator = GetComponent<Rotator>();
         noticer = GetComponentInChildren<Noticer>();
-        noticer.CollisionEnterEvent += OnNotice;
-        noticer.CollisionExitEvent += OnUnnotice;
+        noticer.NoticeEvent += OnNotice;
+        noticer.UnnoticeEvent += OnUnnotice;
 
         originalRotation = transform.forward;
     }
@@ -27,7 +27,7 @@ public class Hypervisor : MonoBehaviour
     {
         if (noticed)
         {
-            rotator.Face(target);
+            rotator.Face(target, lockY:false);
         }
     }
 

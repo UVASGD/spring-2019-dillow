@@ -22,4 +22,7 @@ public class GroundParticles : MonoBehaviour
         jump_detector.GroundExitEvent += delegate { em.rateOverDistance = 0; };
         jump_detector.CanJumpEvent += delegate { em.rateOverDistance = rate; };
     }
+
+    //int terrainLayer = TerrainSurface.GetMainTexture(transform.position);
+    //Use this in an OnCollisionStay or something to determine which particle effect to use
 }
