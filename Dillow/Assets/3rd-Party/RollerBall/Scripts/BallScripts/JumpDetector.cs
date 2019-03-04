@@ -10,7 +10,7 @@ public class JumpDetector : MonoBehaviour
 
     float leeway = 0.2f;
 
-    public JumpDel CanJumpEvent, StopJumpEvent;
+    public JumpDel CanJumpEvent, StopJumpEvent, GroundExitEvent;
     int groundCount;
 
     // Start is called before the first frame update
@@ -49,6 +49,7 @@ public class JumpDetector : MonoBehaviour
 
     IEnumerator StopJump ()
     {
+        GroundExitEvent?.Invoke();
         yield return new WaitForSeconds(leeway);
         StopJumpEvent?.Invoke();
     }

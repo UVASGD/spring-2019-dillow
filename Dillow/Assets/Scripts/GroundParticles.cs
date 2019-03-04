@@ -4,29 +4,22 @@ using UnityEngine;
 
 public class GroundParticles : MonoBehaviour
 {
-    public ParticleSystem particles;
+
+    JumpDetector jump_detector;
+    ParticleSystem particles;
+    ParticleSystem.EmissionModule em;
+
+    float rate = 1;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (particles == null)
-            particles = GetComponent<ParticleSystem>();
-    }
+        jump_detector = GetComponent<JumpDetector>();
+        particles = GetComponent<ParticleSystem>();
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Ground"))
-        {
-        }
-        else if (other.gameObject.CompareTag("Ground Terrain"))
-        {
-            int terrainLayer = TerrainSurface.GetMainTexture(transform.position);
-        }
-        particles.Play();
-    }
+        em = particles.emission;
 
-    private void OnCollisionExit(Collision collision)
-    {
-        particles.Stop();
+        jump_detector.GroundExitEvent += delegate { em.rateOverDistance = 0; };
+        jump_detector.CanJumpEvent += delegate { em.rateOverDistance = rate; };
     }
 }
