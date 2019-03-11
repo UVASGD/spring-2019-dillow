@@ -20,16 +20,46 @@ public class LaserGun : MonoBehaviour
     float laser_time = 0.25f, laserCD = 5f;
     bool can_fire = true;
 
+    LineRenderer aim_laser;
+    public bool activated;
+
     // Start is called before the first frame update
     void Start()
     {
+        if (!rb) rb = GetComponentInParent<Rigidbody>();
         aimDirection = barrel.transform.forward;
         laser = barrel.GetComponent<LineRenderer>();
         laser.enabled = false;
+        aim_laser = GetComponent<LineRenderer>();
+        aim_laser.enabled = false;
 
         hit_tags = new List<Tag>() { Tag.SuperDamage };
 
         //InvokeRepeating("HipFire", 1f, 1f);
+    }
+
+    void Update()
+    {
+        if (activated)
+        {
+            aim_laser.SetPosition(0, barrel.transform.position);
+
+            RaycastHit hit;
+            if (Physics.Raycast(barrel.transform.position, barrel.transform.forward, out hit, range))
+            {
+                aim_laser.SetPosition(1, hit.point);
+            }
+            else
+            {
+                aim_laser.SetPosition(1, barrel.transform.position + (barrel.transform.forward * range));
+            }
+        }
+    }
+
+    public void Activate(bool act = true)
+    {
+        activated = act;
+        aim_laser.enabled = act;
     }
 
     public void Aim(GameObject target)

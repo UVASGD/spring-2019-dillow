@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LaserCat : Mob
 {
-    public List<Rigidbody> arm_parts;
 
     LaserGun gun;
 
@@ -24,11 +23,13 @@ public class LaserCat : Mob
         noticer.UnnoticeEvent += OnUnnotice;
     }
 
-    void SlackArm(bool slack = true)
+    protected override void Die(Vector3 dir)
     {
-        foreach (Rigidbody r in arm_parts)
+        if (!dead)
         {
-            r.isKinematic = !slack;
+            OnCalm(false);
+            noticer.NoticeEvent -= OnNotice;
+            base.Die(dir);
         }
     }
 
@@ -36,6 +37,7 @@ public class LaserCat : Mob
     {
         if (t.HasTag(Tag.Player))
         {
+            target = t.gameObject;
             OnAggro();
         }
     }
@@ -50,31 +52,41 @@ public class LaserCat : Mob
 
     void OnAggro()
     {
-        //gun.Activate();
-        SlackArm();
-        current_behavior = Aggro;
+        gun.Activate();
+        if (current_behavior != null)
+            StopCoroutine(current_behavior);
+        current_behavior = StartCoroutine(Aggro());
     }
 
-    void OnCalm()
+    void OnCalm(bool alive = true)
     {
-        //gun.Activate(false);
-        SlackArm(false);
-        noticer.Blink();
-        current_behavior = Idle;
+        target = null;
+        gun.Activate(false);
+        if (alive)
+            noticer.Blink();
+        if (current_behavior != null)
+            StopCoroutine(current_behavior);
+        current_behavior = StartCoroutine(Idle());
     }
 
-    void Aggro()
+    IEnumerator Aggro()
     {
-
+        while (target)
+        {
+            rotator.Face(target, lockY:false);
+            gun.Aim(target);
+            yield return null;
+        }
+        OnCalm();
     }
 
-    void Idle()
+    IEnumerator Idle()
     {
-
+        yield return null;
     }
 
-    void Move()
+    IEnumerator Move()
     {
-
+        yield return null;
     }
 }

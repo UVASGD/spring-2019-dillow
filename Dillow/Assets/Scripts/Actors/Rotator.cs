@@ -29,6 +29,12 @@ public class Rotator : MonoBehaviour
                                             transform.rotation.w);
     }
 
+    public void TurnTo(GameObject target, bool lockX = true, bool lockY = true, bool lockZ = true)
+    {
+        Vector3 direction = (transform.position - target.transform.position).normalized;
+        TurnTo(direction, lockX, lockY, lockZ);
+    }
+
     public void TurnTo(Vector3 direction, bool lockX = true, bool lockY = true, bool lockZ = true)
     {
         StopAllCoroutines();

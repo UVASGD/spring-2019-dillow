@@ -8,7 +8,8 @@ public class Mob : Body
 {
 
     protected Ragdoll ragdoll;
-    protected BehaviorDel current_behavior;
+    protected Coroutine current_behavior;
+    protected GameObject target;
     
     //Minimum magnitude of the impact for a mob to die
     public int impactThresh;
@@ -31,13 +32,15 @@ public class Mob : Body
         }
     }
 
-    protected virtual void Die()
+    
+
+    protected virtual void Die(Vector3 dir)
     {
         if (!dead)
         {
             dead = true;
             ragdoll.ActivateRagdoll(true);
-            damager.Damage(Vector3.up);
+            damager.Damage(dir);
         }
     }
 
@@ -54,7 +57,7 @@ public class Mob : Body
 
         if (t.HasTag(Tag.Player) && imp.magnitude >= impactThresh)
         {
-            Die();
+            Die(dir);
         }
     }
 }

@@ -16,7 +16,7 @@ public class Body : MonoBehaviour
     protected virtual void Start()
     {
         tagH = GetComponent<TagHandler>();
-        rb = GetComponent<Rigidbody>();
+        rb = gameObject.GetMainRigidbody();
         anim = GetComponent<Animator>();
         damager = GetComponent<Damager>();
     }

@@ -11,7 +11,9 @@ public class Ragdoll : MonoBehaviour
     void Start() {
         rigidList = new List<Rigidbody>(GetComponentsInChildren<Rigidbody>());
         ani = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
+
+        rb = gameObject.GetMainRigidbody();
+
         Body body = GetComponent<Body>();
         foreach(Rigidbody r in rigidList)
         {
@@ -25,7 +27,8 @@ public class Ragdoll : MonoBehaviour
         {
             r.isKinematic = !activate;
         }
-        ani.enabled = !activate;
+        if (ani)
+            ani.enabled = !activate;
         if (rb)
             rb.isKinematic = !activate;
     }

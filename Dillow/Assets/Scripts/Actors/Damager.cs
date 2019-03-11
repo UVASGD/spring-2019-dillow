@@ -19,7 +19,7 @@ public class Damager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = gameObject.GetMainRigidbody();
 
         List<Renderer> re = new List<Renderer>(GetComponentsInChildren<Renderer>());
         if (GetComponent<Renderer>())
@@ -62,6 +62,8 @@ public class Damager : MonoBehaviour
                             dir.y * up_force,
                             force.z * push_force);
         if (rb)
+        {
             rb.AddForce(force);
+        }
     }
 }
