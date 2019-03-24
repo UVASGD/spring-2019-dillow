@@ -30,7 +30,7 @@ public class Damager : MonoBehaviour
             Flasher f = r.gameObject.AddComponent<Flasher>();
             flashers.Add(f);
             f.flashColor = flashColor;
-            f.flashTime = Mathf.Max(StunTime, 0.5f);
+            f.flashTime = Mathf.Max(StunTime + DamageTime, 0.5f);
         }
     }
 

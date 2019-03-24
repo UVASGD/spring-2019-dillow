@@ -5,14 +5,11 @@ using UnityEngine;
 public class LaserGun : MonoBehaviour
 {
     public float range = 50;
-    public float aimForce = 10;
 
     public GameObject barrel;
+    public LineRenderer laser;
 
-    public Rigidbody rb;
-    LineRenderer laser;
-
-    public float aimAngleThreshold = 15f;
+    float aimAngleThreshold = 75f;
     Vector3 aimDirection;
 
     List<Tag> hit_tags;
@@ -20,18 +17,17 @@ public class LaserGun : MonoBehaviour
     float laser_time = 0.25f, laserCD = 5f;
     bool can_fire = true;
 
-    LineRenderer aim_laser;
+    public LineRenderer aim_laser;
     public bool activated;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (!rb) rb = GetComponentInParent<Rigidbody>();
         aimDirection = barrel.transform.forward;
-        laser = barrel.GetComponent<LineRenderer>();
         laser.enabled = false;
-        aim_laser = GetComponent<LineRenderer>();
+        laser.useWorldSpace = true;
         aim_laser.enabled = false;
+        aim_laser.useWorldSpace = true;
 
         hit_tags = new List<Tag>() { Tag.SuperDamage };
 
@@ -45,13 +41,13 @@ public class LaserGun : MonoBehaviour
             aim_laser.SetPosition(0, barrel.transform.position);
 
             RaycastHit hit;
-            if (Physics.Raycast(barrel.transform.position, barrel.transform.forward, out hit, range))
+            if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range))
             {
                 aim_laser.SetPosition(1, hit.point);
             }
             else
             {
-                aim_laser.SetPosition(1, barrel.transform.position + (barrel.transform.forward * range));
+                aim_laser.SetPosition(1, barrel.transform.position + (aimDirection * range));
             }
         }
     }
@@ -64,18 +60,16 @@ public class LaserGun : MonoBehaviour
 
     public void Aim(GameObject target)
     {
-        Vector3 diff = (target.transform.position - barrel.transform.position).normalized;
-        rb?.AddForceAtPosition(diff * aimForce, barrel.transform.position);
-        float angleDiff = Vector3.Angle(barrel.transform.forward, diff);
+        Vector3 targetDir = (target.transform.position - barrel.transform.position).normalized;
+        float angleDiff = Vector3.Angle(barrel.transform.forward, targetDir);
         if (angleDiff < aimAngleThreshold)
         {
-            aimDirection = diff;
+            aimDirection = targetDir;
         }
         else
         {
             aimDirection = barrel.transform.forward;
-        }
-        
+        }      
     }
 
     public void HipFire()
