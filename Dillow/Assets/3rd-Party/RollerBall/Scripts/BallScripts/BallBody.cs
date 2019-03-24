@@ -24,15 +24,15 @@ public class BallBody : Body
     public float jump_hold_time = 0.5f;
     private float jump_hold_timer;
 
-    private float jump_cooldown_time = 0.2f;
+    private float jump_cooldown_time = 0.5f;
     private bool jump_cooling_down;
 
     public float speed_jump_threshold = 20f;
 
     public JumpDetector jump_dectector;
 
-    private float jump_multiplier = 2f; 
-    private float fall_multiplier = 2.5f;
+    private float jump_multiplier = 3f; 
+    private float fall_multiplier = 3.5f;
     private Vector3 jump_vector;
     [HideInInspector] public Vector3 speed_vector;
 
@@ -41,7 +41,7 @@ public class BallBody : Body
     [HideInInspector ]public bool can_move = true;
     private int priority = 0;
 
-    [HideInInspector] public bool jump_ready;
+    public bool jump_ready;
     [HideInInspector] public bool mid_air;
     [HideInInspector] public bool air_ready;
     #endregion
@@ -188,7 +188,7 @@ public class BallBody : Body
         if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
         {
             rb.AddForce(jump_vector * jump_power, ForceMode.Impulse);
-            jump_ready = false;
+            StartCoroutine(JumpCD());
         }
 
         if (mid_air && !air_ready) {
