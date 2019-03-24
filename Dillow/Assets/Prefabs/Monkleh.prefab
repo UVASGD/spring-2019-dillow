@@ -284,6 +284,7 @@ MonoBehaviour:
   aimForce: 10
   barrel: {fileID: 6765398097152165489}
   rb: {fileID: 0}
+  aimAngleThreshold: 15
 --- !u!1 &6765398098196552012
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,7 +407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotator: {fileID: 0}
   noticer: {fileID: 0}
-  originalPosition: {x: 0, y: 0, z: 0}
+  originalRotation: {x: 0, y: 0, z: 0}
 --- !u!1001 &3867759879293633543
 PrefabInstance:
   m_ObjectHideFlags: 0
