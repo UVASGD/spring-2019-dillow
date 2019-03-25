@@ -19,7 +19,7 @@ public class BallBody : Body
     public float max_speed = 50f;
 
     [Header("Jumping")]
-    public float jump_power = 5f;
+    public float jump_power = 10f;
 
     public float jump_hold_time = 0.5f;
     private float jump_hold_timer;
@@ -94,8 +94,10 @@ public class BallBody : Body
     {
         Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
         Vector3 imp = (Vector3)((impact == null) ? Vector3.zero : impact);
+        if (tags == null)
+            tags = t.tagList;
 
-        if ( tags.Contains(Tag.SuperDamage) )
+        if ( (tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage)))
         {
             damager.Damage(dir);
         }

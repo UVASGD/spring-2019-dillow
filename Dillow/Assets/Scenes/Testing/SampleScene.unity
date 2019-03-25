@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 188485550}
   - component: {fileID: 188485552}
   - component: {fileID: 188485551}
+  - component: {fileID: 188485553}
   m_Layer: 0
   m_Name: SnowBall
   m_TagString: Untagged
@@ -207,11 +208,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 188485549}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.54, z: 9.93}
+  m_LocalPosition: {x: 0, y: -0.346, z: 0.73}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1535952646}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &188485551
 ParticleSystemRenderer:
@@ -270,7 +271,7 @@ ParticleSystemRenderer:
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
   m_VertexStreams: 00010304
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -3925,7 +3926,7 @@ ParticleSystem:
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
-    collisionMessages: 0
+    collisionMessages: 1
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
@@ -4879,6 +4880,19 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &188485553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188485549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 942ab66c4c68ccc4989bb6742d444f4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tagList: 02000000
 --- !u!1001 &1246391387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5174,14 +5188,6 @@ PrefabInstance:
       propertyPath: m_ConnectedAnchor.z
       value: 0.00000040978193
       objectReference: {fileID: 0}
-    - target: {fileID: 452366175, guid: bafc1941d7b507a4580e8203176308c8, type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: -0.8827105
-      objectReference: {fileID: 0}
-    - target: {fileID: 452366175, guid: bafc1941d7b507a4580e8203176308c8, type: 3}
-      propertyPath: m_ConnectedAnchor.y
-      value: -0.05536967
-      objectReference: {fileID: 0}
     - target: {fileID: 1644081874, guid: bafc1941d7b507a4580e8203176308c8, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: -0.88271075
@@ -5193,6 +5199,14 @@ PrefabInstance:
     - target: {fileID: 1644081874, guid: bafc1941d7b507a4580e8203176308c8, type: 3}
       propertyPath: m_ConnectedAnchor.z
       value: -0.74645376
+      objectReference: {fileID: 0}
+    - target: {fileID: 452366175, guid: bafc1941d7b507a4580e8203176308c8, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: -0.8827105
+      objectReference: {fileID: 0}
+    - target: {fileID: 452366175, guid: bafc1941d7b507a4580e8203176308c8, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: -0.05536967
       objectReference: {fileID: 0}
     - target: {fileID: 1426857732, guid: bafc1941d7b507a4580e8203176308c8, type: 3}
       propertyPath: m_ConnectedAnchor.x
@@ -5228,7 +5242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 942ab66c4c68ccc4989bb6742d444f4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagList: 0100000002000000
+  tagList: 01000000
 --- !u!1001 &6765398097795591150
 PrefabInstance:
   m_ObjectHideFlags: 0
