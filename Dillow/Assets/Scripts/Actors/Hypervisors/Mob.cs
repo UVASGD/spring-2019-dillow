@@ -8,7 +8,7 @@ public class Mob : Body
 {
 
     protected Ragdoll ragdoll;
-    protected Coroutine current_behavior;
+    protected BehaviorDel current_behavior;
     protected GameObject target;
     
     //Minimum magnitude of the impact for a mob to die
@@ -32,14 +32,20 @@ public class Mob : Body
         }
     }
 
-    
+    protected void Update()
+    {
+        if (!dead)
+        {
+            current_behavior?.Invoke();
+        }
+    }
 
     protected virtual void Die(Vector3 dir)
     {
         if (!dead)
         {
             dead = true;
-            ragdoll.ActivateRagdoll(true);
+            ragdoll?.ActivateRagdoll(true);
             damager.Damage(dir);
         }
     }

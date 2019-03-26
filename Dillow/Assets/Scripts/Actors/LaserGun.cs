@@ -78,10 +78,15 @@ public class LaserGun : MonoBehaviour
         Fire();
     }
 
-    public void Fire()
+    public void Fire(GameObject target = null)
     {
         if (!can_fire)
             return;
+
+        if (target)
+        {
+            aimDirection = target.transform.position - barrel.transform.position;
+        }
 
         RaycastHit hit;
 
