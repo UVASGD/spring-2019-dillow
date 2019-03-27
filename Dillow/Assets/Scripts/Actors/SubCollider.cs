@@ -10,7 +10,7 @@ public class SubCollider : MonoBehaviour
     {
         if (c.collider.GetComponent<TagHandler>())
         {
-            body.Collide(c.contacts[0].point, t:c.collider.GetComponent<TagHandler>(), direction:c.contacts[0].normal, impact:c.impulse);
+            body.Collide(c.contacts[0].point, t:c.collider.GetComponent<TagHandler>(), direction: c.contacts[0].normal, impact:c.impulse);
         }
     }
 

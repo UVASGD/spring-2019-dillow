@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6470596176834278752}
   - component: {fileID: 6470596176834278753}
   m_Layer: 0
-  m_Name: player_ground_impact
+  m_Name: ground_impact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,7 +104,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

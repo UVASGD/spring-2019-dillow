@@ -122,7 +122,7 @@ public class LaserGun : MonoBehaviour
         }
         else if(hit.GetComponent<Body>())
         {
-            hit.GetComponent<Body>().Collide(position, hit_tags, direction: normal);
+            hit.GetComponent<Body>().Collide(position, hit_tags, direction: -normal);
         }
     }
 }

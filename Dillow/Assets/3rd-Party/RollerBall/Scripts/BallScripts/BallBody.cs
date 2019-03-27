@@ -127,7 +127,10 @@ public class BallBody : Body
 
         if (jump_fx && (c.collider.CompareTag("Ground") || c.collider.CompareTag("Ground Terrain")))
             if (c.impulse.magnitude > 10f)
-                Fx_Spawner.instance.SpawnFX(jump_fx, c.contacts[0].point, c.contacts[0].normal);
+            {
+                float vol = Mathf.Clamp01(c.impulse.magnitude / 50f);
+                Fx_Spawner.instance.SpawnFX(jump_fx, c.contacts[0].point, c.contacts[0].normal, vol);
+            }
     }
 
     private void OnFall()
