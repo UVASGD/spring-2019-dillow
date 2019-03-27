@@ -27,9 +27,9 @@ public class BallBody : Body
     private float jump_cooldown_time = 0.5f;
     private bool jump_cooling_down;
 
-    public float speed_jump_threshold = 20f;
+    private float speed_jump_threshold = 20f;
 
-    public JumpDetector jump_dectector;
+    private JumpDetector jump_dectector;
 
     private float jump_multiplier = 3f; 
     private float fall_multiplier = 3.5f;
@@ -44,6 +44,8 @@ public class BallBody : Body
     public bool jump_ready;
     [HideInInspector] public bool mid_air;
     [HideInInspector] public bool air_ready;
+
+    public GameObject jump_fx;
     #endregion
 
     [Header("Locking")]
@@ -117,6 +119,15 @@ public class BallBody : Body
             rb.velocity = rb.velocity.normalized * max_speed;
         }
         OnFall();
+    }
+
+    public override void OnCollisionEnter(Collision c)
+    {
+        base.OnCollisionEnter(c);
+
+        if (jump_fx && (c.collider.CompareTag("Ground") || c.collider.CompareTag("Ground Terrain")))
+            if (c.impulse.magnitude > 10f)
+                Fx_Spawner.instance.SpawnFX(jump_fx, c.contacts[0].point, c.contacts[0].normal);
     }
 
     private void OnFall()
