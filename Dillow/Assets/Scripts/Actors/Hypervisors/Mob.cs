@@ -9,7 +9,9 @@ public class Mob : Body
 
     protected Ragdoll ragdoll;
     protected BehaviorDel current_behavior;
-    protected GameObject target;
+    protected GameObject target, main_body;
+
+    public GameObject death_fx;
     
     //Minimum magnitude of the impact for a mob to die
     public int impactThresh;
@@ -30,6 +32,8 @@ public class Mob : Body
             transform.position = hit.point;
             transform.up = hit.normal;
         }
+
+        main_body = (ragdoll) ? ragdoll.rb.gameObject : gameObject;
     }
 
     protected void Update()
@@ -40,22 +44,26 @@ public class Mob : Body
         }
     }
 
-    protected virtual void Die(Vector3 dir)
+    protected virtual void Die(Vector3 dir, Vector3 pos)
     {
         if (!dead)
         {
             dead = true;
             ragdoll?.ActivateRagdoll(true);
-            damager.Damage(dir);
+            damager.Damage(dir, pos);
         }
     }
 
     public void Destroy()
     {
+        if (death_fx)
+        {
+            Fx_Spawner.instance.SpawnFX(death_fx, main_body.transform.position, Vector3.up);
+        }
         Destroy(gameObject);
     }
 
-    public override void Collide(List<Tag> tags = null, TagHandler t = null,
+    public override void Collide(Vector3 pos, List<Tag> tags = null, TagHandler t = null,
         Vector3? direction = null, Vector3? impact = null)
     {
         Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
@@ -63,7 +71,7 @@ public class Mob : Body
 
         if (t.HasTag(Tag.Player) && imp.magnitude >= impactThresh)
         {
-            Die(dir);
+            Die(dir, pos);
         }
     }
 }

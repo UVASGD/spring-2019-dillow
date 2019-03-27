@@ -27,7 +27,16 @@ public class Body : MonoBehaviour
         if (c.collider.GetComponent<TagHandler>() )
         {
             TagHandler th = c.collider.GetComponent<TagHandler>();
-            Collide(t:th, direction: c.contacts[0].normal, impact: c.impulse);
+            Collide(c.contacts[0].point, t:th, direction: c.contacts[0].normal, impact: c.impulse);
+        }
+    }
+
+    public virtual void OnTriggerEnter(Collider c)
+    {
+        if (c.GetComponent<TagHandler>())
+        {
+            TagHandler th = c.GetComponent<TagHandler>();
+            Collide(transform.position, t:th, direction: transform.position - c.transform.position);
         }
     }
     
@@ -35,11 +44,11 @@ public class Body : MonoBehaviour
     {
         if (c.GetComponent<TagHandler>()) 
         {
-            Collide(t:c.GetComponent<TagHandler>());
+            Collide(transform.position, t:c.GetComponent<TagHandler>());
         }
     }
 
-    public virtual void Collide(List<Tag> tags = null, TagHandler t = null, 
+    public virtual void Collide(Vector3 pos, List<Tag> tags = null, TagHandler t = null, 
         Vector3? direction = null, Vector3? impact = null)
     {
         Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);

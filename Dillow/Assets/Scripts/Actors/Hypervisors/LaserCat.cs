@@ -81,7 +81,7 @@ public class LaserCat : Mob
         current_behavior = Idle;
     }
 
-    protected override void Die(Vector3 dir)
+    protected override void Die(Vector3 dir, Vector3 pos)
     {
         if (!dead)
         {
@@ -90,7 +90,7 @@ public class LaserCat : Mob
             gun.Activate(false);
             noticer.NoticeEvent -= OnNotice;
             noticer.UnnoticeEvent -= OnUnnotice;
-            base.Die(dir);
+            base.Die(dir, pos);
         }
     }
 }

@@ -4,11 +4,11 @@ using UnityEngine;
 public class Ragdoll : MonoBehaviour
 {
     public List<Rigidbody> rigidList;
-    Rigidbody rb;
+    public Rigidbody rb;
     Animator ani;
 
 
-    void Start() {
+    void Awake() {
         rigidList = new List<Rigidbody>(GetComponentsInChildren<Rigidbody>());
         ani = GetComponent<Animator>();
 

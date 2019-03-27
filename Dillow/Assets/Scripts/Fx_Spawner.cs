@@ -20,25 +20,17 @@ public class Fx_Spawner : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    // Start is called before the first frame update
-    void Start()
+
+
+    public void SpawnFX(GameObject fx,  Vector3 position, Vector3 rotation, float vol = -1, Transform parent = null)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
-
-    void SpawnFX(GameObject target, Vector3 position, Vector3 rotation)
-    {
-        GameObject spawned_fx = Instantiate(target, position, Quaternion.identity);
-        spawned_fx.transform.position = position;
+        GameObject spawned_fx = Instantiate(fx, position, Quaternion.identity);
+        if (parent)
+        {
+            spawned_fx.transform.parent = parent;
+        }
         spawned_fx.transform.forward = rotation;
+        spawned_fx.GetComponent<Fx_Object>().vol = vol;
     }
 
     void SpawnFX(FXType effectName, Vector3 position, Vector3 rotation)

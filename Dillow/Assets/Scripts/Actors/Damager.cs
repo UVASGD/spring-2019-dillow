@@ -17,6 +17,8 @@ public class Damager : MonoBehaviour
 
     List<Flasher> flashers;
 
+    public GameObject damage_fx;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,11 +37,17 @@ public class Damager : MonoBehaviour
         }
     }
 
-    public void Damage(Vector3 dir)
+    public void Damage(Vector3 dir, Vector3 pos)
     {
         if (can_be_damaged)
         {
+            if (damage_fx)
+            {
+                Fx_Spawner.instance.SpawnFX(damage_fx, pos, dir);
+            }
+
             StartCoroutine(DamageCo());
+
             foreach (Flasher f in flashers)
             {
                 f.Flash();
@@ -67,9 +75,7 @@ public class Damager : MonoBehaviour
         force = new Vector3(force.x * push_force, 
                             dir.y * up_force,
                             force.z * push_force);
-        if (rb)
-        {
-            rb.AddForce(force);
-        }
+
+        rb?.AddForce(force);
     }
 }

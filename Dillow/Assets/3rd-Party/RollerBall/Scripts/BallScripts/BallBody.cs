@@ -90,7 +90,7 @@ public class BallBody : Body
 
     public void OnDamageEnd() { } //not written
 
-    public override void Collide(List<Tag> tags = null, TagHandler t = null, Vector3? direction = null, Vector3? impact = null)
+    public override void Collide(Vector3 pos, List<Tag> tags = null, TagHandler t = null, Vector3? direction = null, Vector3? impact = null)
     {
         Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
         Vector3 imp = (Vector3)((impact == null) ? Vector3.zero : impact);
@@ -99,7 +99,7 @@ public class BallBody : Body
 
         if ( (tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage)))
         {
-            damager.Damage(dir);
+            damager.Damage(dir, pos);
         }
     }
 
