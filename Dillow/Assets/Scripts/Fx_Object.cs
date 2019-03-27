@@ -26,10 +26,4 @@ public class Fx_Object : MonoBehaviour
         }
         Destroy(gameObject, Mathf.Max(max_audio_len, max_part_len));
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
