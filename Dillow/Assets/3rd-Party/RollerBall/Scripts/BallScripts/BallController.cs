@@ -48,9 +48,9 @@ public class BallController : MonoBehaviour
             // we use world-relative controls in this case, which may not be what the user wants, but hey, we warned them!
         }
 
-        FadeController.instance.FadeInStartedEvent += delegate { can_input = false; body.can_be_damaged = false; };
-        FadeController.instance.FadeOutStartedEvent += delegate { can_input = false; body.can_be_damaged = false; };
-        FadeController.instance.FadeInCompletedEvent += delegate { can_input = true; body.can_be_damaged = true; };
+        FadeController.FadeInStartedEvent += delegate { can_input = false; body.can_be_damaged = false; };
+        FadeController.FadeOutStartedEvent += delegate { can_input = false; body.can_be_damaged = false; };
+        FadeController.FadeInCompletedEvent += delegate { can_input = true; body.can_be_damaged = true; };
     }
 
     private void Update()

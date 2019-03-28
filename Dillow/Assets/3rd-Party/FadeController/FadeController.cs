@@ -19,7 +19,7 @@ public class FadeController : MonoBehaviour {
     public Image fadeImage;
     private bool automatic;
 
-    public FadeEvent FadeOutCompletedEvent, FadeInCompletedEvent, 
+    public static FadeEvent FadeOutCompletedEvent, FadeInCompletedEvent, 
         FadeInStartedEvent, FadeOutStartedEvent;
 
     /// <summary>

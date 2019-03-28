@@ -61,8 +61,8 @@ public class GameManager : MonoBehaviour {
 
         Load();
 
-        FadeController.instance.FadeInStartedEvent += delegate { spawned = true; };
-        FadeController.instance.FadeOutCompletedEvent += delegate { if (!spawned) StartCoroutine(RespawnCo()); };
+        FadeController.FadeInStartedEvent += delegate { spawned = true; };
+        FadeController.FadeOutCompletedEvent += delegate { if (!spawned) StartCoroutine(RespawnCo()); };
     }
 
 
