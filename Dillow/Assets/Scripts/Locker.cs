@@ -45,7 +45,6 @@ public class Locker : MonoBehaviour
         if (!lockon)
         {
             reticle.Deactivate();
-            //play the deactivate sound
             locked = null;
         }
         else
@@ -64,15 +63,15 @@ public class Locker : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, (lockable.transform.position - transform.position).normalized, out hit, range, Physics.AllLayers, QueryTriggerInteraction.Ignore))
                 {
-                    if (hit.rigidbody && hit.rigidbody.gameObject != locked)
+                    if (hit.collider.gameObject != locked)
                     {
-                        Vector3 lock_angle = Vector3.ProjectOnPlane(hit.rigidbody.gameObject.transform.position - transform.position, Vector3.up);
+                        Vector3 lock_angle = Vector3.ProjectOnPlane(hit.collider.gameObject.transform.position - transform.position, Vector3.up);
                         Vector3 cam_angle = Vector3.ProjectOnPlane(main.transform.forward, Vector3.up);
                         float angle = Vector3.Angle(lock_angle, cam_angle);
                         if (angle < best_angle)
                         {
                             best_angle = angle;
-                            best_lock = hit.rigidbody.gameObject;
+                            best_lock = hit.collider.gameObject;
                         }
                     }
                 }
