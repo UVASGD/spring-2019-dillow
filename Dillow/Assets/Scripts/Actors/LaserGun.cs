@@ -95,10 +95,8 @@ public class LaserGun : MonoBehaviour
 
         if (shot_fx) Fx_Spawner.instance.SpawnFX(shot_fx, barrel.transform.position, barrel.transform.forward);
 
-        RaycastHit hit;
-
         laser.SetPosition(0, barrel.transform.position);
-
+        RaycastHit hit;
         if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range, Physics.AllLayers, QueryTriggerInteraction.Ignore))
         {
             laser.SetPosition(1, hit.point);

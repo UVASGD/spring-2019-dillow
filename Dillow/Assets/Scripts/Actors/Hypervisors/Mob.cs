@@ -4,7 +4,7 @@ using UnityEngine;
 
 public delegate void BehaviorDel();
 
-public class Mob : Body
+public class Mob : Body, ILockable
 {
     [Header("POSITIONING")]
     public bool start_on_ground = true;
@@ -39,6 +39,7 @@ public class Mob : Body
         }
 
         main_body = (ragdoll) ? ragdoll.rb.gameObject : gameObject;
+        main_body.AddComponent<MainBody>();
     }
 
     protected virtual void Update()

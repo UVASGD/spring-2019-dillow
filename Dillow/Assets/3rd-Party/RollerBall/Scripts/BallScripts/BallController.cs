@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    private BallBody body;
+    public static BallBody body;
 
     private Vector3 move;
     // the world-relative desired move direction, calculated from the camForward and user input.
@@ -17,10 +17,13 @@ public class BallController : MonoBehaviour
 
     public bool can_input = true;
 
+    private Locker locker;
+
     private void Awake()
     {
         // Set up the reference.
         body = GetComponent<BallBody>();
+        locker = transform.parent.GetComponentInChildren<Locker>();
 
         // get the transform of the main camera
         if (Camera.main != null)
@@ -55,6 +58,15 @@ public class BallController : MonoBehaviour
         {
             // we use world-relative directions in the case of no main camera
             move = (v * Vector3.forward + h * Vector3.right).normalized;
+        }
+
+        if (Input.GetButtonDown("LockOn"))
+        {
+            locker.Lock(true);
+        }
+        else if (Input.GetButtonDown("LockOff"))
+        {
+            locker.Lock(false);
         }
     }
 
