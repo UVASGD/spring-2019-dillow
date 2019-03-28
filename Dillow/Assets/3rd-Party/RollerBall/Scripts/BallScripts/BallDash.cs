@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BallDash : BallAttackAbility
 {
+    public GameObject dash_fx;
 
     public override void OnAction(bool move, Vector3 dir, int jump, int action)
     {
@@ -30,6 +31,7 @@ public class BallDash : BallAttackAbility
         body.rb.velocity += attack_dir * attack_speed;
         intensity = 1f;
         fx_anim?.SetTrigger("Start");
+        Fx_Spawner.instance.SpawnFX(dash_fx, transform.position, Vector3.up);
         //body.collision_state.AddState(CollisionState.attacking);
     }
 

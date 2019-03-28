@@ -45,11 +45,11 @@ public class BallBody : Body
     [HideInInspector] public bool mid_air;
     [HideInInspector] public bool air_ready;
 
+    [Header("FX")]
     public GameObject jump_fx;
     #endregion
 
-    [Header("Locking")]
-    public GameObject lock_enemy;
+    [HideInInspector] public GameObject lock_enemy;
 
     // Start is called before the first frame update
     protected override void Start()

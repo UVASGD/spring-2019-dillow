@@ -73,7 +73,7 @@ public class Damager : MonoBehaviour
     {
         var force = Vector3.ProjectOnPlane(dir, Vector3.up);
         force = new Vector3(force.x * push_force, 
-                            dir.y * up_force,
+                            1f * up_force,
                             force.z * push_force);
         rb?.AddForce(force, ForceMode.Impulse);
     }

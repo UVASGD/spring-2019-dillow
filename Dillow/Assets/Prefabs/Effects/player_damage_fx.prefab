@@ -256,6 +256,11 @@ PrefabInstance:
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1152827718439222269, guid: 57b1a54a17dc4264d80286c34329aa34,
+        type: 3}
+      propertyPath: LightsModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57b1a54a17dc4264d80286c34329aa34, type: 3}
 --- !u!4 &2641468504284981026 stripped

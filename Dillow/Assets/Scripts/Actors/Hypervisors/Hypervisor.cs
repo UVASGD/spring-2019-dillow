@@ -11,6 +11,8 @@ public class Hypervisor : MonoBehaviour
 
     private bool noticed;
     private GameObject target;
+
+    public GameObject SnowThrower;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +22,8 @@ public class Hypervisor : MonoBehaviour
         noticer.UnnoticeEvent += OnUnnotice;
 
         originalRotation = transform.forward;
+
+        SnowThrower.SetActive(false);
     }
 
     // Update is called once per frame
@@ -27,7 +31,7 @@ public class Hypervisor : MonoBehaviour
     {
         if (noticed)
         {
-            rotator.Face(target, lockY:false);
+            rotator.Face(target, false, false, false);
         }
     }
 
@@ -37,6 +41,7 @@ public class Hypervisor : MonoBehaviour
         {
             target = tagHandler.gameObject;
             noticed = true;
+            SnowThrower.SetActive(true);
         }
     }
 
@@ -45,7 +50,8 @@ public class Hypervisor : MonoBehaviour
         if (tagHandler.HasTag(Tag.Player))
         {
             noticed = false;
-            rotator.TurnTo(originalRotation);
+            rotator.TurnTo(originalRotation, true, false, false);
+            SnowThrower.SetActive(false);
         }
     }
 }

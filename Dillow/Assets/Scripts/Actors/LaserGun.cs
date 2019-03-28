@@ -41,7 +41,7 @@ public class LaserGun : MonoBehaviour
             aim_laser.SetPosition(0, barrel.transform.position);
 
             RaycastHit hit;
-            if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range))
+            if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range, Physics.AllLayers, QueryTriggerInteraction.Ignore))
             {
                 aim_laser.SetPosition(1, hit.point);
             }
@@ -92,7 +92,7 @@ public class LaserGun : MonoBehaviour
 
         laser.SetPosition(0, barrel.transform.position);
 
-        if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range))
+        if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range, Physics.AllLayers, QueryTriggerInteraction.Ignore))
         {
             laser.SetPosition(1, hit.point);
             Hit(hit.collider.gameObject, hit.point, hit.normal);

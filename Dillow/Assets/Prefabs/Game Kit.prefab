@@ -307,6 +307,7 @@ MonoBehaviour:
   max_action_time: 0
   max_recharge_time: 0.5
   attack_speed: 20
+  dash_fx: {fileID: 3978700848951034997, guid: c6293b7861873164f9d3b9107809894f, type: 3}
 --- !u!114 &2678606159295956338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,8 +346,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62720878c45cab449b7573e185b5243d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  push_force: 20
-  up_force: 400
+  push_force: 5
+  up_force: 15
   StunTime: 2
   DamageTime: 2
   EndTime: 2
@@ -684,13 +685,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5649285566282940729, guid: b3a80d2e83e3d431ca9105d02caacab8,
         type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.22975291
+      objectReference: {fileID: 0}
+    - target: {fileID: 5649285566282940729, guid: b3a80d2e83e3d431ca9105d02caacab8,
+        type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000019029862
+      value: 0.0000000144623264
       objectReference: {fileID: 0}
     - target: {fileID: 5649285566282940729, guid: b3a80d2e83e3d431ca9105d02caacab8,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000013627406
+      value: 0.000000005720973
       objectReference: {fileID: 0}
     - target: {fileID: 5649285567732968048, guid: b3a80d2e83e3d431ca9105d02caacab8,
         type: 3}

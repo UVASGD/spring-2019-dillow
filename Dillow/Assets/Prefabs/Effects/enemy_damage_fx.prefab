@@ -246,6 +246,11 @@ PrefabInstance:
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5620003632575495240, guid: 57b1a54a17dc4264d80286c34329aa34,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3645810327209951481, guid: 57b1a54a17dc4264d80286c34329aa34,
         type: 3}
       propertyPath: looping
@@ -254,6 +259,11 @@ PrefabInstance:
     - target: {fileID: 1152827718439222269, guid: 57b1a54a17dc4264d80286c34329aa34,
         type: 3}
       propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152827718439222269, guid: 57b1a54a17dc4264d80286c34329aa34,
+        type: 3}
+      propertyPath: LightsModule.enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
