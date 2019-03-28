@@ -20,6 +20,9 @@ public class Hypervisor : Mob
         noticer.UnnoticeEvent += OnUnnotice;
 
         originalRotation = transform.forward;
+        originalRotation.z = Random.Range(0, 360);
+
+        rotator.Face(originalRotation, false, false, false);
 
         SnowThrower.SetActive(false);
     }
@@ -58,7 +61,7 @@ public class Hypervisor : Mob
 
     void Calm()
     {
-        rotator.TurnTo(originalRotation, true, false, false);
+        rotator.TurnTo(originalRotation, false, false, false);
         SnowThrower.SetActive(false);
     }
 

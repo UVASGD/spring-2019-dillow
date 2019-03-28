@@ -12,14 +12,14 @@ public class Rotator : MonoBehaviour
         Face(direction, lockZ, lockY, lockZ);
     }
 
-    public void Face(Vector3 dir, bool lockX = true, bool lockY = true, bool lockZ = true)
+    public void Face(Vector3 dir, bool lockX = true, bool lockY = true, bool lockZ = true, bool stop = true)
     {
 
         float x = transform.rotation.x;
         float y = transform.rotation.y;
         float z = transform.rotation.z;
 
-        StopAllCoroutines();
+        if (stop) StopAllCoroutines();
         transform.rotation = Quaternion.Slerp(transform.rotation,
             Quaternion.LookRotation(dir), smooth_speed);
 
@@ -45,7 +45,8 @@ public class Rotator : MonoBehaviour
     {
         while( Vector3.Angle(transform.forward, direction) != 0 )
         {
-            Face(direction, lockX, lockY, lockZ);
+            print("We are not facing the original vector. Current: " + transform.forward);
+            Face(direction, lockX, lockY, lockZ, false);
             yield return null;
         }
     }
