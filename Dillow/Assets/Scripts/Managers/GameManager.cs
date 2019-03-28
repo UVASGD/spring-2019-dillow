@@ -115,8 +115,8 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator RespawnCo()
     {
-        yield return new WaitForSeconds(1.5f);
         player.gameObject.transform.position = playerSpawnLocation;
+        yield return new WaitForSeconds(1.5f);
         FadeController.instance.FadeIn();
     }
 }

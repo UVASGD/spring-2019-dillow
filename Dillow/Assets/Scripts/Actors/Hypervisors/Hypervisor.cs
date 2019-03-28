@@ -19,10 +19,9 @@ public class Hypervisor : Mob
         noticer.NoticeEvent += OnNotice;
         noticer.UnnoticeEvent += OnUnnotice;
 
-        originalRotation = transform.forward;
-        originalRotation.z = Random.Range(0, 360);
 
-        rotator.Face(originalRotation, false, false, false);
+        originalRotation = Vector3.ProjectOnPlane(Random.insideUnitSphere, Vector3.up).normalized;
+        rotator.TurnTo(originalRotation, true, false, true);
 
         SnowThrower.SetActive(false);
     }

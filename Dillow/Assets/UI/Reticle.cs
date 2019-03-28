@@ -36,11 +36,13 @@ public class Reticle : MonoBehaviour
 
     public void Deactivate()
     {
-        aud.Stop();
-        aud.pitch = 0.75f;
-        aud.Play();
         if (gameObject.activeInHierarchy)
+        {
+            aud.Stop();
+            aud.pitch = 0.75f;
+            aud.Play();
             StartCoroutine(WaitForBloop());
+        }
     }
 
     IEnumerator WaitForBloop()
