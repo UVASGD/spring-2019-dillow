@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1c99d7367a4b9d45ab133da3b29e05f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pitch_range: 0.4
-  amp_range: 0.4
+  pitch_range: 0.2
+  amp_range: 0.2
   vol: -1
 --- !u!82 &6470596176834278753
 AudioSource:
@@ -61,7 +61,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 9623321414f85d545bbad5de43efc730, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
-  m_Pitch: 1
+  m_Pitch: 2
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -104,7 +104,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.06
       inSlope: 0
       outSlope: 0
       tangentMode: 0

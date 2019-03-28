@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Fx_Object : MonoBehaviour
 {
-    public float pitch_range = 0.4f;
-    public float amp_range = 0.4f;
+    float pitch_range = 0.2f, amp_range = 0.2f;
     public float vol = -1f;
     // Start is called before the first frame update
     void Start()

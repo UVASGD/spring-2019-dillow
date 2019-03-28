@@ -12,8 +12,9 @@ public class GroundParticles : MonoBehaviour
     AudioSource aud;
 
     float rate = 1,
-          pitch_range = 0.4f,
-          amp_range = 0.4f,
+          pitch = 0.1f,
+          amp_range = 0.2f,
+          amp_damp = 0.2f,
           sound_threshold = 0.3f,
           max_speed;
 
@@ -39,6 +40,7 @@ public class GroundParticles : MonoBehaviour
         {         
             if (rb.angularVelocity.magnitude > sound_threshold) {
                 aud.volume = rb.angularVelocity.magnitude / rb.maxAngularVelocity;
+                aud.volume -= amp_damp;
                 if (!aud.isPlaying)
                     Play();
             }
@@ -51,7 +53,7 @@ public class GroundParticles : MonoBehaviour
 
     private void Play()
     {
-        aud.pitch += Random.Range(-pitch_range, pitch_range);
+        aud.pitch = pitch;
         aud.volume += Random.Range(-amp_range, 0);
         aud.Play();
     }

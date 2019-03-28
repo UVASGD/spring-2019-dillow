@@ -46,7 +46,8 @@ public class BallBody : Body
     [HideInInspector] public bool air_ready;
 
     [Header("FX")]
-    public GameObject jump_fx;
+    public GameObject impact_fx;
+    public GameObject jump_sound;
     #endregion
 
     [HideInInspector] public GameObject lock_enemy;
@@ -125,11 +126,11 @@ public class BallBody : Body
     {
         base.OnCollisionEnter(c);
 
-        if (jump_fx && (c.collider.CompareTag("Ground") || c.collider.CompareTag("Ground Terrain")))
+        if (impact_fx && (c.collider.CompareTag("Ground") || c.collider.CompareTag("Ground Terrain")))
             if (c.impulse.magnitude > 10f)
             {
-                float vol = Mathf.Clamp01(c.impulse.magnitude / 50f);
-                Fx_Spawner.instance.SpawnFX(jump_fx, c.contacts[0].point, c.contacts[0].normal, vol);
+                float vol = Mathf.Clamp01(c.impulse.magnitude / 40f);
+                Fx_Spawner.instance.SpawnFX(impact_fx, c.contacts[0].point, c.contacts[0].normal, vol);
             }
     }
 
@@ -203,6 +204,7 @@ public class BallBody : Body
     {
         if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
         {
+            Fx_Spawner.instance.SpawnFX(jump_sound, transform.position, Vector3.up);
             rb.AddForce(jump_vector * jump_power, ForceMode.Impulse);
             StartCoroutine(JumpCD());
         }
