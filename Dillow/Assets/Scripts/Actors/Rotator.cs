@@ -45,7 +45,6 @@ public class Rotator : MonoBehaviour
     {
         while( Vector3.Angle(transform.forward, direction) != 0 )
         {
-            print("We are not facing the original vector. Current: " + transform.forward);
             Face(direction, lockX, lockY, lockZ, false);
             yield return null;
         }
