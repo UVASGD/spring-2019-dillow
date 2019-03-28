@@ -1,0 +1,190 @@
+fileFormatVersion: 2
+guid: e5187e22b702d044d958a9a2a517ae9f
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Armature
+    100002: Back1
+    100004: Back2
+    100006: Back3
+    100008: Back4
+    100010: BackLeg.L
+    100012: BackLeg.L_end
+    100014: BackLeg.R
+    100016: BackLeg.R_end
+    100018: Base
+    100020: //RootNode
+    100022: Ear.L
+    100024: Ear.L_end
+    100026: Ear.R
+    100028: Ear.R_end
+    100030: FrontLeg.L
+    100032: FrontLeg.L_end
+    100034: FrontLeg.R
+    100036: FrontLeg.R_end
+    100038: HeadBack
+    100040: HeadFront
+    100042: HeadFront_end
+    100044: Model
+    100046: Model-Mirror
+    100048: Neck
+    100050: Rib1.L
+    100052: Rib1.L_end
+    100054: Rib1.R
+    100056: Rib1.R_end
+    100058: Rib2.L
+    100060: Rib2.L_end
+    100062: Rib2.R
+    100064: Rib2.R_end
+    100066: Rib3.L
+    100068: Rib3.L_end
+    100070: Rib3.R
+    100072: Rib3.R_end
+    100074: RibBase.L
+    100076: RibBase.L_end
+    100078: RibBase.R
+    100080: RibBase.R_end
+    100082: Tail1
+    100084: Tail2
+    100086: Tail3
+    100088: Tail3_end
+    400000: Armature
+    400002: Back1
+    400004: Back2
+    400006: Back3
+    400008: Back4
+    400010: BackLeg.L
+    400012: BackLeg.L_end
+    400014: BackLeg.R
+    400016: BackLeg.R_end
+    400018: Base
+    400020: //RootNode
+    400022: Ear.L
+    400024: Ear.L_end
+    400026: Ear.R
+    400028: Ear.R_end
+    400030: FrontLeg.L
+    400032: FrontLeg.L_end
+    400034: FrontLeg.R
+    400036: FrontLeg.R_end
+    400038: HeadBack
+    400040: HeadFront
+    400042: HeadFront_end
+    400044: Model
+    400046: Model-Mirror
+    400048: Neck
+    400050: Rib1.L
+    400052: Rib1.L_end
+    400054: Rib1.R
+    400056: Rib1.R_end
+    400058: Rib2.L
+    400060: Rib2.L_end
+    400062: Rib2.R
+    400064: Rib2.R_end
+    400066: Rib3.L
+    400068: Rib3.L_end
+    400070: Rib3.R
+    400072: Rib3.R_end
+    400074: RibBase.L
+    400076: RibBase.L_end
+    400078: RibBase.R
+    400080: RibBase.R_end
+    400082: Tail1
+    400084: Tail2
+    400086: Tail3
+    400088: Tail3_end
+    2100000: No Name
+    2300000: Model-Mirror
+    3300000: Model-Mirror
+    4300000: Model
+    4300002: Model-Mirror
+    7400000: Armature|Curled
+    7400002: Armature|Idle
+    9500000: //RootNode
+    13700000: Model
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
