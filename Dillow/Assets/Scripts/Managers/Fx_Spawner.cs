@@ -29,7 +29,8 @@ public class Fx_Spawner : MonoBehaviour
         {
             spawned_fx.transform.parent = parent;
         }
-        spawned_fx.transform.forward = rotation;
+        if (rotation != Vector3.zero)
+            spawned_fx.transform.forward = rotation;
         spawned_fx.GetComponent<Fx_Object>().vol = vol;
     }
 
