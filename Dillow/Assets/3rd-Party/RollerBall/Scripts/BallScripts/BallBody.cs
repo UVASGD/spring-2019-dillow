@@ -108,12 +108,17 @@ public class BallBody : Body
 
         if ( (tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage)))
         {
-            if (next_hit_kills)
-            {
-                GameManager.instance.Respawn();
-            }
-            damager.Damage(dir, pos);
+            Damage(dir, pos);
         }
+    }
+
+    void Damage(Vector3 dir, Vector3 pos)
+    {
+        if (next_hit_kills)
+        {
+            GameManager.instance.Respawn();
+        }
+        damager.Damage(dir, pos);
     }
 
     #region MOVEMENT
