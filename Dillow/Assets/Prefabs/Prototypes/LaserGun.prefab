@@ -269,6 +269,8 @@ MonoBehaviour:
   laser: {fileID: 2424348689214807802}
   aim_laser: {fileID: 3838260294412969468}
   activated: 0
+  shot_fx: {fileID: 2865531046472692746, guid: 4fb17e5a227f3ae4a8593da1abdaa7dc, type: 3}
+  hit_fx: {fileID: 8823223493712109963, guid: 206c84bce083a494c86ec5d06642816d, type: 3}
 --- !u!120 &2424348689214807802
 LineRenderer:
   m_ObjectHideFlags: 0

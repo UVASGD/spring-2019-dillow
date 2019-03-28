@@ -11,7 +11,7 @@ public class LaserCat : Mob
     Rotator rotator;
 
     float aim_timer; //current timer
-    float aim_max = 5f; //time it takes to fire
+    float aim_max = 1.75f; //time it takes to fire
 
 
     // Start is called before the first frame update
@@ -42,7 +42,7 @@ public class LaserCat : Mob
         if (t.HasTag(Tag.Player))
         {
             target = null;
-            OnCalm();
+            Calm();
         }
     }
 
@@ -57,7 +57,9 @@ public class LaserCat : Mob
             if (aim_timer > 0)
             {
                 rotator.Face(target, lockY: false);
-                gun.Aim(target);
+                if (!gun.Aim(target)) {
+                    Calm();
+                }
                 aim_timer -= Time.deltaTime;
             }
             else
@@ -68,11 +70,11 @@ public class LaserCat : Mob
         }
         else
         {
-            OnCalm();
+            Calm();
         }
     }
 
-    void OnCalm()
+    void Calm()
     {
         aim_timer = aim_max;
         target = null;

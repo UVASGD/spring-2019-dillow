@@ -20,6 +20,9 @@ public class LaserGun : MonoBehaviour
     public LineRenderer aim_laser;
     public bool activated;
 
+    public GameObject shot_fx;
+    public GameObject hit_fx;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,17 +61,19 @@ public class LaserGun : MonoBehaviour
         aim_laser.enabled = act;
     }
 
-    public void Aim(GameObject target)
+    public bool Aim(GameObject target)
     {
         Vector3 targetDir = (target.transform.position - barrel.transform.position).normalized;
         float angleDiff = Vector3.Angle(barrel.transform.forward, targetDir);
         if (angleDiff < aimAngleThreshold)
         {
             aimDirection = targetDir;
+            return true;
         }
         else
         {
             aimDirection = barrel.transform.forward;
+            return false;
         }      
     }
 
@@ -88,6 +93,8 @@ public class LaserGun : MonoBehaviour
             aimDirection = target.transform.position - barrel.transform.position;
         }
 
+        if (shot_fx) Fx_Spawner.instance.SpawnFX(shot_fx, barrel.transform.position, barrel.transform.forward);
+
         RaycastHit hit;
 
         laser.SetPosition(0, barrel.transform.position);
@@ -96,6 +103,7 @@ public class LaserGun : MonoBehaviour
         {
             laser.SetPosition(1, hit.point);
             Hit(hit.collider.gameObject, hit.point, hit.normal);
+            if (hit_fx) Fx_Spawner.instance.SpawnFX(hit_fx, hit.point, hit.normal);
         }
         else
         {
