@@ -472,8 +472,8 @@ MonoBehaviour:
   push_force: 5
   up_force: 15
   StunTime: 2
-  DamageTime: 1
-  EndTime: 2
+  DamageTime: 0.5
+  EndTime: 3.5
   flashColor: {r: 1, g: 0, b: 0, a: 1}
   damage_fx: {fileID: 3341575136412007180, guid: 3f432e36a75c3184ebcef09b77e6ed9d,
     type: 3}

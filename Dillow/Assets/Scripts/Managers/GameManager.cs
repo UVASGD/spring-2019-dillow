@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject player;
     public Vector3 playerSpawnLocation;
-    private float spawn_smooth_time = 0.05f;
+    bool spawned;
 
 	public static SaveData saveData;
 	public static Dictionary<ulong, bool> obtainedCollectibles;
@@ -60,7 +60,10 @@ public class GameManager : MonoBehaviour {
         playerSpawnLocation = (spawn) ? spawn.transform.position : player.transform.position;
 
         Load();
-	}
+
+        FadeController.instance.FadeInStartedEvent += delegate { spawned = true; };
+        FadeController.instance.FadeOutCompletedEvent += delegate { if (!spawned) StartCoroutine(RespawnCo()); };
+    }
 
 
 	public static void Save () {
@@ -106,20 +109,13 @@ public class GameManager : MonoBehaviour {
 
     public void Respawn()
     {
-        StartCoroutine(RespawnCo());
+        spawned = false;
+        FadeController.instance.FadeOut(0.1f);
     }
 
     IEnumerator RespawnCo()
     {
-        float vel = 0;
-        FadeController.instance.FadeOut(0.1f);
-        while (Time.timeScale > 0.01f)
-        {
-            Time.timeScale = Mathf.SmoothDamp(Time.timeScale, 0, ref vel, spawn_smooth_time);
-            yield return null;
-        }
-        Time.timeScale = 1f;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         player.gameObject.transform.position = playerSpawnLocation;
         FadeController.instance.FadeIn();
     }
