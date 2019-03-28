@@ -13,7 +13,7 @@ public class GroundParticles : MonoBehaviour
 
     float rate = 1,
           pitch = 0.1f,
-          amp_range = 0.2f,
+          amp_range = 0.02f,
           amp_damp = 0.2f,
           sound_threshold = 0.3f,
           max_speed;

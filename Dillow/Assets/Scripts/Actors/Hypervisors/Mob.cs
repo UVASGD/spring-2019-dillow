@@ -6,6 +6,9 @@ public delegate void BehaviorDel();
 
 public class Mob : Body
 {
+    [Header("POSITIONING")]
+    public bool start_on_ground = true;
+
 
     protected Ragdoll ragdoll;
     protected BehaviorDel current_behavior;
@@ -14,8 +17,7 @@ public class Mob : Body
     public GameObject death_fx;
     
     //Minimum magnitude of the impact for a mob to die
-    public int impactThresh;
-
+    public float impactThresh = 20f;
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -26,17 +28,20 @@ public class Mob : Body
         damager = GetComponent<Damager>(); 
         damager.DamageEndEvent += Destroy;
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit))
+        if (start_on_ground)
         {
-            transform.position = hit.point;
-            transform.up = hit.normal;
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+                transform.position = hit.point;
+                transform.up = hit.normal;
+            }
         }
 
         main_body = (ragdoll) ? ragdoll.rb.gameObject : gameObject;
     }
 
-    protected void Update()
+    protected virtual void Update()
     {
         if (!dead)
         {
@@ -50,6 +55,7 @@ public class Mob : Body
         {
             dead = true;
             ragdoll?.ActivateRagdoll(true);
+            current_behavior = null;
             damager.Damage(dir, pos);
         }
     }

@@ -45,8 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1c99d7367a4b9d45ab133da3b29e05f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pitch_range: 0.4
-  amp_range: 0.4
   vol: -1
 --- !u!82 &7985033630474002983
 AudioSource:
@@ -60,7 +58,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: e8759da343d56ed40b1f8f0184f6455f, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -68,7 +66,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 10
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -251,11 +249,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3645810327209951481, guid: 57b1a54a17dc4264d80286c34329aa34,
-        type: 3}
-      propertyPath: looping
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1152827718439222269, guid: 57b1a54a17dc4264d80286c34329aa34,
         type: 3}
       propertyPath: looping
@@ -264,6 +257,11 @@ PrefabInstance:
     - target: {fileID: 1152827718439222269, guid: 57b1a54a17dc4264d80286c34329aa34,
         type: 3}
       propertyPath: LightsModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3645810327209951481, guid: 57b1a54a17dc4264d80286c34329aa34,
+        type: 3}
+      propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

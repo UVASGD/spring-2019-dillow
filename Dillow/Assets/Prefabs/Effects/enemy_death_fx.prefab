@@ -45,8 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1c99d7367a4b9d45ab133da3b29e05f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pitch_range: 0
-  amp_range: 0
   vol: -1
 --- !u!82 &4648837640582063457
 AudioSource:
@@ -68,7 +66,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 20
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -104,7 +102,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.122
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

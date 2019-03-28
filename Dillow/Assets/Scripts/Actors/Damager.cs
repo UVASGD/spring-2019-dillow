@@ -50,7 +50,7 @@ public class Damager : MonoBehaviour
 
             foreach (Flasher f in flashers)
             {
-                f.Flash();
+                if (f.gameObject.activeInHierarchy) f.Flash();
             }
             Knockback(dir);
         }
@@ -75,6 +75,10 @@ public class Damager : MonoBehaviour
         force = new Vector3(force.x * push_force, 
                             1f * up_force,
                             force.z * push_force);
-        rb?.AddForce(force, ForceMode.Impulse);
+        if (rb)
+        {
+            rb.isKinematic = false;
+            rb.AddForce(force, ForceMode.Impulse);
+        }
     }
 }
