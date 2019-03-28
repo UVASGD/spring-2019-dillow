@@ -37,7 +37,9 @@ public class GameManager : MonoBehaviour {
 
 	private static string dataSubpath = "/data.json";
 
-	public static GameObject player;
+	public GameObject player;
+    public Vector3 playerSpawnLocation;
+    private float spawn_smooth_time = 0.05f;
 
 	public static SaveData saveData;
 	public static Dictionary<ulong, bool> obtainedCollectibles;
@@ -54,7 +56,10 @@ public class GameManager : MonoBehaviour {
 		}
 
 		player = GameObject.FindWithTag("Player");
-		Load();
+        GameObject spawn = GameObject.FindGameObjectWithTag("Respawn");
+        playerSpawnLocation = (spawn) ? spawn.transform.position : player.transform.position;
+
+        Load();
 	}
 
 
@@ -98,4 +103,24 @@ public class GameManager : MonoBehaviour {
 			Save();
 		}
 	}
+
+    public void Respawn()
+    {
+        StartCoroutine(RespawnCo());
+    }
+
+    IEnumerator RespawnCo()
+    {
+        float vel = 0;
+        FadeController.instance.FadeOut(0.1f);
+        while (Time.timeScale > 0.01f)
+        {
+            Time.timeScale = Mathf.SmoothDamp(Time.timeScale, 0, ref vel, spawn_smooth_time);
+            yield return null;
+        }
+        Time.timeScale = 1f;
+        yield return new WaitForSeconds(1f);
+        player.gameObject.transform.position = playerSpawnLocation;
+        FadeController.instance.FadeIn();
+    }
 }

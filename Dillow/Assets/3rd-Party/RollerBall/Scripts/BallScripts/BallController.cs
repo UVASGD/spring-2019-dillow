@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    public static BallBody body;
+    public BallBody body;
+    public static BallController instance;
 
     private Vector3 move;
     // the world-relative desired move direction, calculated from the camForward and user input.
@@ -21,6 +22,16 @@ public class BallController : MonoBehaviour
 
     private void Awake()
     {
+        if (null == instance)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         // Set up the reference.
         body = GetComponent<BallBody>();
         locker = transform.parent.GetComponentInChildren<Locker>();
@@ -36,6 +47,10 @@ public class BallController : MonoBehaviour
                 "Warning: no main camera found. Ball needs a Camera tagged \"MainCamera\", for camera-relative controls.");
             // we use world-relative controls in this case, which may not be what the user wants, but hey, we warned them!
         }
+
+        FadeController.instance.FadeInStartedEvent += delegate { can_input = false; body.can_be_damaged = false; };
+        FadeController.instance.FadeOutStartedEvent += delegate { can_input = false; body.can_be_damaged = false; };
+        FadeController.instance.FadeInCompletedEvent += delegate { can_input = true; body.can_be_damaged = true; };
     }
 
     private void Update()

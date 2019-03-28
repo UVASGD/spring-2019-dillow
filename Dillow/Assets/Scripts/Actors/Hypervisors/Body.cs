@@ -10,7 +10,7 @@ public class Body : MonoBehaviour
     [HideInInspector] public TagHandler tagH;
     [HideInInspector]public Damager damager;
 
-    protected bool can_be_damaged = true;
+    public bool can_be_damaged = true, next_hit_kills;
     protected bool dead;
 
     // Start is called before the first frame update

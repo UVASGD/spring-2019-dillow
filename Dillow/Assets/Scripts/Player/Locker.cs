@@ -10,6 +10,9 @@ public class Locker : MonoBehaviour
     GameObject locked;
 
     float range;
+
+    int layermask;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +20,9 @@ public class Locker : MonoBehaviour
         reticle = GameObject.FindGameObjectWithTag("Reticle").GetComponent<Reticle>();
         reticle.gameObject.SetActive(false);
         range = GetComponent<SphereCollider>().radius;
+
+        layermask = LayerMask.GetMask("Player");
+        layermask = ~layermask;
     }
 
     // Update is called once per frame
@@ -25,9 +31,9 @@ public class Locker : MonoBehaviour
         if (locked)
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, (locked.transform.position - transform.position).normalized, out hit, range, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(transform.position, (locked.transform.position - transform.position).normalized, out hit, range, layermask, QueryTriggerInteraction.Ignore))
             {
-                reticle.SetReticle(main.WorldToScreenPoint(hit.point));
+                reticle.SetReticle(main.WorldToScreenPoint(hit.collider.transform.position));
             }
             else
             {
@@ -61,7 +67,7 @@ public class Locker : MonoBehaviour
                     continue;
                 }
                 RaycastHit hit;
-                if (Physics.Raycast(transform.position, (lockable.transform.position - transform.position).normalized, out hit, range, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+                if (Physics.Raycast(transform.position, (lockable.transform.position - transform.position).normalized, out hit, range, layermask, QueryTriggerInteraction.Ignore))
                 {
                     if (hit.collider.gameObject != locked)
                     {
@@ -78,7 +84,7 @@ public class Locker : MonoBehaviour
             }
             if (best_lock)
             {
-                BallController.body.lock_enemy = locked;
+                BallController.instance.body.lock_enemy = locked;
                 locked = best_lock;
                 reticle.gameObject.SetActive(true);
                 reticle.Activate(locked);

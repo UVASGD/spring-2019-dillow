@@ -113,7 +113,7 @@ public class Cannon : MonoBehaviour {
         aiming = true;
 
 		if (null == projectile) {
-			projectile = GameManager.player.GetComponent<Rigidbody>();
+			projectile = GameManager.instance.player.GetComponent<Rigidbody>();
 		}
 		
 		yield return new WaitForSeconds (3f);
@@ -153,7 +153,7 @@ public class Cannon : MonoBehaviour {
 	void Fire (Rigidbody projectile = null) {
 		firing = true;
 		if (null == projectile) {
-			projectile = GameManager.player.GetComponent<Rigidbody>();
+			projectile = GameManager.instance.player.GetComponent<Rigidbody>();
 		}
 		projectile.gameObject.AddComponent<FollowPath>().SetPath(pathNodes, speed, true, pathSpeedMultiplier);
 	}

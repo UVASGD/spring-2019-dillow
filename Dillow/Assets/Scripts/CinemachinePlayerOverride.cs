@@ -17,11 +17,11 @@ public class CinemachinePlayerOverride : MonoBehaviour {
 		}
 
 		if (true == follow) {
-			cam.Follow = GameManager.player.transform;
+			cam.Follow = GameManager.instance.player.transform;
 		}
 
 		if (true == lookat) {
-			cam.LookAt = GameManager.player.transform;
+			cam.LookAt = GameManager.instance.player.transform;
 		}
 	}
 

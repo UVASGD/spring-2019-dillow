@@ -57,7 +57,7 @@ public class Mob : Body, ILockable
             dead = true;
             ragdoll?.ActivateRagdoll(true);
             current_behavior = null;
-            damager.Damage(dir, pos);
+            damager.Damage(dir, pos, true);
         }
     }
 

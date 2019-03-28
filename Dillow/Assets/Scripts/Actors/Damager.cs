@@ -6,10 +6,11 @@ public delegate void DamagerDel();
 
 public class Damager : MonoBehaviour
 {
-    public float push_force = 50f, up_force = 50f;
+    public float push_force = 10f, up_force = 15f;
     Rigidbody rb;
 
-    bool can_be_damaged = true;
+    bool can_be_damaged = true, dead, knockbackable = true;
+    float knockbackCD = 0.2f;
     public DamagerDel StunEvent, StunEndEvent, DamageAllowEvent, DamageEndEvent, DeathEvent;
     public float StunTime, DamageTime, EndTime;
 
@@ -33,11 +34,11 @@ public class Damager : MonoBehaviour
             Flasher f = r.gameObject.AddComponent<Flasher>();
             flashers.Add(f);
             f.flashColor = flashColor;
-            f.flashTime = Mathf.Max(StunTime + DamageTime, 0.5f);
+            f.flashTime = Mathf.Max(StunTime + DamageTime + EndTime, 0.5f);
         }
     }
 
-    public void Damage(Vector3 dir, Vector3 pos)
+    public void Damage(Vector3 dir, Vector3 pos, bool kill = false)
     {
         if (can_be_damaged)
         {
@@ -52,7 +53,12 @@ public class Damager : MonoBehaviour
             {
                 if (f.gameObject.activeInHierarchy) f.Flash();
             }
+        }
+        if (!dead && knockbackable)
+        {
+            dead = kill;
             Knockback(dir);
+            KnockbackCo();
         }
     }
 
@@ -80,5 +86,12 @@ public class Damager : MonoBehaviour
             rb.isKinematic = false;
             rb.AddForce(force, ForceMode.Impulse);
         }
+    }
+
+    IEnumerator KnockbackCo()
+    {
+        knockbackable = false;
+        yield return new WaitForSeconds(knockbackCD);
+        knockbackable = true;
     }
 }

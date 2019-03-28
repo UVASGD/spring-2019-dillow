@@ -75,7 +75,7 @@ public class BallBody : Body
         damager = GetComponent<Damager>();
         damager.StunEvent += OnStun;
         damager.StunEndEvent += OnStunEnd;
-        damager.DamageAllowEvent += OnDamage;
+        damager.DamageAllowEvent += OnDamageAllow;
         damager.DamageEndEvent += OnDamageEnd;
     }
 
@@ -89,9 +89,15 @@ public class BallBody : Body
         can_move = true;
     }
 
-    public void OnDamage() { } //not written
+    public void OnDamageAllow()
+    {
+        next_hit_kills = true;
+    }
 
-    public void OnDamageEnd() { } //not written
+    public void OnDamageEnd()
+    {
+        next_hit_kills = false;
+    }
 
     public override void Collide(Vector3 pos, List<Tag> tags = null, TagHandler t = null, Vector3? direction = null, Vector3? impact = null)
     {
@@ -102,6 +108,10 @@ public class BallBody : Body
 
         if ( (tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage)))
         {
+            if (next_hit_kills)
+            {
+                GameManager.instance.Respawn();
+            }
             damager.Damage(dir, pos);
         }
     }
