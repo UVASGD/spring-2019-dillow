@@ -38,7 +38,7 @@ public class GroundParticles : MonoBehaviour
     {
         if (aud)
         {         
-            if (rb.angularVelocity.magnitude > sound_threshold) {
+            if (rb.angularVelocity.magnitude > sound_threshold && grounded) {
                 aud.volume = rb.angularVelocity.magnitude / rb.maxAngularVelocity;
                 aud.volume -= amp_damp;
                 if (!aud.isPlaying)
