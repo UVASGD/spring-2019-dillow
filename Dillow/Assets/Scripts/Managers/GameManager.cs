@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using System.Security;
+using System;
+using System.Linq;
 
 public struct SaveData {
 	//TODO: Fungus data
@@ -14,19 +14,19 @@ public struct SaveData {
 	//public Dictionary<int, bool> obtainedCollectibles;
 	//public Dictionary<CollectibleType, int> collectiblesCount;
 	//public Dictionary<int, bool> abilities;
-	public List<ulong> obtainedCollectibles;
-	public List<int> collectiblesCount;
+	public List<string> obtainedCollectibles;
+	public int[] collectibleCounts;
 	public List<int> abilities;
 	public List<GameObject> inventory;
 
 	public SaveData (Vector3 playerSpawnLocation, string currentScene, string targetScene, 
-	                 List<ulong> obtainedCollectibles, List<int> collectiblesCount,
+	                 List<string> obtainedCollectibles, int[] collectibleCounts,
 					 List<int> abilities, List<GameObject> inventory) {
 		this.playerSpawnLocation = playerSpawnLocation;
 		this.currentScene = currentScene;
 		this.targetScene = targetScene;
 		this.obtainedCollectibles = obtainedCollectibles;
-		this.collectiblesCount = collectiblesCount;
+		this.collectibleCounts = collectibleCounts;
 		this.abilities = abilities;
 		this.inventory = inventory;
 	}
@@ -40,12 +40,10 @@ public class GameManager : MonoBehaviour {
 	public static GameObject player;
 
 	public static SaveData saveData;
-	public static Dictionary<ulong, bool> obtainedCollectibles;
+	public static HashSet<string> obtainedCollectibles;
+    public static Dictionary<CollectibleType, int> collectibleCounts;
 
-	private void Awake () {
-		//print("Size: " + sizeof(CollectibleType));
-		obtainedCollectibles = new Dictionary<ulong, bool>();
-
+    private void Awake () {
 		if (null == instance) {
 			instance = this;
 			DontDestroyOnLoad(gameObject);
@@ -53,20 +51,26 @@ public class GameManager : MonoBehaviour {
 			Destroy(gameObject);
 		}
 
-		player = GameObject.FindWithTag("Player");
+        obtainedCollectibles = new HashSet<string>();
+        collectibleCounts = new Dictionary<CollectibleType, int>();
+
+        player = GameObject.FindWithTag("Player");
 		Load();
 	}
 
 
 	public static void Save () {
-		//print("Saving!");
-		saveData.obtainedCollectibles = new List<ulong>();
-		foreach (ulong item in obtainedCollectibles.Keys) {
-			saveData.obtainedCollectibles.Add(item);
-		}
-		//saveData.obtainedCollectibles.Add()
+        //print("Saving!");
+        SaveData saveData = new SaveData();
+		saveData.obtainedCollectibles = new List<string>(obtainedCollectibles);
+        int N = Enum.GetValues(typeof(CollectibleType)).Cast<int>().Max() + 1;
+        saveData.collectibleCounts = new int[N];
+        foreach (var item in collectibleCounts)
+        {
+            saveData.collectibleCounts[(int)item.Key]++;
+        }
 
-		string jsonData = JsonUtility.ToJson(saveData);
+        string jsonData = JsonUtility.ToJson(saveData);
 		string filePath = Application.dataPath + dataSubpath;
 		File.WriteAllText(filePath, jsonData);
 	}
@@ -78,24 +82,27 @@ public class GameManager : MonoBehaviour {
 		if (File.Exists(filePath)) {
 			//print("File found");
 			string jsonData = File.ReadAllText(filePath);
-			saveData = JsonUtility.FromJson<SaveData>(jsonData);
-
-			foreach (ulong item in saveData.obtainedCollectibles) {
-				obtainedCollectibles.Add(item, true);
-			}
+			SaveData saveData = JsonUtility.FromJson<SaveData>(jsonData);
+            obtainedCollectibles = new HashSet<string>(saveData.obtainedCollectibles);
+            collectibleCounts = new Dictionary<CollectibleType, int>();
+            for (int i=0; i < saveData.collectibleCounts.Length; i++)
+            {
+                collectibleCounts[(CollectibleType)i] = saveData.collectibleCounts[i];
+            }
 		} else {
 			//print("New Game");
-			saveData = new SaveData();
-			saveData.obtainedCollectibles = new List<ulong>();
-			saveData.collectiblesCount = new List<int>();
-			for (int i = 0; i < sizeof(CollectibleType); i++) {
-				saveData.collectiblesCount.Add(0);
-			}
-			//saveData.obtainedCollectibles = new List<int>();
-			//saveData.collectiblesCount = new List<int>();
-			//saveData.abilities = new List<int>();
-			//saveData.inventory = new List<GameObject>();
 			Save();
 		}
 	}
+
+    public static void AddCollectible(Collectible collectible)
+    {
+        obtainedCollectibles.Add(collectible.id);
+        collectibleCounts[collectible.type]++;
+    }
+
+    public static bool HasCollectible(Collectible collectible)
+    {
+        return obtainedCollectibles.Contains(collectible.id);
+    }
 }

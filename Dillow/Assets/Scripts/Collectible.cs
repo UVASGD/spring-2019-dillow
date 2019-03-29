@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,15 +7,18 @@ public enum CollectibleType { Gear, Currency, Powerup, LevelSpecific, };
 public class Collectible : MonoBehaviour {
 	public CollectibleType type;
 	public bool replenishable = false;
-	public ulong id;
+	public string id;
+
+    private static HashSet<string> ids;
 
 	private void Start () {
-		id = GetID();
-		//print("ID: " + id);
+		if (ids.Contains(id)) {
+            throw new InvalidOperationException("Duplicate id: " + id);
+        }
+        ids.Add(id);
 
-		if (false == replenishable) {
-			print("Colllectibles: " + GameManager.obtainedCollectibles.Count);
-			if (GameManager.obtainedCollectibles.ContainsKey(id)) {
+		if (!replenishable) {
+			if (GameManager.HasCollectible(this)) {
 				Destroy(gameObject);
 			}
 		}
@@ -23,14 +26,8 @@ public class Collectible : MonoBehaviour {
 
 	protected virtual void OnTriggerEnter (Collider other) {
 		if (other.CompareTag("Player")) {
-			GameManager.obtainedCollectibles.Add(id, true);
-			GameManager.saveData.collectiblesCount[(int)type]++;
-			GameManager.Save();
+			GameManager.AddCollectible(this);
 			Destroy(gameObject);
 		}
-	}
-
-	private ulong GetID () {
-		return (ulong)(transform.position.x * 2048 * 2048 + transform.position.z * 2048 + transform.position.y);
 	}
 }
