@@ -4,14 +4,16 @@ using UnityEngine;
 public class Ragdoll : MonoBehaviour
 {
     public List<Rigidbody> rigidList;
-    Rigidbody rb;
-    public Animator ani;
+    public Rigidbody rb;
+    Animator ani;
 
 
-    void Start() {
+    void Awake() {
         rigidList = new List<Rigidbody>(GetComponentsInChildren<Rigidbody>());
         ani = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
+
+        rb = gameObject.GetMainRigidbody();
+
         Body body = GetComponent<Body>();
         foreach(Rigidbody r in rigidList)
         {
@@ -20,15 +22,14 @@ public class Ragdoll : MonoBehaviour
         ActivateRagdoll(false);
     }
     
-    void ActivateRagdoll(bool activate) { 
+    public void ActivateRagdoll(bool activate) { 
         foreach (Rigidbody r in rigidList)
         {
             r.isKinematic = !activate;
         }
-        ani.enabled = !activate;
-        rb.isKinematic = !activate;
-        
+        if (ani)
+            ani.enabled = !activate;
+        if (rb)
+            rb.isKinematic = !activate;
     }
-
-    
 }

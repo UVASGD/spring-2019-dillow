@@ -8,46 +8,48 @@ public class Body : MonoBehaviour
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public Animator anim;
     [HideInInspector] public TagHandler tagH;
+    [HideInInspector]public Damager damager;
+
+    public bool can_be_damaged = true, next_hit_kills;
+    public bool dead;
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
         tagH = GetComponent<TagHandler>();
-        rb = GetComponent<Rigidbody>();
+        rb = gameObject.GetMainRigidbody();
         anim = GetComponent<Animator>();
+        damager = GetComponent<Damager>();
     }
 
-    public void OnTriggerEnter(Collider c)
-    {
-        if (c.GetComponent<TagHandler>()) 
-        {
-            Collide(c.GetComponent<TagHandler>());
-        }
-    }
-
-    public void OnCollisionEnter(Collision c)
+    public virtual void OnCollisionEnter(Collision c)
     {
         if (c.collider.GetComponent<TagHandler>() )
         {
-            Collide(c.collider.GetComponent<TagHandler>(), c.contacts[0].normal, c.impulse);
+            TagHandler th = c.collider.GetComponent<TagHandler>();
+            Collide(c.contacts[0].point, t:th, direction: c.contacts[0].normal, impact: c.impulse);
+        }
+    }
+
+    public virtual void OnTriggerEnter(Collider c)
+    {
+        if (c.GetComponent<TagHandler>())
+        {
+            TagHandler th = c.GetComponent<TagHandler>();
+            Collide(transform.position, t:th, direction: transform.position - c.transform.position);
         }
     }
     
-    public void OnParticleCollision(GameObject c)
+    public virtual void OnParticleCollision(GameObject c)
     {
         if (c.GetComponent<TagHandler>()) 
         {
-            Collide(c.GetComponent<TagHandler>());
+            Collide(transform.position, t:c.GetComponent<TagHandler>());
         }
     }
 
-    public virtual void Collide(TagHandler t, Vector3? direction = null, Vector3? impact = null)
-    {
-        Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
-        Vector3 imp = (Vector3)((impact == null) ? Vector3.zero : impact);
-    }
-
-    public virtual void Collide(List<Tag> tags, Vector3? direction = null, Vector3? impact = null)
+    public virtual void Collide(Vector3 pos, List<Tag> tags = null, TagHandler t = null, 
+        Vector3? direction = null, Vector3? impact = null)
     {
         Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
         Vector3 imp = (Vector3)((impact == null) ? Vector3.zero : impact);

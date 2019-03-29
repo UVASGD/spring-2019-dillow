@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    private BallBody body;
+    public BallBody body;
+    public static BallController instance;
 
     private Vector3 move;
     // the world-relative desired move direction, calculated from the camForward and user input.
@@ -17,10 +18,23 @@ public class BallController : MonoBehaviour
 
     public bool can_input = true;
 
+    private Locker locker;
+
     private void Awake()
     {
+        if (null == instance)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         // Set up the reference.
         body = GetComponent<BallBody>();
+        locker = transform.parent.GetComponentInChildren<Locker>();
 
         // get the transform of the main camera
         if (Camera.main != null)
@@ -33,6 +47,10 @@ public class BallController : MonoBehaviour
                 "Warning: no main camera found. Ball needs a Camera tagged \"MainCamera\", for camera-relative controls.");
             // we use world-relative controls in this case, which may not be what the user wants, but hey, we warned them!
         }
+
+        FadeController.FadeInStartedEvent += delegate { can_input = false; body.can_be_damaged = false; };
+        FadeController.FadeOutStartedEvent += delegate { can_input = false; body.can_be_damaged = false; };
+        FadeController.FadeInCompletedEvent += delegate { can_input = true; body.can_be_damaged = true; };
     }
 
     private void Update()
@@ -55,6 +73,15 @@ public class BallController : MonoBehaviour
         {
             // we use world-relative directions in the case of no main camera
             move = (v * Vector3.forward + h * Vector3.right).normalized;
+        }
+
+        if (Input.GetButtonDown("LockOn"))
+        {
+            locker.Lock(true);
+        }
+        else if (Input.GetButtonDown("LockOff"))
+        {
+            locker.Lock(false);
         }
     }
 

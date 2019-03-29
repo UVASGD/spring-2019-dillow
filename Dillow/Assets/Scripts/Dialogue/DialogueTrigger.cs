@@ -7,6 +7,7 @@ using Fungus;
 public class DialogueTrigger : MonoBehaviour
 {
 	SphereCollider sphere;
+    ParticleSystem talkPrompt;
 
     public Flowchart chart;
 
@@ -15,14 +16,38 @@ public class DialogueTrigger : MonoBehaviour
     {
 		sphere = GetComponent<SphereCollider>();
         sphere.isTrigger = true;
+
+        talkPrompt = GetComponent<ParticleSystem>();
+        Debug.Log("talkPrompt: " + talkPrompt.ToString());
+        if (talkPrompt != null && ! talkPrompt.isStopped) {
+            talkPrompt.Stop();
+        }
+    }
+
+    private void ShowPrompt() {
+        if (talkPrompt != null) {
+            talkPrompt.Play();
+        }
+    }
+
+    private void HidePrompt() {
+        if (talkPrompt != null) {
+            talkPrompt.Stop();
+            talkPrompt.Clear();
+        }
     }
 
     private void OnTriggerEnter(Collider other) {
         GameObject go = other.gameObject;
 
-        if (go.CompareTag("Player") && BallController.interact == 2)
+        bool tooFast = BallController.instance.gameObject.GetMainRigidbody().velocity.magnitude > 0.5f;
+
+        if (go.CompareTag("Player") && BallController.interact == 2 && !tooFast)
         { // callcontroller.interact == 2 checks whether 'e' has been pressed
             DoTrigger();
+        }
+        else if (go.CompareTag("Player")) {
+            ShowPrompt();
         }
     }
 
@@ -40,15 +65,27 @@ public class DialogueTrigger : MonoBehaviour
         GameObject go = other.gameObject;
 
         if (go.CompareTag("Player")) {
-            chart.ExecuteBlock("EndTrigger");
+            EndTrigger();
+            HidePrompt();
         }
     }
 
     void DoTrigger() {
-
         if (chart != null) {
             chart.ExecuteBlock("Trigger");
-            //string chatType = chart.GetStringVariable("type"); 
+            //string chatType = chart.GetStringVariable("type");
+            BallController.instance.can_input = false;
         }
+    }
+
+    void EndTrigger() {
+        if (chart != null) {
+            chart.ExecuteBlock("EndTrigger");
+            BallController.instance.can_input = true;
+        }
+    }
+
+    public void FinishDialogue() {
+        BallController.instance.can_input = true;
     }
 }

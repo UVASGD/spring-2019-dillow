@@ -37,7 +37,9 @@ public class GameManager : MonoBehaviour {
 
 	private static string dataSubpath = "/data.json";
 
-	public static GameObject player;
+	public GameObject player;
+    public Vector3 playerSpawnLocation;
+    bool spawned;
 
 	public static SaveData saveData;
 	public static Dictionary<ulong, bool> obtainedCollectibles;
@@ -54,8 +56,14 @@ public class GameManager : MonoBehaviour {
 		}
 
 		player = GameObject.FindWithTag("Player");
-		Load();
-	}
+        GameObject spawn = GameObject.FindGameObjectWithTag("Respawn");
+        playerSpawnLocation = (spawn) ? spawn.transform.position : player.transform.position;
+
+        Load();
+
+        FadeController.FadeInStartedEvent += delegate { spawned = true; };
+        FadeController.FadeOutCompletedEvent += delegate { if (!spawned) StartCoroutine(RespawnCo()); };
+    }
 
 
 	public static void Save () {
@@ -98,4 +106,19 @@ public class GameManager : MonoBehaviour {
 			Save();
 		}
 	}
+
+    public void Respawn()
+    {
+        spawned = false;
+        FadeController.instance.FadeOut(0.1f);
+    }
+
+    IEnumerator RespawnCo()
+    {
+        player.gameObject.transform.position = playerSpawnLocation;
+        print(playerSpawnLocation);
+        BallController.instance.body.dead = false;
+        yield return new WaitForSeconds(1.5f);
+        FadeController.instance.FadeIn();
+    }
 }

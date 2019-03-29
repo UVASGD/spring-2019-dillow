@@ -12,7 +12,7 @@ public class Node : MonoBehaviour
     public List<Node> adjacents;
     public GameObject obj;
 
-    private NodeArea nodeArea;
+    public NodeArea nodeArea;
 
     // Start is called before the first frame update
     void Start()

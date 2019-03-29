@@ -6,17 +6,40 @@ public delegate void CollisionDel(TagHandler handler);
 
 public class Noticer : MonoBehaviour
 {
-    public CollisionDel CollisionEnterEvent, CollisionExitEvent;
+    public CollisionDel NoticeEvent, UnnoticeEvent;
+
+    Collider col;
+
+    bool detecting = true;
+
+    private void Start()
+    {
+        col = GetComponent<Collider>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<TagHandler>())
-            CollisionEnterEvent?.Invoke(other.GetComponent<TagHandler>());
+            NoticeEvent?.Invoke(other.GetComponent<TagHandler>());
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<TagHandler>())
-            CollisionExitEvent?.Invoke(other.GetComponent<TagHandler>());
+        if (detecting && other.GetComponent<TagHandler>())
+            UnnoticeEvent?.Invoke(other.GetComponent<TagHandler>());
+    }
+
+    public void Blink()
+    {
+        StartCoroutine(BlinkCo());
+    }
+
+    IEnumerator BlinkCo()
+    {
+        detecting = false;
+        col.enabled = false;
+        yield return null;
+        detecting = true;
+        col.enabled = true;
     }
 }

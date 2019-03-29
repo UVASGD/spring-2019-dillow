@@ -6,19 +6,20 @@ public class SubCollider : MonoBehaviour
 {
     public Body body;
 
-    public void OnTriggerEnter(Collider c)
-    {
-        if (c.GetComponent<TagHandler>())
-        {
-            body.Collide(c.GetComponent<TagHandler>());
-        }
-    }
-
     public void OnCollisionEnter(Collision c)
     {
         if (c.collider.GetComponent<TagHandler>())
         {
-            body.Collide(c.collider.GetComponent<TagHandler>(), c.contacts[0].normal, c.impulse);
+            body.Collide(c.contacts[0].point, t:c.collider.GetComponent<TagHandler>(), direction: c.contacts[0].normal, impact:c.impulse);
+        }
+    }
+
+    public virtual void OnTriggerEnter(Collider c)
+    {
+        if (c.GetComponent<TagHandler>())
+        {
+            TagHandler th = c.GetComponent<TagHandler>();
+            body.Collide(transform.position, t: th, direction: transform.position - c.transform.position);
         }
     }
 
@@ -26,7 +27,7 @@ public class SubCollider : MonoBehaviour
     {
         if (c.GetComponent<TagHandler>())
         {
-            body.Collide(c.GetComponent<TagHandler>());
+            body.Collide(transform.position, t:c.GetComponent<TagHandler>());
         }
     }
 }

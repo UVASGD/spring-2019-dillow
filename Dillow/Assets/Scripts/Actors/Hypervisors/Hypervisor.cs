@@ -2,33 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hypervisor : MonoBehaviour
+public class Hypervisor : Mob
 {
-    public Rotator rotator;
-    public Noticer noticer;
+    Rotator rotator;
+    Noticer noticer;
+    
+    public Vector3 originalRotation;
 
-    public Vector3 originalPosition;
-
-    private bool noticed;
-    private GameObject target;
+    public GameObject SnowThrower;
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         rotator = GetComponent<Rotator>();
         noticer = GetComponentInChildren<Noticer>();
-        noticer.CollisionEnterEvent += OnNotice;
-        noticer.CollisionExitEvent += OnUnnotice;
+        noticer.NoticeEvent += OnNotice;
+        noticer.UnnoticeEvent += OnUnnotice;
 
-        originalPosition = transform.position;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (noticed)
-        {
-            rotator.Face(target);
-        }
+        originalRotation = Vector3.ProjectOnPlane(Random.insideUnitSphere, Vector3.up).normalized;
+        rotator.TurnTo(originalRotation, true, false, true);
+
+        SnowThrower.SetActive(false);
     }
 
     public void OnNotice(TagHandler tagHandler)
@@ -36,7 +31,8 @@ public class Hypervisor : MonoBehaviour
         if (tagHandler.HasTag(Tag.Player))
         {
             target = tagHandler.gameObject;
-            noticed = true;
+            SnowThrower.SetActive(true);
+            current_behavior = Aggro;
         }
     }
 
@@ -44,10 +40,33 @@ public class Hypervisor : MonoBehaviour
     {
         if (tagHandler.HasTag(Tag.Player))
         {
-            noticed = false;
-            //Vector3 direction = (originalPosition - transform.position).normalized;
-            //transform.rotation = Quaternion.Slerp(transform.rotation,
-            //Quaternion.LookRotation(direction), 0.1f); ;
+            current_behavior = null;
+            Calm();
         }
+    }
+
+    void Aggro()
+    {
+        if (target)
+        {
+            rotator.Face(target, false, false, false);
+        }
+        else
+        {
+            current_behavior = null;
+            Calm();
+        }
+    }
+
+    void Calm()
+    {
+        rotator.TurnTo(originalRotation, false, false, false);
+        SnowThrower.SetActive(false);
+    }
+
+    protected override void Die(Vector3 dir, Vector3 pos)
+    {
+        SnowThrower.SetActive(false);
+        base.Die(dir, pos);
     }
 }
