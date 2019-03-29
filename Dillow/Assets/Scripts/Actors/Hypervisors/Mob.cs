@@ -54,6 +54,7 @@ public class Mob : Body, ILockable
     {
         if (!dead)
         {
+            tagH.Add(Tag.Dead);
             dead = true;
             ragdoll?.ActivateRagdoll(true);
             current_behavior = null;
