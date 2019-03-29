@@ -15,7 +15,7 @@ public class BallDash : BallAttackAbility
             if (body.lock_enemy)
             {
                 Vector3 lock_dir = (body.lock_enemy.transform.position - body.transform.position).normalized;
-                attack_dir = (Vector3.Angle(attack_dir, lock_dir) < 90f)
+                attack_dir = (Vector3.Angle(attack_dir, lock_dir) < 150f)
                     ? lock_dir : attack_dir;
             }
 

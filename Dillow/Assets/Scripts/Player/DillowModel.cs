@@ -25,6 +25,8 @@ public class DillowModel : MonoBehaviour
 
     void Update()
     {
+        if (!bodyrb)
+            return;
         if (bodyrb.velocity.magnitude > 0)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation,
