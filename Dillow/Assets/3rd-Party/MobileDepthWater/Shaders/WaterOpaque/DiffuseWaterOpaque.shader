@@ -65,17 +65,20 @@
 
 			fixed2 WaterPlaneUV(fixed3 worldPos, fixed camHeightOverWater)
 			{
-				fixed3 camToWorldRay = worldPos - _WorldSpaceCameraPos;
+				fixed3 camToWorldRay = fixed3(worldPos.x, worldPos.y + tan((worldPos.x + worldPos.z) * _Time.x / 10), worldPos.z) - _WorldSpaceCameraPos;
 				fixed3 rayToWaterPlane = (camHeightOverWater / camToWorldRay.y * camToWorldRay);
 				return rayToWaterPlane.xz - _WorldSpaceCameraPos.xz;
 			}
-
+            
+            //float3 add;
+            
 			v2f vert (appdata v)
 			{
 				v2f o;
-
+                //add = float4(0f, 0f, _SinTime.w, 0f);
 				o.worldPos = mul(UNITY_MATRIX_M, v.vertex);
 				o.vertex = mul(UNITY_MATRIX_VP, o.worldPos);
+                //o.vertex += sin(_Time * o.vertex.x);
 				
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				o.camHeightOverWater = _WorldSpaceCameraPos.y - _WaterHeight;
@@ -85,6 +88,7 @@
 				fixed3 rayToWaterPlane = (o.camHeightOverWater / camToWorldRay.y * camToWorldRay);
 
 				fixed3 worldPosOnPlane = _WorldSpaceCameraPos - rayToWaterPlane;
+                
 				fixed3 positionForFog = lerp(worldPosOnPlane, o.worldPos.xyz, o.worldPos.y > _WaterHeight);
 				fixed4 waterVertex = mul(UNITY_MATRIX_VP, fixed4(positionForFog, 1));
 				UNITY_TRANSFER_FOG(o, waterVertex);
@@ -96,6 +100,7 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				fixed2 water_uv = WaterPlaneUV(i.worldPos, i.camHeightOverWater);
+                
 				fixed4 distortion = tex2D(_DistTex, water_uv * _DistTiling) * 2 - 1;
 				fixed2 distorted_uv = ((water_uv + distortion.rg) - _Time.y * _MoveDirection.xz) * _Tiling;
 

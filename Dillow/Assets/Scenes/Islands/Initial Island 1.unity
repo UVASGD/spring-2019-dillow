@@ -241,20 +241,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190660278}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5c747aa66d704453b4772e11a2140da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target1: {fileID: 1099265814}
-  Target2: {fileID: 2041076086}
-  waves:
-  - Length: 1
-    Speed: 1
-    Scale: 1
-  - Length: 2
-    Speed: -2
-    Scale: 2
+  magnitude: 10
+  frequency: 1
 --- !u!4 &203296043 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8707213472399067527, guid: e9f8765dd4a27f043a4e7f5a74563be6,
@@ -1323,12 +1316,12 @@ PrefabInstance:
     - target: {fileID: 4475016646859034545, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000016815143
+      value: -0.000000016815143
       objectReference: {fileID: 0}
     - target: {fileID: 4475016646859034545, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000000003648364
+      value: 0.000000003648364
       objectReference: {fileID: 0}
     - target: {fileID: 4475016646859034545, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
@@ -1368,12 +1361,12 @@ PrefabInstance:
     - target: {fileID: 4475016647273640554, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000013316661
+      value: -0.000000030131805
       objectReference: {fileID: 0}
     - target: {fileID: 4475016647273640554, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00000009830182
+      value: 0.000000101950185
       objectReference: {fileID: 0}
     - target: {fileID: 4475016647273640554, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
@@ -1960,12 +1953,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8707213472399067527, guid: e9f8765dd4a27f043a4e7f5a74563be6,
     type: 3}
   m_PrefabInstance: {fileID: 1169079353}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1099265814 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 227480546858149783, guid: 1b12373d00418478d8478fb860dd2b0b,
-    type: 3}
-  m_PrefabInstance: {fileID: 796331579}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1128051865 stripped
 Transform:
@@ -3176,7 +3163,7 @@ MonoBehaviour:
   waterTile: {x: 0.01, y: 0.01}
   textureVisibility: 1
   distortionTex: {fileID: 2800000, guid: f6acd684980920849a180e1c541fb199, type: 3}
-  distortionTile: {x: 0.2, y: 0.2}
+  distortionTile: {x: 0, y: 0}
   waterHeight: 50
   waterDeep: 8.19
   waterDepthParam: 0.0879
@@ -3376,12 +3363,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8707213472399067527, guid: e9f8765dd4a27f043a4e7f5a74563be6,
     type: 3}
   m_PrefabInstance: {fileID: 1231933056}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2041076086 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4475016646859034545, guid: 1b12373d00418478d8478fb860dd2b0b,
-    type: 3}
-  m_PrefabInstance: {fileID: 796331579}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2045281085
 PrefabInstance:
