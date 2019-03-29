@@ -30,6 +30,14 @@ public class Locker :  Follower
     {
         if (locked)
         {
+            if (locked.GetComponent<Body>())
+            {
+                if (locked.GetComponent<Body>().dead)
+                {
+                    Lock(false);
+                    return;
+                }
+            }
             RaycastHit hit;
             if (Physics.Raycast(transform.position, (locked.transform.position - transform.position).normalized, out hit, range, layermask, QueryTriggerInteraction.Ignore))
             {

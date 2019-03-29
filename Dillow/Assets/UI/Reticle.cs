@@ -40,6 +40,7 @@ public class Reticle : MonoBehaviour
         {
             aud.Stop();
             aud.pitch = 0.75f;
+            aud.volume = 0.5f;
             aud.Play();
             StartCoroutine(WaitForBloop());
         }
@@ -59,6 +60,7 @@ public class Reticle : MonoBehaviour
         velocity = Vector2.zero;
         aud.Stop();
         aud.pitch = 1f;
+        aud.volume = 1f;
         aud.Play();
         anim.Play();
         BallController.instance.body.lock_enemy = locked;

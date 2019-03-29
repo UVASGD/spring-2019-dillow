@@ -5,6 +5,8 @@ using UnityEngine;
 public class BallDash : BallAttackAbility
 {
     public GameObject dash_fx;
+    bool locked;
+    float dash_multiplier = 1.5f;
 
     public override void OnAction(bool move, Vector3 dir, int jump, int action)
     {
@@ -14,9 +16,14 @@ public class BallDash : BallAttackAbility
 
             if (body.lock_enemy)
             {
+                locked = true;
                 Vector3 lock_dir = (body.lock_enemy.transform.position - body.transform.position).normalized;
                 attack_dir = (Vector3.Angle(attack_dir, lock_dir) < 150f)
                     ? lock_dir : attack_dir;
+            }
+            else
+            {
+                locked = false;
             }
 
             StartCoroutine(Action());
@@ -25,7 +32,14 @@ public class BallDash : BallAttackAbility
 
     protected override void StartAction()
     {
-        body.rb.velocity += attack_dir * attack_speed;
+        if (locked)
+        {
+            body.rb.velocity = attack_speed * attack_dir * dash_multiplier;
+        }
+        else
+        {
+            body.rb.velocity += attack_dir * attack_speed;
+        }
         intensity = 1f;
         fx_anim?.SetTrigger("Start");
         Fx_Spawner.instance.SpawnFX(dash_fx, transform.position, Vector3.up);

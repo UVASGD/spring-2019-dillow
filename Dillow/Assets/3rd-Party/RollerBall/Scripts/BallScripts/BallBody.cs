@@ -117,8 +117,10 @@ public class BallBody : Body
 
     void Damage(Vector3 dir, Vector3 pos)
     {
-        if (next_hit_kills)
+        if (next_hit_kills && !dead)
         {
+            dead = true;
+            next_hit_kills = false;
             GameManager.instance.Respawn();
         }
         damager.Damage(dir, pos);

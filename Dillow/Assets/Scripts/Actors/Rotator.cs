@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Rotator : MonoBehaviour
 {
-    float smooth_speed = 0.05f;
+    float smooth_speed = 0.5f;
 
     public void Face(GameObject target, bool lockX = true, bool lockY = true, bool lockZ = true)
     {
