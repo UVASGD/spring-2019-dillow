@@ -16,7 +16,7 @@ public class VolmetricAudio : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        aud.transform.position = GetClosestPoint(BallController.instance.body.transform.position);
+        aud.transform.position = GetClosestPoint(DillowController.instance.body.transform.position);
     }
 
     Vector3 GetClosestPoint(Vector3 point)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallDash : BallAttackAbility
+public class BallDash : DillowAttackAbility
 {
     public GameObject dash_fx;
     bool locked;

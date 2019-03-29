@@ -4,30 +4,44 @@ using UnityEngine;
 
 public delegate void MoveDel(bool move, Vector3 dir, int jump, int action);
 public delegate void EndDel();
+public delegate void TransformDel(bool ball);
 
 [RequireComponent(typeof(Rigidbody))]
-public class BallBody : Body
+public class DillowBody : Body
 {
 
-    #region MOVEMENT VARIABLES
+    #region DILLOW
+    [Header("Dillow")]
+    float dillow_speed = 200f;
+    float turn_speed = 1f;
+    float dillow_jump_power = 20f;
+    float dillow_drag = 20f;
+    CapsuleCollider dillow_collider;
+    #endregion
+
+    #region BALL
     [Header("Rolling")]
+    float ball_power = 200f;
+    float airball_power = 10f;
+    float ball_drag = 5f;
 
-    public float roll_power = 200f;
-    public float move_power = 10f;
+    float max_ball_speed = 50f;
 
-    public float max_roll_speed = 50f;
-    public float max_speed = 50f;
+    float ball_jump_power = 10f;
+    float speed_jump_threshold = 20f;
 
+    public SphereCollider ball_collider;
+    #endregion
+
+    #region JUMPING
     [Header("Jumping")]
-    public float jump_power = 10f;
+    public float jump_power;
 
-    public float jump_hold_time = 0.5f;
+    public float jump_hold_time = 1f;
     private float jump_hold_timer;
 
     private float jump_cooldown_time = 0.5f;
     private bool jump_cooling_down;
-
-    private float speed_jump_threshold = 20f;
 
     private JumpDetector jump_dectector;
 
@@ -36,19 +50,24 @@ public class BallBody : Body
     private Vector3 jump_vector;
     [HideInInspector] public Vector3 speed_vector;
 
-    public event MoveDel MoveEvent;
-    public event EndDel EndEvent;
-    [HideInInspector ]public bool can_move = true;
-    private int priority = 0;
-
     public bool jump_ready;
     [HideInInspector] public bool mid_air;
     [HideInInspector] public bool air_ready;
+    #endregion
+
+    #region MOVEMENT
+    float max_speed = 50f;
+    public event MoveDel MoveEvent;
+    public event EndDel EndEvent;
+    public event TransformDel TransformEvent;
+    [HideInInspector ]public bool can_move = true;
+    int priority = 0;
+    public bool ball = true;
+    #endregion
 
     [Header("FX")]
     public GameObject impact_fx;
     public GameObject jump_sound;
-    #endregion
 
     [HideInInspector] public GameObject lock_enemy;
 
@@ -59,13 +78,13 @@ public class BallBody : Body
     {
         #region MOVEMENT_INITIALIZATION
         base.Start();
-        rb.maxAngularVelocity = max_roll_speed;
+        //dillow_collider = GetComponent<CapsuleCollider>();
+        ball_collider = GetComponent<SphereCollider>();
+
+        rb.maxAngularVelocity = max_ball_speed;
 
         jump_vector = Vector3.up;
         speed_vector = Vector3.zero;
-
-        MoveEvent += OnMove;
-        MoveEvent += OnJump;
 
         jump_dectector = transform.parent.GetComponentInChildren<JumpDetector>();
         jump_dectector.CanJumpEvent += OnGround;
@@ -74,13 +93,21 @@ public class BallBody : Body
         OnGround();
         #endregion
 
+        #region INITIALIZATION
+        MoveEvent += OnDash;
+        MoveEvent += OnJumpHold;
+        TransformToBall();
+
         damager = GetComponent<Damager>();
         damager.StunEvent += OnStun;
         damager.StunEndEvent += OnStunEnd;
         damager.DamageAllowEvent += OnDamageAllow;
         damager.DamageEndEvent += OnDamageEnd;
         ready = true;
+        #endregion
     }
+
+    #region DAMAGE
 
     public void OnStun()
     {
@@ -126,7 +153,9 @@ public class BallBody : Body
         damager.Damage(dir, pos);
     }
 
-    #region MOVEMENT
+    #endregion
+
+    #region INVOLUNTARY MOVEMENT
     private void Update()
     {
         speed_vector = rb.velocity;
@@ -166,6 +195,22 @@ public class BallBody : Body
         }
     }
 
+    private void OnJumpHold(bool move, Vector3 dir, int jump, int action)
+    {
+        if (mid_air && !air_ready)
+        {
+            if (jump == 1 && jump_hold_timer > 0f && rb.velocity.y > 0f)
+            {
+                rb.AddForce(jump_vector * jump_power);
+                jump_hold_timer -= Time.deltaTime;
+            }
+            else if (jump == -1)
+            {
+                air_ready = true;
+            }
+        }
+    }
+
     public void Input(bool move, Vector3 dir, int jump, int action)
     {
        if (can_move && MoveEvent != null)
@@ -193,23 +238,25 @@ public class BallBody : Body
     {
         priority = 0;
     }
+    #endregion
 
-    private void OnMove(bool move, Vector3 dir, int jump, int action)
+    #region BALL MOVEMENT
+
+    private void OnBallMove(bool move, Vector3 dir, int jump, int action)
     {
        if (move)
         {
             if (mid_air)
             {
-                rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * move_power);
+                rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * airball_power);
                 if (CheckPriority(1))
-                    rb.AddForce(dir * move_power);
+                    rb.AddForce(dir * airball_power);
             }
             else
             {
-                rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * roll_power);
+                rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * ball_power);
             }
         }
-
         //Calculate jump direction
         if (rb.velocity.magnitude > speed_jump_threshold)
         {
@@ -220,27 +267,50 @@ public class BallBody : Body
             jump_vector = Vector3.up;
     }
 
-    private void OnJump(bool move, Vector3 dir, int jump, int action)
+    private void OnBallJump(bool move, Vector3 dir, int jump, int action)
     {
         if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
         {
             Fx_Spawner.instance.SpawnFX(jump_sound, transform.position, Vector3.up);
-            rb.AddForce(jump_vector * jump_power, ForceMode.Impulse);
+            rb.AddForce(jump_vector * ball_jump_power, ForceMode.Impulse);
             StartCoroutine(JumpCD());
+            TransformToDillow();
         }
+    }
 
-        if (mid_air && !air_ready) {
-            if (jump == 1 && jump_hold_timer > 0f && rb.velocity.y > 0f)
+    #endregion
+
+    #region DILLOW MOVEMENT
+    private void OnDillowMove(bool move, Vector3 dir, int jump, int action)
+    {
+        if (move)
+        {
+            if (mid_air)
             {
-                rb.AddForce(jump_vector * jump_power);
-                jump_hold_timer -= Time.deltaTime;
+                rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * airball_power);
+                if (CheckPriority(1))
+                    rb.AddForce(dir * airball_power);
             }
-            else if (jump == -1)
+            else
             {
-                air_ready = true;
+                print("Move this fucker");
+                rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * dillow_speed);
             }
         }
     }
+
+    private void OnDillowJump(bool move, Vector3 dir, int jump, int action)
+    {
+        if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
+        {
+            Fx_Spawner.instance.SpawnFX(jump_sound, transform.position, Vector3.up);
+            rb.AddForce(Vector3.up * jump_power, ForceMode.Impulse);
+            StartCoroutine(JumpCD());
+        }
+    }
+    #endregion
+
+    #region PHYSICS FLAGS
 
     private void OnGround()
     {
@@ -263,5 +333,56 @@ public class BallBody : Body
         yield return new WaitForSeconds(jump_cooldown_time);
         jump_cooling_down = false;
     }
+
+    #endregion
+
+    #region TRANSFORM
+
+    private void OnDash(bool move, Vector3 dir, int jump, int action)
+    {
+        if (action == 2)
+        {
+            TransformToBall();
+        }
+    }
+
+    public void TransformToBall()
+    {
+        ball = true;
+        jump_power = ball_jump_power;
+    
+        MoveEvent += OnBallMove;
+        MoveEvent += OnBallJump;
+        MoveEvent -= OnDillowMove;
+        MoveEvent -= OnDillowJump;
+
+        //ball_collider.enabled = true;
+        //dillow_collider.enabled = false;
+
+        rb.angularDrag = ball_drag;
+        //rb.constraints = RigidbodyConstraints.None;
+
+        TransformEvent?.Invoke(true);
+    }
+
+    public void TransformToDillow()
+    {
+        ball = false;
+        jump_power = dillow_jump_power;
+
+        MoveEvent += OnDillowMove;
+        MoveEvent += OnDillowJump;
+        MoveEvent -= OnBallMove;
+        MoveEvent -= OnBallJump;
+
+        //ball_collider.enabled = false;
+        //dillow_collider.enabled = true;
+
+        rb.angularDrag = dillow_drag;
+        //rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        TransformEvent?.Invoke(false);
+    }
+
     #endregion
 }

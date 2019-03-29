@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour {
     {
         player.gameObject.transform.position = playerSpawnLocation;
         print(playerSpawnLocation);
-        BallController.instance.body.dead = false;
+        DillowController.instance.body.dead = false;
         yield return new WaitForSeconds(1.5f);
         FadeController.instance.FadeIn();
     }
