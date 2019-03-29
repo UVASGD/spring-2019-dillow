@@ -52,6 +52,8 @@ public class BallBody : Body
 
     [HideInInspector] public GameObject lock_enemy;
 
+    public bool ready;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -77,6 +79,7 @@ public class BallBody : Body
         damager.StunEndEvent += OnStunEnd;
         damager.DamageAllowEvent += OnDamageAllow;
         damager.DamageEndEvent += OnDamageEnd;
+        ready = true;
     }
 
     public void OnStun()

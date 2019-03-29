@@ -32,10 +32,15 @@ public class Damager : MonoBehaviour
         foreach (Renderer r in re)
         {
             Flasher f = r.gameObject.AddComponent<Flasher>();
-            flashers.Add(f);
-            f.flashColor = flashColor;
-            f.flashTime = Mathf.Max(StunTime + DamageTime + EndTime, 0.5f);
+            AddFlasher(f);
         }
+    }
+
+    public void AddFlasher(Flasher f)
+    {
+        flashers.Add(f);
+        f.flashColor = flashColor;
+        f.flashTime = Mathf.Max(StunTime + DamageTime + EndTime, 0.5f);
     }
 
     public void Damage(Vector3 dir, Vector3 pos, bool kill = false)
