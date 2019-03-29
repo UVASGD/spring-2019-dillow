@@ -2,11 +2,15 @@
 {
 	Properties
 	{
-		_WaterColor ("Water color", Color) = (1, 1, 1, 1)
+		_WaterColor ("Water color", Color) = (0.008, 0.239, 0.745, 1)
 		_WaterTex ("Water texture", 2D) = "white" {}
 		_Tiling ("Water tiling", Vector) = (1, 1, 1, 1)
 		_TextureVisibility("Texture visibility", Range(0, 1)) = 1
-
+        
+        _WaveFrequency ("Wave frequency", Float) = 1
+        _WaveAmplitude ("Wave amplitude", Float) = 1
+        _WaveSize ("Wave size", Float) = 1
+        
 		[Space(20)]
 		_DistTex ("Distortion", 2D) = "white" {}
 		_DistTiling ("Distortion tiling", Vector) = (1, 1, 1, 1)
@@ -54,6 +58,10 @@
 			sampler2D _WaterTex;
 			fixed2 _Tiling;
 			fixed4 _WaterColor;
+            
+            fixed _WaveFrequency;
+            fixed _WaveAmplitude;
+            fixed _WaveSize;
 
 			sampler2D _DistTex;
 			fixed2 _DistTiling;
@@ -65,8 +73,11 @@
 
 			fixed2 WaterPlaneUV(fixed3 worldPos, fixed camHeightOverWater)
 			{
-				fixed3 camToWorldRay = fixed3(worldPos.x, worldPos.y + tan((worldPos.x + worldPos.z) * _Time.x / 10), worldPos.z) - _WorldSpaceCameraPos;
-				fixed3 rayToWaterPlane = (camHeightOverWater / camToWorldRay.y * camToWorldRay);
+                fixed adjustedCamHeight = fixed(camHeightOverWater + sin((worldPos.x / 10) + _Time.x * 50));
+				//fixed3 camToWorldRay = fixed3(worldPos.x, worldPos.y + sin((worldPos.x) * _Time.x / 10), worldPos.z) - _WorldSpaceCameraPos;
+                fixed3 camToWorldRay = worldPos - _WorldSpaceCameraPos;
+				fixed3 rayToWaterPlane = (adjustedCamHeight / camToWorldRay.y * camToWorldRay);
+                //fixed3 rayToWaterPlane = (camHeightOverWater / camToWorldRay.y * camToWorldRay);
 				return rayToWaterPlane.xz - _WorldSpaceCameraPos.xz;
 			}
             
