@@ -4,7 +4,7 @@ using UnityEngine;
 
 public delegate void JumpDel();
 
-public class JumpDetector : MonoBehaviour
+public class JumpDetector : Follower
 {
     Collider jump_detector;
 

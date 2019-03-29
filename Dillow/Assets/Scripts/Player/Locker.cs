@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Locker : MonoBehaviour
+public class Locker :  Follower
 {
     Camera main;
     Reticle reticle;

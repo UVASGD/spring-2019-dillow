@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DillowModel : MonoBehaviour
+public class DillowModel : Follower
 {
     BallBody body;
     Rigidbody bodyrb, rb;
