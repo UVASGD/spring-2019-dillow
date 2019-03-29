@@ -2,7 +2,7 @@
 {
 	Properties
 	{
-		_WaterColor ("Water color", Color) = (1, 1, 1, 1)
+		_WaterColor ("Water color", Color) = (0.008, 0.239, 0.745, 1)
 		_WaterTex ("Water texture", 2D) = "white" {}
 		_Tiling ("Water tiling", Vector) = (1, 1, 1, 1)
 		_TextureVisibility("Texture visibility", Range(0, 1)) = 1
