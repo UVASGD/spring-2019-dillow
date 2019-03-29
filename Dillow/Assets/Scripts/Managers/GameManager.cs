@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System;
 using System.Linq;
+using UnityEngine;
 
 public struct SaveData {
 	//TODO: Fungus data
@@ -37,7 +38,9 @@ public class GameManager : MonoBehaviour {
 
 	private static string dataSubpath = "/data.json";
 
-	public static GameObject player;
+	public GameObject player;
+    public Vector3 playerSpawnLocation;
+    bool spawned;
 
 	public static SaveData saveData;
 	public static HashSet<string> obtainedCollectibles;
@@ -51,15 +54,17 @@ public class GameManager : MonoBehaviour {
 			Destroy(gameObject);
 		}
 
-        obtainedCollectibles = new HashSet<string>();
-        collectibleCounts = new Dictionary<CollectibleType, int>();
+        Load();
 
         player = GameObject.FindWithTag("Player");
-		Load();
-	}
+        GameObject spawn = GameObject.FindGameObjectWithTag("Respawn");
+        playerSpawnLocation = (spawn) ? spawn.transform.position : player.transform.position;
 
+        FadeController.FadeInStartedEvent += delegate { spawned = true; };
+        FadeController.FadeOutCompletedEvent += delegate { if (!spawned) StartCoroutine(RespawnCo()); };
+    }
 
-	public static void Save () {
+    public static void Save () {
         //print("Saving!");
         SaveData saveData = new SaveData();
 		saveData.obtainedCollectibles = new List<string>(obtainedCollectibles);
@@ -104,5 +109,20 @@ public class GameManager : MonoBehaviour {
     public static bool HasCollectible(Collectible collectible)
     {
         return obtainedCollectibles.Contains(collectible.id);
+    }
+
+    public void Respawn()
+    {
+        spawned = false;
+        FadeController.instance.FadeOut(0.1f);
+    }
+
+    IEnumerator RespawnCo()
+    {
+        player.gameObject.transform.position = playerSpawnLocation;
+        print(playerSpawnLocation);
+        BallController.instance.body.dead = false;
+        yield return new WaitForSeconds(1.5f);
+        FadeController.instance.FadeIn();
     }
 }

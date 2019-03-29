@@ -10,12 +10,17 @@ public class LaserCat : Mob
     Noticer noticer;
     Rotator rotator;
 
+    float aim_timer; //current timer
+    float aim_max = 1.75f; //time it takes to fire
+
+
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
 
         gun = GetComponentInChildren<LaserGun>();
+        aim_timer = aim_max;
         noticer = GetComponentInChildren<Noticer>();
         rotator = GetComponent<Rotator>();
 
@@ -23,22 +28,12 @@ public class LaserCat : Mob
         noticer.UnnoticeEvent += OnUnnotice;
     }
 
-    protected override void Die(Vector3 dir)
-    {
-        if (!dead)
-        {
-            OnCalm(false);
-            noticer.NoticeEvent -= OnNotice;
-            base.Die(dir);
-        }
-    }
-
     void OnNotice(TagHandler t)
     {
-        if (t.HasTag(Tag.Player))
-        {
+        if (t.HasTag(Tag.Player)) {
             target = t.gameObject;
-            OnAggro();
+            gun.Activate(true);
+            current_behavior = Aggro;
         }
     }
 
@@ -46,47 +41,58 @@ public class LaserCat : Mob
     {
         if (t.HasTag(Tag.Player))
         {
-            OnCalm();
+            target = null;
+            Calm();
         }
     }
 
-    void OnAggro()
+    void Idle()
     {
-        gun.Activate();
-        if (current_behavior != null)
-            StopCoroutine(current_behavior);
-        current_behavior = StartCoroutine(Aggro());
     }
 
-    void OnCalm(bool alive = true)
+    void Aggro()
     {
+        if (target)
+        {
+            if (aim_timer > 0)
+            {
+                rotator.Face(target, lockY: false);
+                if (!gun.Aim(target)) {
+                    Calm();
+                }
+                aim_timer -= Time.deltaTime;
+            }
+            else
+            {
+                gun.Fire(target);
+                aim_timer = aim_max;
+            }
+        }
+        else
+        {
+            Calm();
+        }
+    }
+
+    void Calm()
+    {
+        aim_timer = aim_max;
         target = null;
         gun.Activate(false);
-        if (alive)
-            noticer.Blink();
-        if (current_behavior != null)
-            StopCoroutine(current_behavior);
-        current_behavior = StartCoroutine(Idle());
+        noticer.Blink();
+        current_behavior = Idle;
     }
 
-    IEnumerator Aggro()
+    protected override void Die(Vector3 dir, Vector3 pos)
     {
-        while (target)
+        if (!dead)
         {
-            rotator.Face(target, lockY:false);
-            gun.Aim(target);
-            yield return null;
+            current_behavior = null;
+            target = null;
+            gun.Activate(false);
+            noticer.NoticeEvent -= OnNotice;
+            noticer.UnnoticeEvent -= OnUnnotice;
+            base.Die(dir, pos);
         }
-        OnCalm();
-    }
-
-    IEnumerator Idle()
-    {
-        yield return null;
-    }
-
-    IEnumerator Move()
-    {
-        yield return null;
     }
 }

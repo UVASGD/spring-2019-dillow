@@ -19,20 +19,20 @@ public class BallBody : Body
     public float max_speed = 50f;
 
     [Header("Jumping")]
-    public float jump_power = 5f;
+    public float jump_power = 10f;
 
     public float jump_hold_time = 0.5f;
     private float jump_hold_timer;
 
-    private float jump_cooldown_time = 0.2f;
+    private float jump_cooldown_time = 0.5f;
     private bool jump_cooling_down;
 
-    public float speed_jump_threshold = 20f;
+    private float speed_jump_threshold = 20f;
 
-    public JumpDetector jump_dectector;
+    private JumpDetector jump_dectector;
 
-    private float jump_multiplier = 2f; 
-    private float fall_multiplier = 2.5f;
+    private float jump_multiplier = 3f; 
+    private float fall_multiplier = 3.5f;
     private Vector3 jump_vector;
     [HideInInspector] public Vector3 speed_vector;
 
@@ -41,13 +41,18 @@ public class BallBody : Body
     [HideInInspector ]public bool can_move = true;
     private int priority = 0;
 
-    [HideInInspector] public bool jump_ready;
+    public bool jump_ready;
     [HideInInspector] public bool mid_air;
     [HideInInspector] public bool air_ready;
+
+    [Header("FX")]
+    public GameObject impact_fx;
+    public GameObject jump_sound;
     #endregion
 
-    [Header("Locking")]
-    public GameObject lock_enemy;
+    [HideInInspector] public GameObject lock_enemy;
+
+    public bool ready;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -72,8 +77,9 @@ public class BallBody : Body
         damager = GetComponent<Damager>();
         damager.StunEvent += OnStun;
         damager.StunEndEvent += OnStunEnd;
-        damager.DamageAllowEvent += OnDamage;
+        damager.DamageAllowEvent += OnDamageAllow;
         damager.DamageEndEvent += OnDamageEnd;
+        ready = true;
     }
 
     public void OnStun()
@@ -86,19 +92,38 @@ public class BallBody : Body
         can_move = true;
     }
 
-    public void OnDamage() { } //not written
+    public void OnDamageAllow()
+    {
+        next_hit_kills = true;
+    }
 
-    public void OnDamageEnd() { } //not written
+    public void OnDamageEnd()
+    {
+        next_hit_kills = false;
+    }
 
-    public override void Collide(List<Tag> tags = null, TagHandler t = null, Vector3? direction = null, Vector3? impact = null)
+    public override void Collide(Vector3 pos, List<Tag> tags = null, TagHandler t = null, Vector3? direction = null, Vector3? impact = null)
     {
         Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
         Vector3 imp = (Vector3)((impact == null) ? Vector3.zero : impact);
+        if (tags == null)
+            tags = t.tagList;
 
-        if ( tags.Contains(Tag.SuperDamage) )
+        if ( (tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage)))
         {
-            damager.Damage(dir);
+            Damage(dir, pos);
         }
+    }
+
+    void Damage(Vector3 dir, Vector3 pos)
+    {
+        if (next_hit_kills && !dead)
+        {
+            dead = true;
+            next_hit_kills = false;
+            GameManager.instance.Respawn();
+        }
+        damager.Damage(dir, pos);
     }
 
     #region MOVEMENT
@@ -115,6 +140,18 @@ public class BallBody : Body
             rb.velocity = rb.velocity.normalized * max_speed;
         }
         OnFall();
+    }
+
+    public override void OnCollisionEnter(Collision c)
+    {
+        base.OnCollisionEnter(c);
+
+        if (impact_fx && (c.collider.CompareTag("Ground") || c.collider.CompareTag("Ground Terrain")))
+            if (c.impulse.magnitude > 10f)
+            {
+                float vol = Mathf.Clamp01(c.impulse.magnitude / 40f);
+                Fx_Spawner.instance.SpawnFX(impact_fx, c.contacts[0].point, c.contacts[0].normal, vol);
+            }
     }
 
     private void OnFall()
@@ -187,8 +224,9 @@ public class BallBody : Body
     {
         if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
         {
+            Fx_Spawner.instance.SpawnFX(jump_sound, transform.position, Vector3.up);
             rb.AddForce(jump_vector * jump_power, ForceMode.Impulse);
-            jump_ready = false;
+            StartCoroutine(JumpCD());
         }
 
         if (mid_air && !air_ready) {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public delegate void JumpDel();
 
-public class JumpDetector : MonoBehaviour
+public class JumpDetector : Follower
 {
     Collider jump_detector;
 
@@ -21,29 +21,23 @@ public class JumpDetector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Ground") || other.CompareTag("Ground Terrain"))
-        {
-            groundCount++;
+        groundCount++;
 
-            if (groundCount == 1)
-            {
-                StopAllCoroutines();
-                CanJumpEvent?.Invoke();
-            }
-        }      
+        if (groundCount == 1)
+        {
+            StopAllCoroutines();
+            CanJumpEvent?.Invoke();
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Ground") || other.CompareTag("Ground Terrain"))
-        {
-            groundCount--;
+        groundCount--;
 
-            if (groundCount <= 0)
-            {
-                groundCount = 0;
-                StartCoroutine(StopJump());
-            }
+        if (groundCount <= 0)
+        {
+            groundCount = 0;
+            StartCoroutine(StopJump());
         }
     }
 

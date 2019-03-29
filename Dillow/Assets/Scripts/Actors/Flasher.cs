@@ -22,9 +22,9 @@ public class Flasher : MonoBehaviour
 
     IEnumerator FlashCo()
     {
-        Color normColor = r.material.color;
-        r.material.color = flashColor;
-        yield return new WaitForSeconds(flashTime);
-        r.material.color = normColor;
+            Color normColor = r.material.color;
+            r.material.color = flashColor;
+            yield return new WaitForSeconds(flashTime);
+            r.material.color = normColor;
     }
 }

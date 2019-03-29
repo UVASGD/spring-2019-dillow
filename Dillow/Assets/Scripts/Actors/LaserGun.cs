@@ -5,14 +5,11 @@ using UnityEngine;
 public class LaserGun : MonoBehaviour
 {
     public float range = 50;
-    public float aimForce = 10;
 
     public GameObject barrel;
+    public LineRenderer laser;
 
-    public Rigidbody rb;
-    LineRenderer laser;
-
-    public float aimAngleThreshold = 15f;
+    float aimAngleThreshold = 75f;
     Vector3 aimDirection;
 
     List<Tag> hit_tags;
@@ -20,18 +17,20 @@ public class LaserGun : MonoBehaviour
     float laser_time = 0.25f, laserCD = 5f;
     bool can_fire = true;
 
-    LineRenderer aim_laser;
+    public LineRenderer aim_laser;
     public bool activated;
+
+    public GameObject shot_fx;
+    public GameObject hit_fx;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (!rb) rb = GetComponentInParent<Rigidbody>();
         aimDirection = barrel.transform.forward;
-        laser = barrel.GetComponent<LineRenderer>();
         laser.enabled = false;
-        aim_laser = GetComponent<LineRenderer>();
+        laser.useWorldSpace = true;
         aim_laser.enabled = false;
+        aim_laser.useWorldSpace = true;
 
         hit_tags = new List<Tag>() { Tag.SuperDamage };
 
@@ -45,13 +44,13 @@ public class LaserGun : MonoBehaviour
             aim_laser.SetPosition(0, barrel.transform.position);
 
             RaycastHit hit;
-            if (Physics.Raycast(barrel.transform.position, barrel.transform.forward, out hit, range))
+            if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range, Physics.AllLayers, QueryTriggerInteraction.Ignore))
             {
                 aim_laser.SetPosition(1, hit.point);
             }
             else
             {
-                aim_laser.SetPosition(1, barrel.transform.position + (barrel.transform.forward * range));
+                aim_laser.SetPosition(1, barrel.transform.position + (aimDirection * range));
             }
         }
     }
@@ -62,20 +61,20 @@ public class LaserGun : MonoBehaviour
         aim_laser.enabled = act;
     }
 
-    public void Aim(GameObject target)
+    public bool Aim(GameObject target)
     {
-        Vector3 diff = (target.transform.position - barrel.transform.position).normalized;
-        rb?.AddForceAtPosition(diff * aimForce, barrel.transform.position);
-        float angleDiff = Vector3.Angle(barrel.transform.forward, diff);
+        Vector3 targetDir = (target.transform.position - barrel.transform.position).normalized;
+        float angleDiff = Vector3.Angle(barrel.transform.forward, targetDir);
         if (angleDiff < aimAngleThreshold)
         {
-            aimDirection = diff;
+            aimDirection = targetDir;
+            return true;
         }
         else
         {
             aimDirection = barrel.transform.forward;
-        }
-        
+            return false;
+        }      
     }
 
     public void HipFire()
@@ -84,19 +83,25 @@ public class LaserGun : MonoBehaviour
         Fire();
     }
 
-    public void Fire()
+    public void Fire(GameObject target = null)
     {
         if (!can_fire)
             return;
 
-        RaycastHit hit;
+        if (target)
+        {
+            aimDirection = target.transform.position - barrel.transform.position;
+        }
+
+        if (shot_fx) Fx_Spawner.instance.SpawnFX(shot_fx, barrel.transform.position, barrel.transform.forward);
 
         laser.SetPosition(0, barrel.transform.position);
-
-        if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range))
+        RaycastHit hit;
+        if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range, Physics.AllLayers, QueryTriggerInteraction.Ignore))
         {
             laser.SetPosition(1, hit.point);
             Hit(hit.collider.gameObject, hit.point, hit.normal);
+            if (hit_fx) Fx_Spawner.instance.SpawnFX(hit_fx, hit.point, hit.normal);
         }
         else
         {
@@ -123,7 +128,7 @@ public class LaserGun : MonoBehaviour
         }
         else if(hit.GetComponent<Body>())
         {
-            hit.GetComponent<Body>().Collide(hit_tags);
+            hit.GetComponent<Body>().Collide(position, hit_tags, direction: -normal);
         }
     }
 }
