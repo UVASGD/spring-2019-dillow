@@ -40,7 +40,9 @@ public class DialogueTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         GameObject go = other.gameObject;
 
-        if (go.CompareTag("Player") && BallController.interact == 2)
+        bool tooFast = BallController.instance.gameObject.GetMainRigidbody().velocity.magnitude > 0.5f;
+
+        if (go.CompareTag("Player") && BallController.interact == 2 && !tooFast)
         { // callcontroller.interact == 2 checks whether 'e' has been pressed
             DoTrigger();
         }
@@ -71,13 +73,19 @@ public class DialogueTrigger : MonoBehaviour
     void DoTrigger() {
         if (chart != null) {
             chart.ExecuteBlock("Trigger");
-            //string chatType = chart.GetStringVariable("type"); 
+            //string chatType = chart.GetStringVariable("type");
+            BallController.instance.can_input = false;
         }
     }
 
     void EndTrigger() {
         if (chart != null) {
             chart.ExecuteBlock("EndTrigger");
+            BallController.instance.can_input = true;
         }
+    }
+
+    public void FinishDialogue() {
+        BallController.instance.can_input = true;
     }
 }
