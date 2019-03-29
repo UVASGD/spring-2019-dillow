@@ -1316,12 +1316,12 @@ PrefabInstance:
     - target: {fileID: 4475016646859034545, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000016815143
+      value: 0.000000016815143
       objectReference: {fileID: 0}
     - target: {fileID: 4475016646859034545, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000003648364
+      value: -0.000000003648364
       objectReference: {fileID: 0}
     - target: {fileID: 4475016646859034545, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
@@ -1361,12 +1361,12 @@ PrefabInstance:
     - target: {fileID: 4475016647273640554, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000030131805
+      value: -0.000000013316661
       objectReference: {fileID: 0}
     - target: {fileID: 4475016647273640554, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000101950185
+      value: 0.00000009830182
       objectReference: {fileID: 0}
     - target: {fileID: 4475016647273640554, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
@@ -3165,12 +3165,12 @@ MonoBehaviour:
   distortionTex: {fileID: 2800000, guid: f6acd684980920849a180e1c541fb199, type: 3}
   distortionTile: {x: 0, y: 0}
   waterHeight: 50
-  waterDeep: 8.19
-  waterDepthParam: 0.0879
-  waterMinAlpha: 0.604
+  waterDeep: 0
+  waterDepthParam: 0.1
+  waterMinAlpha: 0
   borderColor: {r: 1, g: 1, b: 1, a: 0.57254905}
-  borderWidth: 0.184
-  moveDirection: {x: 0, y: 0.8}
+  borderWidth: 0.53
+  moveDirection: {x: 0, y: 1.6}
 --- !u!4 &1806404572
 Transform:
   m_ObjectHideFlags: 0
