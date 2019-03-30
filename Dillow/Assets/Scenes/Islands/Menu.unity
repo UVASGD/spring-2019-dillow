@@ -784,6 +784,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 114351716474635070, guid: bce1702a2d4de3a46a2c9f8325f10233,
+        type: 3}
+      propertyPath: m_Text
+      value: Coming Soon
+      objectReference: {fileID: 0}
     - target: {fileID: 224686678291459464, guid: bce1702a2d4de3a46a2c9f8325f10233,
         type: 3}
       propertyPath: m_AnchoredPosition.x
