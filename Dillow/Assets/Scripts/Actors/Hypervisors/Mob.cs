@@ -47,13 +47,13 @@ public class Mob : Body, ILockable
 
 	protected virtual void OnNotice (TagHandler t) {
 		if (t.HasTag(Tag.Player)) {
-			Fungus.MusicManager.PlayCombatMusic(true, 2f);
+			//Fungus.MusicManager.PlayCombatMusic(true, 2f);
 		}
 	}
 
 	protected virtual void OnUnnotice (TagHandler t) {
 		if (t.HasTag(Tag.Player)) {
-			Fungus.MusicManager.PlayIdleMusic();
+			//Fungus.MusicManager.PlayIdleMusic();
 		}
 	}
 
