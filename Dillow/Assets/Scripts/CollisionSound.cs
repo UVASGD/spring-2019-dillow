@@ -5,7 +5,8 @@ using UnityEngine;
 public class CollisionSound : MonoBehaviour
 {
     public GameObject collisionEffects;
-    float impactThreshold = 15f, maxThreshold 50f;
+	float impactThreshold = 15f;
+    float maxThreshold = 50f;
     // Start is called before the first frame update
     void Start()
     {
