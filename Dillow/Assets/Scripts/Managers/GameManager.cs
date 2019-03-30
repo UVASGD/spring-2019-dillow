@@ -18,7 +18,6 @@ public struct SaveData {
 	public List<ulong> obtainedCollectibles;
 	public int[] collectibleCounts;
 	public List<int> abilities;
-	public List<GameObject> inventory;
 
 	public SaveData (Vector3 playerSpawnLocation, string currentScene, string targetScene, 
 	                 List<ulong> obtainedCollectibles, int[] collectibleCounts,
@@ -29,7 +28,6 @@ public struct SaveData {
 		this.obtainedCollectibles = obtainedCollectibles;
 		this.collectibleCounts = collectibleCounts;
 		this.abilities = abilities;
-		this.inventory = inventory;
 	}
 }
 
