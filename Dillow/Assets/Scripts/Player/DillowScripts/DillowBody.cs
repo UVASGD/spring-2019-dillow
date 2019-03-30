@@ -12,10 +12,10 @@ public class DillowBody : Body
 
     #region DILLOW
     [Header("Dillow")]
-    float dillow_speed = 100f;
+    float dillow_speed = 150f;
     float turn_speed = 1f;
     float dillow_jump_power = 20f;
-    float dillow_drag = 50f;
+    float dillow_drag = 20f;
     CapsuleCollider dillow_collider;
     #endregion
 
