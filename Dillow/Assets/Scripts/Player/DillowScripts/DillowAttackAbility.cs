@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallAttackAbility : BallAbility
+public class DillowAttackAbility : DillowAbility
 {
     [Header("Action Duration")]
     public float max_action_time;

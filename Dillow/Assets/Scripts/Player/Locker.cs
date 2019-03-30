@@ -7,7 +7,7 @@ public class Locker :  Follower
     Camera main;
     Reticle reticle;
     List<GameObject> lockables = new List<GameObject>();
-    GameObject locked;
+    public GameObject locked;
 
     float range;
 
@@ -30,14 +30,21 @@ public class Locker :  Follower
     {
         if (locked)
         {
-            if (locked.GetComponent<Body>())
+            TagHandler t = locked.GetComponentInParent<TagHandler>();
+            if (t)
             {
-                if (locked.GetComponent<Body>().dead)
+                if (t.HasTag(Tag.Dead))
                 {
                     Lock(false);
                     return;
                 }
             }
+            else
+            {
+                Lock(false);
+                return;
+            }
+
             RaycastHit hit;
             if (Physics.Raycast(transform.position, (locked.transform.position - transform.position).normalized, out hit, range, layermask, QueryTriggerInteraction.Ignore))
             {
@@ -92,7 +99,7 @@ public class Locker :  Follower
             }
             if (best_lock)
             {
-                BallController.instance.body.lock_enemy = locked;
+                DillowController.instance.body.lock_enemy = locked;
                 locked = best_lock;
                 reticle.gameObject.SetActive(true);
                 reticle.Activate(locked);

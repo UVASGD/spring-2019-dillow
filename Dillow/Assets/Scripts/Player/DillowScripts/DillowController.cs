@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallController : MonoBehaviour
+public class DillowController : MonoBehaviour
 {
-    public BallBody body;
-    public static BallController instance;
+    public DillowBody body;
+    public static DillowController instance;
 
     private Vector3 move;
     // the world-relative desired move direction, calculated from the camForward and user input.
@@ -33,7 +33,7 @@ public class BallController : MonoBehaviour
         }
 
         // Set up the reference.
-        body = GetComponent<BallBody>();
+        body = GetComponent<DillowBody>();
         locker = transform.parent.GetComponentInChildren<Locker>();
 
         // get the transform of the main camera
@@ -77,11 +77,11 @@ public class BallController : MonoBehaviour
 
         if (Input.GetButtonDown("LockOn"))
         {
-            locker.Lock(true);
+            locker.Lock(!locker.locked);
         }
-        else if (Input.GetButtonDown("LockOff"))
+        else if (Input.GetButtonDown("Swap"))
         {
-            locker.Lock(false);
+            locker.Lock(true);
         }
     }
 

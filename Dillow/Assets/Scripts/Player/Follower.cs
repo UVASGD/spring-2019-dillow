@@ -11,7 +11,7 @@ public class Follower : MonoBehaviour
     {
         pc = GetComponent<PositionConstraint>();
         ConstraintSource cs = new ConstraintSource();
-        cs.sourceTransform = transform.parent.GetComponentInChildren<BallBody>().transform;
+        cs.sourceTransform = transform.parent.GetComponentInChildren<DillowBody>().transform;
         cs.weight = 1;
         if (pc.sourceCount == 0)
             pc.AddSource(cs);

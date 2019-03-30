@@ -63,6 +63,6 @@ public class Reticle : MonoBehaviour
         aud.volume = 1f;
         aud.Play();
         anim.Play();
-        BallController.instance.body.lock_enemy = locked;
+        DillowController.instance.body.lock_enemy = locked;
     }
 }

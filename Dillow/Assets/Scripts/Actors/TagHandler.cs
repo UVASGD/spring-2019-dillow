@@ -6,6 +6,7 @@ public enum Tag
     Enemy,
     Damage,
     SuperDamage,
+    Dead,
 }
 
 public class TagHandler : MonoBehaviour
