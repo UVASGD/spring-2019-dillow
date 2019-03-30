@@ -75,6 +75,7 @@ public class DialogueTrigger : MonoBehaviour
             chart.ExecuteBlock("Trigger");
             //string chatType = chart.GetStringVariable("type");
             DillowController.instance.can_input = false;
+            DillowController.instance.gameObject.GetMainRigidbody().isKinematic = true;
         }
     }
 
@@ -82,10 +83,12 @@ public class DialogueTrigger : MonoBehaviour
         if (chart != null) {
             chart.ExecuteBlock("EndTrigger");
             DillowController.instance.can_input = true;
+            DillowController.instance.gameObject.GetMainRigidbody().isKinematic = false;
         }
     }
 
     public void FinishDialogue() {
         DillowController.instance.can_input = true;
+        DillowController.instance.gameObject.GetMainRigidbody().isKinematic = false;
     }
 }
