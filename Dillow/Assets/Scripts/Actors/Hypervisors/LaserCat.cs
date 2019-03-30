@@ -8,11 +8,13 @@ public class LaserCat : Mob
     LaserGun gun;
     
     Rotator rotator;
-    NpcMover mover;
+    MobMover mover;
 
     float aim_timer; //current timer
     float aim_max = 1.75f; //time it takes to fire
 
+    int speed_hash, idle_hash, aim_hash, blasting_hash;
+    float speed_rate, anim_speed_multiplier = 2f;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -22,10 +24,15 @@ public class LaserCat : Mob
         gun = GetComponentInChildren<LaserGun>();
         aim_timer = aim_max;
         rotator = GetComponent<Rotator>();
-        mover = GetComponent<NpcMover>();
+        mover = GetComponent<MobMover>();
 
         noticer.NoticeEvent += OnNotice;
         noticer.UnnoticeEvent += OnUnnotice;
+
+        speed_hash = Animator.StringToHash("Speed");
+        idle_hash = Animator.StringToHash("Idle");
+        aim_hash = Animator.StringToHash("Aim");
+        blasting_hash = Animator.StringToHash("Blasting");
     }
 
 	protected override void OnNotice (TagHandler t)
@@ -50,6 +57,15 @@ public class LaserCat : Mob
         }
     }
 
+    protected override void Update()
+    {
+        base.Update();
+
+        speed_rate = mover.agent.velocity.magnitude / mover.agent.speed;
+        speed_rate *= anim_speed_multiplier;
+        anim.SetFloat(speed_hash, speed_rate);
+    }
+
     void Idle()
     {
         mover.walk = true;
@@ -65,13 +81,20 @@ public class LaserCat : Mob
             if (aim_timer > 0)
             {
                 rotator.Face(target, lockY: false);
-                if (!gun.Aim(target)) {
+                if (!gun.Aim(target))
+                {
                     Calm();
                 }
-                aim_timer -= Time.deltaTime;
+                else
+                {
+                    anim.SetBool(aim_hash, true);
+                    aim_timer -= Time.deltaTime;
+                    gun.Charge(aim_timer);
+                }
             }
             else
             {
+                anim.SetTrigger(blasting_hash);
                 gun.Fire(target);
                 aim_timer = aim_max;
             }
@@ -84,6 +107,7 @@ public class LaserCat : Mob
 
     void Calm()
     {
+        anim.SetBool(aim_hash, false);
         aim_timer = aim_max;
         target = null;
         gun.Activate(false);
@@ -91,7 +115,7 @@ public class LaserCat : Mob
         current_behavior = Idle;
     }
 
-    protected override void Die(Vector3 dir, Vector3 pos)
+    protected override void Damage(Vector3 dir, Vector3 pos)
     {
         if (!dead)
         {
@@ -100,7 +124,7 @@ public class LaserCat : Mob
             gun.Activate(false);
             noticer.NoticeEvent -= OnNotice;
             noticer.UnnoticeEvent -= OnUnnotice;
-            base.Die(dir, pos);
+            base.Damage(dir, pos);
         }
     }
 }

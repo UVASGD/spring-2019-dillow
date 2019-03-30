@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Body : MonoBehaviour
+public class Body : MonoBehaviour, IMortal
 {
     public CollisionDel CollisionEvent;
     [HideInInspector] public Rigidbody rb;
@@ -18,6 +18,10 @@ public class Body : MonoBehaviour
     {
         tagH = GetComponent<TagHandler>();
         rb = gameObject.GetMainRigidbody();
+        if (!rb.GetComponent<MainBody>())
+        {
+            rb.gameObject.AddComponent<MainBody>().DeathEvent += Die;
+        }
         anim = GetComponent<Animator>();
         damager = GetComponent<Damager>();
     }
@@ -62,5 +66,13 @@ public class Body : MonoBehaviour
         Collide(pos, tags, obj, dir, imp);
     }
 
-    public virtual void Collide(Vector3 pos, List<Tag> tags, GameObject obj, Vector3 direction, Vector3 impact) { }
+    public virtual void Collide(Vector3 pos, List<Tag> tags, GameObject obj, Vector3 direction, Vector3 impact) {
+        if (tags.Contains(Tag.Water) && impact.magnitude > 0f)
+        {
+            rb.velocity = Vector3.down;
+            obj.GetComponent<Water>().AddVictim(rb.gameObject, rb.GetComponent<Collider>());
+        }
+    }
+
+    public virtual void Die() { }
 }

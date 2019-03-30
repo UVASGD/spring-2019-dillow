@@ -42,8 +42,7 @@ public class Mob : Body, ILockable
             }
         }
 
-        main_body = (ragdoll) ? ragdoll.rb.gameObject : gameObject;
-        main_body.AddComponent<MainBody>();
+        main_body = rb.gameObject;
     }
 
 	protected virtual void OnNotice (TagHandler t) {
@@ -66,7 +65,16 @@ public class Mob : Body, ILockable
         }
     }
 
-    protected virtual void Die(Vector3 dir, Vector3 pos)
+    protected virtual void Damage(Vector3 dir, Vector3 pos)
+    {
+        if (!dead)
+        {
+            Die();
+            damager.Damage(dir, pos, true);
+        }
+    }
+
+    public override void Die()
     {
         if (!dead)
         {
@@ -74,7 +82,6 @@ public class Mob : Body, ILockable
             dead = true;
             ragdoll?.ActivateRagdoll(true);
             current_behavior = null;
-            damager.Damage(dir, pos, true);
         }
     }
 
@@ -89,9 +96,11 @@ public class Mob : Body, ILockable
 
     public override void Collide(Vector3 pos, List<Tag> tags, GameObject obj, Vector3 direction, Vector3 impact)
     {
+        base.Collide(pos, tags, obj, direction, impact);
+
         if (tags.Contains(Tag.Player) && tags.Contains(Tag.Attacking) && impact.magnitude >= impactThresh)
         {
-            Die(direction, pos);
+            Damage(direction, pos);
         }
     }
 }

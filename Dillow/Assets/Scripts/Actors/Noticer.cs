@@ -20,20 +20,16 @@ public class Noticer : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print("NoticerEnter");
         if (other.GetComponent<TagHandler>())
         {
-            print(other.name);
             NoticeEvent?.Invoke(other.GetComponent<TagHandler>());
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        print("NoticerExit");
         if (detecting && other.GetComponent<TagHandler>())
         {
-            print(other.name);
             UnnoticeEvent?.Invoke(other.GetComponent<TagHandler>());
         }
     }

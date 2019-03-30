@@ -9,6 +9,8 @@ public enum Tag
     Water,
     Attacking,
     Dead,
+    Marine,
+    Dashing,
 }
 
 public class TagHandler : MonoBehaviour
@@ -24,6 +26,11 @@ public class TagHandler : MonoBehaviour
     public void Remove(Tag tag)
     {
         tagList.Remove(tag);
+    }
+
+    public void RemoveAll(Tag tag)
+    {
+        tagList.RemoveAll(t => t == tag);
     }
 
     public bool HasTag(Tag tag)

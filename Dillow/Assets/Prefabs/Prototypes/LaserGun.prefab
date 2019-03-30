@@ -38,7 +38,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4949205944482769231}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -271,6 +271,9 @@ MonoBehaviour:
   activated: 0
   shot_fx: {fileID: 2865531046472692746, guid: 4fb17e5a227f3ae4a8593da1abdaa7dc, type: 3}
   hit_fx: {fileID: 8823223493712109963, guid: 206c84bce083a494c86ec5d06642816d, type: 3}
+  charge_fx: {fileID: 7506653913096556021, guid: 3f4a24ed4ff3efe439080a5cdb8e4023,
+    type: 3}
+  charge_time: 0.8
 --- !u!120 &2424348689214807802
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -278,7 +281,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6833797963521357730}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

@@ -55,8 +55,11 @@ public class DillowModel : Follower
         if (bodyrb.velocity.magnitude > 1f)
         {
             Vector3 velocity = Vector3.ProjectOnPlane(bodyrb.velocity.normalized, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation,
-        Quaternion.LookRotation(velocity), 1f);
+            if (velocity != Vector3.zero)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(velocity), 1f);
+            }
         }
 
         spinning_body.transform.Rotate(Vector3.right * Time.deltaTime * bodyrb.angularVelocity.magnitude * rot_speed);

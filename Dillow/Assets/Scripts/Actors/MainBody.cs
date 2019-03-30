@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainBody : MonoBehaviour, ILockable
+public delegate void DeathDel();
+
+public class MainBody : MonoBehaviour, ILockable, IMortal
 {
+    public DeathDel DeathEvent;
+
+    public void Die() { DeathEvent?.Invoke(); }
 }

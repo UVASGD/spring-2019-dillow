@@ -23,7 +23,6 @@ public class Hypervisor : Mob
 
 	protected override void OnNotice (TagHandler tagHandler)
     {
-		print("Child notice!");
 		base.OnNotice(tagHandler);
 
 		if (tagHandler.HasTag(Tag.Player))
@@ -36,7 +35,6 @@ public class Hypervisor : Mob
 
 	protected override void OnUnnotice (TagHandler tagHandler)
     {
-		print("Child unnotice!");
 		base.OnUnnotice(tagHandler);
 
 		if (tagHandler.HasTag(Tag.Player))
@@ -65,9 +63,9 @@ public class Hypervisor : Mob
         SnowThrower.SetActive(false);
     }
 
-    protected override void Die(Vector3 dir, Vector3 pos)
+    protected override void Damage(Vector3 dir, Vector3 pos)
     {
         SnowThrower.SetActive(false);
-        base.Die(dir, pos);
+        base.Damage(dir, pos);
     }
 }

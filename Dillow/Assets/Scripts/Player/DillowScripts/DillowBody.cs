@@ -140,13 +140,11 @@ public class DillowBody : Body
 
     public override void Collide(Vector3 pos, List<Tag> tags, GameObject obj, Vector3 direction, Vector3 impact)
     {
+        base.Collide(pos, tags, obj, direction, impact);
+
         if ((tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage)))
         {
             Damage(direction, pos);
-        }
-        if (tags.Contains(Tag.Water))
-        {
-            Die();
         }
     }
 
@@ -159,19 +157,15 @@ public class DillowBody : Body
         damager.Damage(dir, pos);
     }
 
-    void Die()
+    public override void Die()
     {
         if (!dead)
         {
-            print("Next hit kills: " + next_hit_kills);
-            if (next_hit_kills)
-            {
-                dead = true;
-                next_hit_kills = false;
-                anim.SetBool(fall_hash, true);
-                Fx_Spawner.instance.SpawnFX(death_sound, transform.position, Vector3.up);
-                GameManager.instance.Respawn();
-            }
+            dead = true;
+            next_hit_kills = false;
+            anim.SetBool(fall_hash, true);
+            Fx_Spawner.instance.SpawnFX(death_sound, transform.position, Vector3.up);
+            GameManager.instance.Respawn();
         }
     }
 

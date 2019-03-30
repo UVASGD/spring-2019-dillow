@@ -22,6 +22,9 @@ public class LaserGun : MonoBehaviour
 
     public GameObject shot_fx;
     public GameObject hit_fx;
+    public GameObject charge_fx; 
+    float charge_time = 1f, fuckingwait = 50f; //must be slightly less than charge fx time
+    bool charging;
 
     // Start is called before the first frame update
     void Start()
@@ -130,5 +133,18 @@ public class LaserGun : MonoBehaviour
         {
             hit.GetComponent<Body>().Collide(position, hit_tags, direction: -normal);
         }
+    }
+
+    public void Charge(float aim_time)
+    {
+        if (!charging && aim_time < charge_time) StartCoroutine(ChargeCo());
+    }
+
+    IEnumerator ChargeCo()
+    {
+        charging = true;
+        if (charge_fx) Fx_Spawner.instance.SpawnFX(charge_fx, barrel.transform.position, barrel.transform.forward);
+        yield return new WaitForSeconds(charge_time + 5f);
+        charging = false;
     }
 }

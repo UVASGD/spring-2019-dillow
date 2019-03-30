@@ -131,6 +131,7 @@ public class GameManager : MonoBehaviour {
     IEnumerator RespawnCo()
     {
         player.gameObject.transform.position = playerSpawnLocation;
+        DillowController.instance.body.rb.velocity = Vector3.zero;
         print(playerSpawnLocation);
         DillowController.instance.body.Live();
         yield return new WaitForSeconds(1.5f);

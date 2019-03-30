@@ -19,7 +19,7 @@ public class BallDash : DillowAttackAbility
             {
                 locked = true;
                 Vector3 lock_dir = (body.lock_enemy.transform.position - body.transform.position).normalized;
-                attack_dir = (Vector3.Angle(attack_dir, lock_dir) < 150f)
+                attack_dir = (Vector3.Angle(attack_dir, lock_dir) < 100f)
                     ? lock_dir : attack_dir;
             }
             else
@@ -44,7 +44,6 @@ public class BallDash : DillowAttackAbility
         intensity = 1f;
         fx_anim?.SetTrigger("Start");
         Fx_Spawner.instance.SpawnFX(dash_fx, transform.position, Vector3.up);
-        //body.collision_state.AddState(CollisionState.attacking);
     }
 
     protected override void EndAction()
@@ -54,5 +53,12 @@ public class BallDash : DillowAttackAbility
         fx_anim?.SetTrigger("Stop");
         //body.collision_state.RemoveState(CollisionState.attacking);
         StartCoroutine(Recharge());
+    }
+
+    IEnumerator AddDashing()
+    {
+        body.tagH.Add(Tag.Dashing);
+        yield return new WaitForSeconds(max_action_time + max_recharge_time);
+        body.tagH.RemoveAll(Tag.Dashing);
     }
 }

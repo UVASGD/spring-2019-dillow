@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NpcMover : MonoBehaviour
+public class MobMover : MonoBehaviour
 {
     public bool walk;
 
-    public NavMeshAgent agent;
+    [HideInInspector] public NavMeshAgent agent;
     public NodeArea nodeArea;
     public float wanderTime;  // Time before NPC chooses another random node seconds
     float nextWanderTime;
+
+    private void Awake()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
 
     void Update()
     {

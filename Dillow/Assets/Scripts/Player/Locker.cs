@@ -39,11 +39,6 @@ public class Locker :  Follower
                     return;
                 }
             }
-            else
-            {
-                Lock(false);
-                return;
-            }
 
             RaycastHit hit;
             if (Physics.Raycast(transform.position, (locked.transform.position - transform.position).normalized, out hit, range, layermask, QueryTriggerInteraction.Ignore))
@@ -99,12 +94,12 @@ public class Locker :  Follower
             }
             if (best_lock)
             {
-                DillowController.instance.body.lock_enemy = locked;
                 locked = best_lock;
                 reticle.gameObject.SetActive(true);
                 reticle.Activate(locked);
             }
         }
+        DillowController.instance.body.lock_enemy = locked;
     }
 
     private void OnTriggerEnter(Collider other)

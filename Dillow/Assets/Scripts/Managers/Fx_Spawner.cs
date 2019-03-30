@@ -22,7 +22,7 @@ public class Fx_Spawner : MonoBehaviour
     }
 
 
-    public void SpawnFX(GameObject fx,  Vector3 position, Vector3 rotation, float vol = -1, Transform parent = null)
+    public GameObject SpawnFX(GameObject fx,  Vector3 position, Vector3 rotation, float vol = -1, Transform parent = null)
     {
         GameObject spawned_fx = Instantiate(fx, position, Quaternion.identity);
         if (parent)
@@ -32,11 +32,13 @@ public class Fx_Spawner : MonoBehaviour
         if (rotation != Vector3.zero)
             spawned_fx.transform.forward = rotation;
         spawned_fx.GetComponent<Fx_Object>().vol = vol;
+
+        return spawned_fx;
     }
 
-    void SpawnFX(FXType effectName, Vector3 position, Vector3 rotation)
+    GameObject SpawnFX(FXType effectName, Vector3 position, Vector3 rotation)
     {
-        SpawnFX(fx_objs[(int)effectName], position, rotation);
+        return SpawnFX(fx_objs[(int)effectName], position, rotation);
     }
 }
 
