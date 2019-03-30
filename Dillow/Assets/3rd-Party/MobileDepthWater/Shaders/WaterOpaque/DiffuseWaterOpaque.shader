@@ -73,7 +73,7 @@
 
 			fixed2 WaterPlaneUV(fixed3 worldPos, fixed camHeightOverWater)
 			{
-                fixed adjustedCamHeight = fixed(camHeightOverWater + sin((worldPos.x / 10) + _Time.x * 50));
+                fixed adjustedCamHeight = fixed(camHeightOverWater + 0.3 * sin((worldPos.x / 10) + _Time.x * 50));
 				//fixed3 camToWorldRay = fixed3(worldPos.x, worldPos.y + sin((worldPos.x) * _Time.x / 10), worldPos.z) - _WorldSpaceCameraPos;
                 fixed3 camToWorldRay = worldPos - _WorldSpaceCameraPos;
 				fixed3 rayToWaterPlane = (adjustedCamHeight / camToWorldRay.y * camToWorldRay);

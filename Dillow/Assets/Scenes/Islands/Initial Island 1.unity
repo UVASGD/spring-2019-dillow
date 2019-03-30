@@ -3249,6 +3249,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3663100828007698684, guid: b0e55f2fffcc741e78e550a0b72da5e1,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 500000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3663100828007698684, guid: b0e55f2fffcc741e78e550a0b72da5e1,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 500000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0e55f2fffcc741e78e550a0b72da5e1, type: 3}
 --- !u!23 &1431556883 stripped
@@ -4104,6 +4114,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 24300002, guid: ea3a05cef8ecd29418f8d1f8ce03d340,
         type: 2}
+    - target: {fileID: 2214102015494000454, guid: 1dae8870bdddf47d0afd0d31e66a6ec8,
+        type: 3}
+      propertyPath: idleMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 8540b138d8ef04d1f849dd33fcd2030d, type: 3}
+    - target: {fileID: 2214102015494000454, guid: 1dae8870bdddf47d0afd0d31e66a6ec8,
+        type: 3}
+      propertyPath: combatMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 0804e73e6fe7349819d16d4079924b54, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1dae8870bdddf47d0afd0d31e66a6ec8, type: 3}
 --- !u!4 &8477457582739297505

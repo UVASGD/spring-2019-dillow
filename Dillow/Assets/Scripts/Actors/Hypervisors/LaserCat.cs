@@ -6,8 +6,7 @@ public class LaserCat : Mob
 {
 
     LaserGun gun;
-
-    Noticer noticer;
+    
     Rotator rotator;
 
     float aim_timer; //current timer
@@ -21,15 +20,13 @@ public class LaserCat : Mob
 
         gun = GetComponentInChildren<LaserGun>();
         aim_timer = aim_max;
-        noticer = GetComponentInChildren<Noticer>();
         rotator = GetComponent<Rotator>();
-
-        noticer.NoticeEvent += OnNotice;
-        noticer.UnnoticeEvent += OnUnnotice;
     }
 
-    void OnNotice(TagHandler t)
+	protected override void OnNotice (TagHandler t)
     {
+		base.OnNotice(t);
+
         if (t.HasTag(Tag.Player)) {
             target = t.gameObject;
             gun.Activate(true);
@@ -37,9 +34,11 @@ public class LaserCat : Mob
         }
     }
 
-    void OnUnnotice(TagHandler t)
+    protected override void OnUnnotice(TagHandler t)
     {
-        if (t.HasTag(Tag.Player))
+		base.OnUnnotice(t);
+
+		if (t.HasTag(Tag.Player))
         {
             target = null;
             Calm();
@@ -52,6 +51,7 @@ public class LaserCat : Mob
 
     void Aggro()
     {
+
         if (target)
         {
             if (aim_timer > 0)

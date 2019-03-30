@@ -12,27 +12,59 @@ namespace Fungus
     [RequireComponent(typeof(AudioSource))]
     public class MusicManager : MonoBehaviour
     {
-        protected AudioSource audioSource;
+		public static MusicManager instance;
+
+		public AudioClip idleMusic;
+		public AudioClip combatMusic;
+
+		protected AudioSource audioSource;
+
+		private float timeSinceActive;
+
 
         protected virtual void Awake()
         {
-            audioSource = GetComponent<AudioSource>();            
+			if (instance == null) {
+				instance = this;
+			} else {
+				Destroy(gameObject);
+			}
+
+			audioSource = GetComponent<AudioSource>();            
         }
 
         protected virtual void Start()
         {
             audioSource.playOnAwake = false;
             audioSource.loop = true;
+			timeSinceActive = 0f;
         }
 
-        #region Public members
+		protected virtual void Update () {
+			timeSinceActive += Time.deltaTime;
+		}
 
-        /// <summary>
-        /// Plays game music using an audio clip.
-        /// One music clip may be played at a time.
-        /// </summary>
-        public void PlayMusic(AudioClip musicClip, bool loop, float fadeDuration, float atTime)
+		#region Public members
+
+		public static void PlayCombatMusic (bool loop = true, float fadeDuration = 2f, float atTime = 0f) {
+			instance.PlayMusic(instance.combatMusic, loop, fadeDuration, atTime);
+		}
+
+		public static void PlayIdleMusic (bool loop = true, float fadeDuration = 5f, float atTime = 0f) {
+			instance.PlayMusic(instance.idleMusic, loop, fadeDuration, instance.timeSinceActive % instance.idleMusic.length);
+		}
+
+		//public static void PlayIdleMusic (bool loop = true, float fadeDuration = 2f) {
+		//	instance.PlayMusic(instance.combatMusic, loop, fadeDuration, instance.timeSinceActive % instance.combatMusic.length);
+		//}
+
+		/// <summary>
+		/// Plays game music using an audio clip.
+		/// One music clip may be played at a time.
+		/// </summary>
+		public void PlayMusic(AudioClip musicClip, bool loop, float fadeDuration, float atTime)
         {
+			print("Music swap!");
             if (audioSource == null || audioSource.clip == musicClip)
             {
                 return;

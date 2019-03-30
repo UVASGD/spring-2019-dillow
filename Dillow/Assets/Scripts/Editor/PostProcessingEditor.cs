@@ -6,7 +6,7 @@ using UnityEditor;
 
 public class PostProcessingEditor : MonoBehaviour {
 
-	[MenuItem("Post-Processing/Toggle %#t")]
+	[MenuItem("Tools/Post-Processing/Toggle %#t")]
 	public static void Toggle () {
 		PostProcessLayer layer;
 		if (null != (layer = FindObjectOfType<PostProcessLayer>())) {
