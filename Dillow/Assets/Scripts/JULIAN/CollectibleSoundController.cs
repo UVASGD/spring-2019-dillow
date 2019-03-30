@@ -7,7 +7,7 @@ public class CollectibleSoundController : MonoBehaviour {
 
     public static CollectibleSoundController instance;
     public Vector2 range = 5 * Vector2.one;
-    public AudioMixer mixer;
+    public AudioMixerGroup mixer;
     List<AudioSource> sounds;
 
     void Awake() {
@@ -45,6 +45,7 @@ public class CollectibleSoundController : MonoBehaviour {
         GameObject g = new GameObject(clip.name + "(" + volume + ")");
         g.transform.SetParent(transform);
         AudioSource source = g.AddComponent<AudioSource>();
+        source.outputAudioMixerGroup = mixer;
         source.minDistance = range.x;
         source.maxDistance = range.y;
         source.volume = volume;

@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
-public enum FXType {}
+public enum FXType {Generic, Wood}
 
-public class Fx_Spawner : MonoBehaviour
-{
+public class Fx_Spawner : MonoBehaviour {
+    public AudioMixerGroup mixer;
     public List<GameObject> fx_objs = new List<GameObject>();
 
     // Singleton code
@@ -31,7 +32,9 @@ public class Fx_Spawner : MonoBehaviour
         }
         if (rotation != Vector3.zero)
             spawned_fx.transform.forward = rotation;
-        spawned_fx.GetComponent<Fx_Object>().vol = vol;
+        Fx_Object fx_obj = spawned_fx.GetComponent<Fx_Object>();
+        fx_obj.vol = vol;
+        fx_obj.mixerGroup = mixer;
 
         return spawned_fx;
     }

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Plays a sound whenever the object gets hit
+/// </summary>
 public class CollisionSound : MonoBehaviour
 {
     public List<GameObject> collisionEffects = new List<GameObject>();
@@ -11,15 +14,23 @@ public class CollisionSound : MonoBehaviour
     Animator anim;
     int collide_hash;
 
+    public bool softLimit = false;
+
     private void Start()
     {
         anim = GetComponent<Animator>();
         collide_hash = Animator.StringToHash("Collide");
     }
 
+    //Dictionary<GameObject, Vector2> cols;
+    //void Start() {
+    //    cols = new Dictionary<GameObject, Vector2>();
+    //}
+
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.impulse.magnitude > impactThreshold)
+        //cols[collision.gameObject] = collision.impulse;
+        if (collision.impulse.magnitude > impactThreshold && !softLimit || softLimit)
         {
             if (anim)
                 anim.SetTrigger(collide_hash);
@@ -30,4 +41,15 @@ public class CollisionSound : MonoBehaviour
             }
         }
     }
+
+    //private void OnCollisionExit(Collision collision) {
+    //    cols.Remove(collision.gameObject);
+    //}
+
+    //void OnGizmoDraw() {
+    //    foreach(GameObject go in cols.Keys) {
+    //        Gizmos.color = Color.Lerp(Color.green, Color.red, cols[go].magnitude);
+    //        Gizmos.DrawLine(transform.position, cols[go]);
+    //    }
+    //}
 }
