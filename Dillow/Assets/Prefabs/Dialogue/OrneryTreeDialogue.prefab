@@ -80,7 +80,7 @@ GameObject:
   - component: {fileID: 4792280086643015026}
   - component: {fileID: 4792280086643014974}
   m_Layer: 0
-  m_Name: TreeDialogue
+  m_Name: OrneryTreeDialogue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,7 +93,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4792280086643014960}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -11.92, y: 0.595, z: 5.3790007}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -126,8 +126,7 @@ MonoBehaviour:
     height: 859
   selectedBlocks:
   - {fileID: 4792280086643014973}
-  selectedCommands:
-  - {fileID: 4792280086643014975}
+  selectedCommands: []
   variables:
   - {fileID: 5476387348379525449}
   - {fileID: 5476387348379525474}
@@ -168,6 +167,7 @@ MonoBehaviour:
   eventHandler: {fileID: 0}
   commandList:
   - {fileID: 4792280086643014933}
+  - {fileID: 0}
 --- !u!114 &5476387348379525449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,8 +197,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: 272
-    y: 295
+    x: 275
+    y: 238
     width: 121
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
@@ -1276,7 +1276,7 @@ MonoBehaviour:
   storyText: <i>Sigh</i>...
   description: 
   character: {fileID: 0}
-  portrait: {fileID: 0}
+  portrait: {fileID: 21300000, guid: 5b27ab8ad465615418cb04dc6b2fd71b, type: 3}
   voiceOverClip: {fileID: 0}
   showAlways: 1
   showCount: 1
@@ -1303,7 +1303,7 @@ MonoBehaviour:
   storyText: The weather's fine.
   description: 
   character: {fileID: 0}
-  portrait: {fileID: 0}
+  portrait: {fileID: 21300000, guid: 5b27ab8ad465615418cb04dc6b2fd71b, type: 3}
   voiceOverClip: {fileID: 0}
   showAlways: 1
   showCount: 1
@@ -1357,7 +1357,7 @@ MonoBehaviour:
   storyText: Ok, fine. I'll ask.
   description: 
   character: {fileID: 0}
-  portrait: {fileID: 0}
+  portrait: {fileID: 21300000, guid: 5b27ab8ad465615418cb04dc6b2fd71b, type: 3}
   voiceOverClip: {fileID: 0}
   showAlways: 1
   showCount: 1
@@ -1384,7 +1384,7 @@ MonoBehaviour:
   storyText: What's poppingamer?
   description: 
   character: {fileID: 0}
-  portrait: {fileID: 0}
+  portrait: {fileID: 21300000, guid: 5b27ab8ad465615418cb04dc6b2fd71b, type: 3}
   voiceOverClip: {fileID: 0}
   showAlways: 1
   showCount: 1
@@ -1596,7 +1596,7 @@ MonoBehaviour:
   storyText: Leaf me alone.
   description: 
   character: {fileID: 0}
-  portrait: {fileID: 0}
+  portrait: {fileID: 21300000, guid: 5b27ab8ad465615418cb04dc6b2fd71b, type: 3}
   voiceOverClip: {fileID: 0}
   showAlways: 1
   showCount: 1
@@ -1895,7 +1895,7 @@ MonoBehaviour:
   storyText: '...'
   description: 
   character: {fileID: 0}
-  portrait: {fileID: 0}
+  portrait: {fileID: 21300000, guid: 5b27ab8ad465615418cb04dc6b2fd71b, type: 3}
   voiceOverClip: {fileID: 0}
   showAlways: 1
   showCount: 1
@@ -2013,7 +2013,7 @@ MonoBehaviour:
   storyText: <i>sigh</i>...
   description: 
   character: {fileID: 0}
-  portrait: {fileID: 0}
+  portrait: {fileID: 21300000, guid: 5b27ab8ad465615418cb04dc6b2fd71b, type: 3}
   voiceOverClip: {fileID: 0}
   showAlways: 1
   showCount: 1
@@ -2040,7 +2040,7 @@ MonoBehaviour:
   storyText: Yes I am a tree.
   description: 
   character: {fileID: 0}
-  portrait: {fileID: 0}
+  portrait: {fileID: 21300000, guid: 5b27ab8ad465615418cb04dc6b2fd71b, type: 3}
   voiceOverClip: {fileID: 0}
   showAlways: 1
   showCount: 1
@@ -2115,7 +2115,7 @@ MonoBehaviour:
   storyText: Fine.
   description: 
   character: {fileID: 0}
-  portrait: {fileID: 0}
+  portrait: {fileID: 21300000, guid: 5b27ab8ad465615418cb04dc6b2fd71b, type: 3}
   voiceOverClip: {fileID: 0}
   showAlways: 1
   showCount: 1
