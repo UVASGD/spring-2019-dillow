@@ -152,7 +152,10 @@ public class DillowBody : Body
 
     void Damage(Vector3 dir, Vector3 pos)
     {
-        if (next_hit_kills) Die();
+        if (next_hit_kills)
+        { Die(); }
+        else if (!dead)
+        { TransformToBall(); }
         damager.Damage(dir, pos);
     }
 
@@ -160,6 +163,7 @@ public class DillowBody : Body
     {
         if (!dead)
         {
+            print("Next hit kills: " + next_hit_kills);
             if (next_hit_kills)
             {
                 dead = true;
@@ -167,10 +171,6 @@ public class DillowBody : Body
                 anim.SetBool(fall_hash, true);
                 Fx_Spawner.instance.SpawnFX(death_sound, transform.position, Vector3.up);
                 GameManager.instance.Respawn();
-            }
-            else
-            {
-                TransformToBall();
             }
         }
     }
@@ -386,6 +386,8 @@ public class DillowBody : Body
         {
             anim.SetBool(curl_hash, true);
 
+            tagH.Add(Tag.Attacking);
+
             ball = true;
             jump_power = ball_jump_power;
 
@@ -409,6 +411,8 @@ public class DillowBody : Body
         if (ball || first)
         {
             anim.SetBool(curl_hash, false);
+
+            tagH.Remove(Tag.Attacking);
 
             ball = false;
             jump_power = dillow_jump_power;

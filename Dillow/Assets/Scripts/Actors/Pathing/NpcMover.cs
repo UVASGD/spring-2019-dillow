@@ -14,11 +14,11 @@ public class NpcMover : MonoBehaviour
 
     void Update()
     {
-        if (!walk)
+        if (!walk && agent.isOnNavMesh)
         {
             agent.ResetPath();
         }
-        if (walk && Time.time > nextWanderTime + Random.Range(-3f,3f))
+        if (walk && Time.time > nextWanderTime + Random.Range(-3f,3f) && nodeArea)
         {
             nextWanderTime = Time.time + wanderTime;
             agent.SetDestination(nodeArea.GetRandomNode(agent.gameObject));
