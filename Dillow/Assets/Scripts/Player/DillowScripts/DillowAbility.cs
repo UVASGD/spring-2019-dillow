@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BallBody))]
-public abstract class BallAbility : MonoBehaviour
+[RequireComponent(typeof(DillowBody))]
+public abstract class DillowAbility : MonoBehaviour
 {
-    protected BallBody body;
+    protected DillowBody body;
     protected Animator fx_anim;
 
     protected bool action_ready;
@@ -13,7 +13,7 @@ public abstract class BallAbility : MonoBehaviour
 
     protected virtual void Start()
     {
-        body = GetComponent<BallBody>();
+        body = GetComponent<DillowBody>();
         body.MoveEvent += OnAction;
         body.EndEvent += OnEnd;
         action_ready = true;
