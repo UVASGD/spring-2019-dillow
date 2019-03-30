@@ -74,7 +74,6 @@ public class BallBody : Body
         OnGround();
         #endregion
 
-        damager = GetComponent<Damager>();
         damager.StunEvent += OnStun;
         damager.StunEndEvent += OnStunEnd;
         damager.DamageAllowEvent += OnDamageAllow;
@@ -102,28 +101,32 @@ public class BallBody : Body
         next_hit_kills = false;
     }
 
-    public override void Collide(Vector3 pos, List<Tag> tags = null, TagHandler t = null, Vector3? direction = null, Vector3? impact = null)
+    public override void Collide(Vector3 pos, List<Tag> tags, GameObject obj, Vector3 direction, Vector3 impact)
     {
-        Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
-        Vector3 imp = (Vector3)((impact == null) ? Vector3.zero : impact);
-        if (tags == null)
-            tags = t.tagList;
-
-        if ( (tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage)))
+        if ((tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage)))
         {
-            Damage(dir, pos);
+            Damage(direction, pos);
+        }
+        if (tags.Contains(Tag.Water))
+        {
+            Die();
         }
     }
 
     void Damage(Vector3 dir, Vector3 pos)
     {
-        if (next_hit_kills && !dead)
+        if (next_hit_kills) Die();
+        damager.Damage(dir, pos);
+    }
+
+    void Die()
+    {
+        if (!dead)
         {
             dead = true;
             next_hit_kills = false;
             GameManager.instance.Respawn();
         }
-        damager.Damage(dir, pos);
     }
 
     #region MOVEMENT

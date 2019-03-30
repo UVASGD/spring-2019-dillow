@@ -70,15 +70,11 @@ public class Mob : Body, ILockable
         Destroy(gameObject);
     }
 
-    public override void Collide(Vector3 pos, List<Tag> tags = null, TagHandler t = null,
-        Vector3? direction = null, Vector3? impact = null)
+    public override void Collide(Vector3 pos, List<Tag> tags, GameObject obj, Vector3 direction, Vector3 impact)
     {
-        Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
-        Vector3 imp = (Vector3)((impact == null) ? Vector3.zero : impact);
-
-        if (t.HasTag(Tag.Player) && imp.magnitude >= impactThresh)
+        if (tags.Contains(Tag.Player) && impact.magnitude >= impactThresh)
         {
-            Die(dir, pos);
+            Die(direction, pos);
         }
     }
 }

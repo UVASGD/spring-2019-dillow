@@ -8,7 +8,7 @@ public class Body : MonoBehaviour
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public Animator anim;
     [HideInInspector] public TagHandler tagH;
-    [HideInInspector]public Damager damager;
+    [HideInInspector] public Damager damager;
 
     public bool can_be_damaged = true, next_hit_kills;
     public bool dead;
@@ -27,7 +27,7 @@ public class Body : MonoBehaviour
         if (c.collider.GetComponent<TagHandler>() )
         {
             TagHandler th = c.collider.GetComponent<TagHandler>();
-            Collide(c.contacts[0].point, t:th, direction: c.contacts[0].normal, impact: c.impulse);
+            Collide(c.contacts[0].point, tagHandler: th, direction: c.contacts[0].normal, impact: c.impulse);
         }
     }
 
@@ -36,7 +36,7 @@ public class Body : MonoBehaviour
         if (c.GetComponent<TagHandler>())
         {
             TagHandler th = c.GetComponent<TagHandler>();
-            Collide(transform.position, t:th, direction: transform.position - c.transform.position);
+            Collide(transform.position, tagHandler: th, direction: transform.position - c.transform.position);
         }
     }
     
@@ -44,14 +44,23 @@ public class Body : MonoBehaviour
     {
         if (c.GetComponent<TagHandler>()) 
         {
-            Collide(transform.position, t:c.GetComponent<TagHandler>());
+            Collide(transform.position, tagHandler: c.GetComponent<TagHandler>());
         }
     }
 
-    public virtual void Collide(Vector3 pos, List<Tag> tags = null, TagHandler t = null, 
+    public void Collide(Vector3 pos, TagHandler tagHandler,
         Vector3? direction = null, Vector3? impact = null)
     {
-        Vector3 dir = (Vector3)((direction == null) ? Vector3.up : direction);
-        Vector3 imp = (Vector3)((impact == null) ? Vector3.zero : impact);
+        Collide(pos, tagHandler.tagList, tagHandler.gameObject, direction, impact);
     }
+
+    public void Collide(Vector3 pos, List<Tag> tags = null, GameObject obj = null,
+        Vector3? direction = null, Vector3? impact = null)
+    {
+        Vector3 dir = direction.GetValueOrDefault(Vector3.up);
+        Vector3 imp = impact.GetValueOrDefault(Vector3.zero);
+        Collide(pos, tags, obj, dir, imp);
+    }
+
+    public virtual void Collide(Vector3 pos, List<Tag> tags, GameObject obj, Vector3 direction, Vector3 impact) { }
 }

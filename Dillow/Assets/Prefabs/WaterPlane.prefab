@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 3663100828007698685}
   - component: {fileID: 3663100828007698682}
   - component: {fileID: 3663100828007698683}
+  - component: {fileID: 5096715755823088825}
   m_Layer: 0
   m_Name: WaterPlane
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,3 +93,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5096715755823088825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663100828007698680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 942ab66c4c68ccc4989bb6742d444f4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tagList: 04000000
