@@ -23,7 +23,8 @@ public class FX_RangeE : Editor {
     }
 
     public override void OnInspectorGUI() {
-        //serializedObject.Update();
+        base.OnInspectorGUI();
+        serializedObject.Update();
 
         var serProp = serializedObject.GetIterator();
         while (serProp.NextVisible(true)) {

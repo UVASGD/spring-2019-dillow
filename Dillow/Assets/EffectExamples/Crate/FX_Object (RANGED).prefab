@@ -46,11 +46,11 @@ MonoBehaviour:
   vol: -1
   mixerGroup: {fileID: 24300002, guid: ea3a05cef8ecd29418f8d1f8ce03d340, type: 2}
   sounds:
-  - sound: 
+  - sound: Assets/Resources/Audio/wood_soft.wav
     threshold: 0.25
-  - sound: 
+  - sound: Assets/Resources/Audio/wood_medium.wav
     threshold: 0.5
-  - sound: 
+  - sound: Assets/Resources/Audio/wood_harsh.wav
     threshold: 0.75
-  - sound: 
+  - sound: Assets/Resources/Audio/wood_heavy.wav
     threshold: 1
