@@ -16,11 +16,7 @@ public class NpcMover : MonoBehaviour
     {
         if (!walk)
         {
-            agent.enabled = false;
-        }
-        else
-        {
-            agent.enabled = true;
+            agent.ResetPath();
         }
         if (walk && Time.time > nextWanderTime + Random.Range(-3f,3f))
         {
@@ -28,5 +24,10 @@ public class NpcMover : MonoBehaviour
             agent.SetDestination(nodeArea.GetRandomNode(agent.gameObject));
         }
         
+    }
+
+    public void MoveToTarget(Vector3 target)
+    {
+        agent.SetDestination(target);
     }
 }
