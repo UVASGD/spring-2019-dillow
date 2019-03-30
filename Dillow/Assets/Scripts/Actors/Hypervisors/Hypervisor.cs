@@ -5,7 +5,6 @@ using UnityEngine;
 public class Hypervisor : Mob
 {
     Rotator rotator;
-    Noticer noticer;
     
     public Vector3 originalRotation;
 
@@ -15,10 +14,6 @@ public class Hypervisor : Mob
     {
         base.Start();
         rotator = GetComponent<Rotator>();
-        noticer = GetComponentInChildren<Noticer>();
-        noticer.NoticeEvent += OnNotice;
-        noticer.UnnoticeEvent += OnUnnotice;
-
 
         originalRotation = Vector3.ProjectOnPlane(Random.insideUnitSphere, Vector3.up).normalized;
         rotator.TurnTo(originalRotation, true, false, true);
@@ -26,9 +21,12 @@ public class Hypervisor : Mob
         SnowThrower.SetActive(false);
     }
 
-    public void OnNotice(TagHandler tagHandler)
+	protected override void OnNotice (TagHandler tagHandler)
     {
-        if (tagHandler.HasTag(Tag.Player))
+		print("Child notice!");
+		base.OnNotice(tagHandler);
+
+		if (tagHandler.HasTag(Tag.Player))
         {
             target = tagHandler.gameObject;
             SnowThrower.SetActive(true);
@@ -36,9 +34,12 @@ public class Hypervisor : Mob
         }
     }
 
-    public void OnUnnotice(TagHandler tagHandler)
+	protected override void OnUnnotice (TagHandler tagHandler)
     {
-        if (tagHandler.HasTag(Tag.Player))
+		print("Child unnotice!");
+		base.OnUnnotice(tagHandler);
+
+		if (tagHandler.HasTag(Tag.Player))
         {
             current_behavior = null;
             Calm();

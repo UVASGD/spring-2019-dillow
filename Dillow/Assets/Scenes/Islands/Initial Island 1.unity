@@ -1620,37 +1620,37 @@ PrefabInstance:
     - target: {fileID: 4475016646859034545, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000016815143
+      value: 0.000000016815143
       objectReference: {fileID: 0}
     - target: {fileID: 4475016646859034545, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000003648364
+      value: -0.000000003648364
       objectReference: {fileID: 0}
     - target: {fileID: 4475016646436313379, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.22975291
+      value: 0.22975293
       objectReference: {fileID: 0}
     - target: {fileID: 4475016646436313379, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000019018316
+      value: 0.000000014473873
       objectReference: {fileID: 0}
     - target: {fileID: 4475016646436313379, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000013578501
+      value: 0.0000000056720677
       objectReference: {fileID: 0}
     - target: {fileID: 4475016647273640554, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000030131805
+      value: -0.000000013316661
       objectReference: {fileID: 0}
     - target: {fileID: 4475016647273640554, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000101950185
+      value: 0.00000009830182
       objectReference: {fileID: 0}
     - target: {fileID: 4475016647273640554, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
@@ -4104,6 +4104,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 24300002, guid: ea3a05cef8ecd29418f8d1f8ce03d340,
         type: 2}
+    - target: {fileID: 2214102015494000454, guid: 1dae8870bdddf47d0afd0d31e66a6ec8,
+        type: 3}
+      propertyPath: idleMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 8540b138d8ef04d1f849dd33fcd2030d, type: 3}
+    - target: {fileID: 2214102015494000454, guid: 1dae8870bdddf47d0afd0d31e66a6ec8,
+        type: 3}
+      propertyPath: combatMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 0804e73e6fe7349819d16d4079924b54, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1dae8870bdddf47d0afd0d31e66a6ec8, type: 3}
 --- !u!4 &8477457582739297505
