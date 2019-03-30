@@ -9,6 +9,7 @@ public class LaserCat : Mob
 
     Noticer noticer;
     Rotator rotator;
+    NpcMover mover;
 
     float aim_timer; //current timer
     float aim_max = 1.75f; //time it takes to fire
@@ -23,6 +24,7 @@ public class LaserCat : Mob
         aim_timer = aim_max;
         noticer = GetComponentInChildren<Noticer>();
         rotator = GetComponent<Rotator>();
+        mover = GetComponent<NpcMover>();
 
         noticer.NoticeEvent += OnNotice;
         noticer.UnnoticeEvent += OnUnnotice;
@@ -30,6 +32,7 @@ public class LaserCat : Mob
 
     void OnNotice(TagHandler t)
     {
+        //print("Notice");
         if (t.HasTag(Tag.Player)) {
             target = t.gameObject;
             gun.Activate(true);
@@ -39,6 +42,7 @@ public class LaserCat : Mob
 
     void OnUnnotice(TagHandler t)
     {
+        //print("Unnotice");
         if (t.HasTag(Tag.Player))
         {
             target = null;
@@ -48,10 +52,14 @@ public class LaserCat : Mob
 
     void Idle()
     {
+        mover.walk = true;
     }
 
     void Aggro()
     {
+        //print("Aggro");
+        mover.walk = false;
+        //mover.MoveToTarget(target.transform.position);
         if (target)
         {
             if (aim_timer > 0)
