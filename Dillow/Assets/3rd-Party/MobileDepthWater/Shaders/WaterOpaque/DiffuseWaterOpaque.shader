@@ -116,9 +116,16 @@
 				fixed2 distorted_uv = ((water_uv + distortion.rg) - _Time.y * _MoveDirection.xz) * _Tiling;
 
 				fixed4 waterCol = tex2D(_WaterTex, distorted_uv);
+                
 				waterCol = lerp(_WaterColor, fixed4(1, 1, 1, 1), waterCol.r * _TextureVisibility);
+                fixed3 ray = i.worldPos - _WorldSpaceCameraPos;
+                fixed len = length(ray);
+                fixed3 a = ray / len;
+                fixed val = 1 / (1 + exp(-20 * a.y));
+                //waterCol += lerp(fixed4(1, 1, 1, 1), fixed4(0, 0, 0, 1), clamp(abs(val), 0, 1));
+                waterCol += lerp(fixed4(0, 0, 0, 1), fixed4(1, 1, 1, 1), clamp(abs(val), 0, 1));
 
-				UNITY_APPLY_FOG(i.fogCoord, waterCol);
+				//UNITY_APPLY_FOG(i.fogCoord, waterCol);
 
 				return waterCol;
 			}
