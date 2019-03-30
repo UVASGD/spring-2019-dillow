@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour {
         int[] saveCollectibleCounts = new int[N];
         foreach (var item in collectibleCounts)
         {
-            saveCollectibleCounts[(int)item.Key]++;
+            saveCollectibleCounts[(int)item.Key] = item.Value;
         }
         SaveData saveData = new SaveData(
             instance.playerSpawnLocation,
@@ -108,6 +108,7 @@ public class GameManager : MonoBehaviour {
     {
         obtainedCollectibles.Add(collectible.id);
         collectibleCounts[collectible.type]++;
+        Save();
     }
 
     public static bool HasCollectible(Collectible collectible)
