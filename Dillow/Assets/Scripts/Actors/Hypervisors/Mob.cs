@@ -9,8 +9,8 @@ public class Mob : Body, ILockable
     [Header("POSITIONING")]
     public bool start_on_ground = true;
 
-
-    protected Ragdoll ragdoll;
+	protected Noticer noticer;
+	protected Ragdoll ragdoll;
     protected BehaviorDel current_behavior;
     protected GameObject target, main_body;
 
@@ -23,7 +23,11 @@ public class Mob : Body, ILockable
     {
         base.Start();
 
-        ragdoll = GetComponent<Ragdoll>();
+		noticer = GetComponentInChildren<Noticer>();
+		noticer.NoticeEvent += OnNotice;
+		noticer.UnnoticeEvent += OnUnnotice;
+
+		ragdoll = GetComponent<Ragdoll>();
 
         damager = GetComponent<Damager>(); 
         damager.DamageEndEvent += Destroy;
@@ -42,7 +46,19 @@ public class Mob : Body, ILockable
         main_body.AddComponent<MainBody>();
     }
 
-    protected virtual void Update()
+	protected virtual void OnNotice (TagHandler t) {
+		if (t.HasTag(Tag.Player)) {
+			Fungus.MusicManager.PlayCombatMusic(true, 2f);
+		}
+	}
+
+	protected virtual void OnUnnotice (TagHandler t) {
+		if (t.HasTag(Tag.Player)) {
+			Fungus.MusicManager.PlayIdleMusic();
+		}
+	}
+
+	protected virtual void Update()
     {
         if (!dead)
         {
@@ -54,6 +70,7 @@ public class Mob : Body, ILockable
     {
         if (!dead)
         {
+            tagH.Add(Tag.Dead);
             dead = true;
             ragdoll?.ActivateRagdoll(true);
             current_behavior = null;

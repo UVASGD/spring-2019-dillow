@@ -6,6 +6,7 @@ public delegate void CollisionDel(TagHandler handler);
 
 public class Noticer : MonoBehaviour
 {
+	public bool hostile = true;
     public CollisionDel NoticeEvent, UnnoticeEvent;
 
     Collider col;
