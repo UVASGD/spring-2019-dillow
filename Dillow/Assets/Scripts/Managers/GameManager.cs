@@ -109,6 +109,12 @@ public class GameManager : MonoBehaviour {
         obtainedCollectibles.Add(collectible.id);
         collectibleCounts[collectible.type]++;
         Save();
+
+        switch (collectible.type) {
+            case CollectibleType.Gear:
+                UIController.instance.ShowGear(collectibleCounts[collectible.type]);
+                break;
+        }
     }
 
     public static bool HasCollectible(Collectible collectible)

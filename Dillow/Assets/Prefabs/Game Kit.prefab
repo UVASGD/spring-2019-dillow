@@ -619,6 +619,42 @@ MonoBehaviour:
   flashColor: {r: 1, g: 0, b: 0, a: 1}
   damage_fx: {fileID: 3341575136412007180, guid: 3f432e36a75c3184ebcef09b77e6ed9d,
     type: 3}
+--- !u!114 &1291900973411403380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8385080744236258893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0d5f5ebccb5c6b4ea2ef929744c92d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  anim: {fileID: 0}
+  tagH: {fileID: 0}
+  damager: {fileID: 0}
+  can_be_damaged: 1
+  next_hit_kills: 0
+  dead: 0
+  roll_power: 200
+  move_power: 10
+  max_roll_speed: 50
+  max_speed: 50
+  jump_power: 10
+  jump_hold_time: 0.5
+  speed_vector: {x: 0, y: 0, z: 0}
+  can_move: 1
+  jump_ready: 0
+  mid_air: 0
+  air_ready: 0
+  impact_fx: {fileID: 6470596176834278558, guid: b31c7d5f2d75e9944a1c771453fb5e15,
+    type: 3}
+  jump_sound: {fileID: 6727617701154152326, guid: dd4e130b3b23a4d4e937dfc57cc7a00e,
+    type: 3}
+  lock_enemy: {fileID: 0}
+  ready: 0
 --- !u!114 &5509439415126854960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1362,6 +1398,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.0000000056720677
+      objectReference: {fileID: 0}
+    - target: {fileID: 5649285566282940729, guid: b3a80d2e83e3d431ca9105d02caacab8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.22975293
       objectReference: {fileID: 0}
     - target: {fileID: 5649285567732968048, guid: b3a80d2e83e3d431ca9105d02caacab8,
         type: 3}

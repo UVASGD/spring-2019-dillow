@@ -4,12 +4,17 @@ using UnityEngine;
 
 public enum CollectibleType { Gear, Currency, Powerup, LevelSpecific, };
 
+[RequireComponent(typeof(AudioSource))]
 public class Collectible : MonoBehaviour {
 	public CollectibleType type;
 	public bool replenishable = false;
 	public ulong id;
 
+    public Animator anim;
+    private AudioSource sound;
+
     private void Start () {
+        sound = GetComponent<AudioSource>();
 		if (!replenishable) {
 			if (GameManager.HasCollectible(this)) {
 				Destroy(gameObject);
@@ -19,8 +24,12 @@ public class Collectible : MonoBehaviour {
 
     protected virtual void OnTriggerEnter (Collider other) {
 		if (other.CompareTag("Player")) {
+            CollectibleSoundController.instance.PlaySound(sound, sound.volume);
 			GameManager.AddCollectible(this);
-			Destroy(gameObject);
+            if (anim != null)
+                anim.SetTrigger("Kill");
+            else
+                Destroy(gameObject);
 		}
 	}
 
