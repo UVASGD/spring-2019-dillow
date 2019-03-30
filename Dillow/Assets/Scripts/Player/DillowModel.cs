@@ -6,7 +6,7 @@ public class DillowModel : Follower
 {
     DillowBody body;
     Rigidbody bodyrb, rb;
-    float rot_speed = 50, turn_speed = 1f;
+    float rot_speed = 50, turn_speed = 0.25f;
     GameObject spinning_body;
 
     bool ball;
@@ -22,6 +22,10 @@ public class DillowModel : Follower
             yield return null;
         }
         bodyrb = body.rb;
+        if (!GetComponentInChildren<Flasher>())
+        {
+            GetComponentInChildren<SkinnedMeshRenderer>().gameObject.AddComponent<Flasher>();
+        }
         body.damager.AddFlasher(GetComponentInChildren<Flasher>());
     }
 
@@ -37,10 +41,10 @@ public class DillowModel : Follower
         }
         else
         {
-            if (!ball)
+            if (ball)
             {
-                spinning_body.transform.up = Vector3.up;
-                transform.up = Vector3.up;
+                ball = false;
+                spinning_body.transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
             }
             DillowUpdate();
         }
@@ -52,7 +56,7 @@ public class DillowModel : Follower
         {
             Vector3 velocity = Vector3.ProjectOnPlane(bodyrb.velocity.normalized, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation,
-        Quaternion.LookRotation(velocity), turn_speed);
+        Quaternion.LookRotation(velocity), 1f);
         }
 
         spinning_body.transform.Rotate(Vector3.right * Time.deltaTime * bodyrb.angularVelocity.magnitude * rot_speed);
