@@ -3222,12 +3222,12 @@ PrefabInstance:
     - target: {fileID: 4475016646859034545, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000016815143
+      value: -0.000000016815143
       objectReference: {fileID: 0}
     - target: {fileID: 4475016646859034545, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000000003648364
+      value: 0.000000003648364
       objectReference: {fileID: 0}
     - target: {fileID: 4475016646859034545, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
@@ -3272,12 +3272,12 @@ PrefabInstance:
     - target: {fileID: 4475016647273640554, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000013316661
+      value: -0.000000030131805
       objectReference: {fileID: 0}
     - target: {fileID: 4475016647273640554, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00000009830182
+      value: 0.000000101950185
       objectReference: {fileID: 0}
     - target: {fileID: 4475016647273640554, guid: 1b12373d00418478d8478fb860dd2b0b,
         type: 3}
@@ -4599,6 +4599,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enterMusic: Initial Island Village
   exitMusic: Initial Island Ambient
+  loop: 1
+  crossfade: 1
+  fadein: 1
+  fadeDuration: 5
+  syncTimes: 1
 --- !u!1001 &1226930305
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13034,6 +13039,8 @@ MonoBehaviour:
       track: {fileID: 8300000, guid: 5dba44380c5314e349f3d7e3c6ed0245, type: 3}
     - name: Combat1
       track: {fileID: 8300000, guid: 0804e73e6fe7349819d16d4079924b54, type: 3}
+    - name: None
+      track: {fileID: 8300000, guid: e05e304092aaa4a0688d31fb54772822, type: 3}
 --- !u!4 &8477457582739297505
 Transform:
   m_ObjectHideFlags: 0
