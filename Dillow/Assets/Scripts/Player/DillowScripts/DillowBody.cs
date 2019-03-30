@@ -203,6 +203,8 @@ public class DillowBody : Body
 
     private void OnFall()
     {
+        if (!rb.useGravity)
+            return;
         if (rb.velocity.y < 0f)
         {
             rb.velocity += Vector3.up * Physics.gravity.y * (fall_multiplier - 1f) * Time.deltaTime;
