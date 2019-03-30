@@ -35,12 +35,32 @@ ModelImporter:
     4300002: node_id208
     4300004: node_id210
     4300006: node_id212
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_375
+    second: {fileID: 2100000, guid: a695dc2c99bf44db19d9bb39db8a9161, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_376
+    second: {fileID: 2100000, guid: c4ed58942cf9847e9954b0283382251c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_377
+    second: {fileID: 2100000, guid: c4ed58942cf9847e9954b0283382251c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_378
+    second: {fileID: 2100000, guid: e900f917969b84223a9e95903398fa5d, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -66,7 +86,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 2048
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1

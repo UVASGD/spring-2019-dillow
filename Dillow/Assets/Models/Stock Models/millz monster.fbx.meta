@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d04f9c93b2e3f43cca56746e5a2fb831
+guid: b5a0450fa87e08843a9fa9eac4915771
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -67,12 +67,62 @@ ModelImporter:
     4300014: node_id78
     4300016: node_id80
     4300018: node_id82
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_435
+    second: {fileID: 2100000, guid: 9cc0b8db15a7a474ebb9df24283cec59, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_436
+    second: {fileID: 2100000, guid: 968cca060eb034252a89fb5b0d5179d3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_437
+    second: {fileID: 2100000, guid: 968cca060eb034252a89fb5b0d5179d3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_438
+    second: {fileID: 2100000, guid: 461b43895688048ce824b22aa71ca6aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_439
+    second: {fileID: 2100000, guid: 461b43895688048ce824b22aa71ca6aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_440
+    second: {fileID: 2100000, guid: fb4f7f4562d4648e78c3946b78ba31d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_441
+    second: {fileID: 2100000, guid: fb4f7f4562d4648e78c3946b78ba31d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_442
+    second: {fileID: 2100000, guid: 5be2a434a476a41c2ae37b8347f1534e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_443
+    second: {fileID: 2100000, guid: 5be2a434a476a41c2ae37b8347f1534e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_444
+    second: {fileID: 2100000, guid: 5be2a434a476a41c2ae37b8347f1534e, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -98,7 +148,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 2048
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1

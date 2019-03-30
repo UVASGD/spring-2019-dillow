@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e2fc6b304c2fe48ef875c3b967bfbe25
+guid: b47ebfe3374c06a49ae63c0b125eaae8
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -55,12 +55,52 @@ ModelImporter:
     4300010: node_id90
     4300012: node_id92
     4300014: node_id94
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_208
+    second: {fileID: 2100000, guid: c3757c4282f6e428db51db7142203d0a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_209
+    second: {fileID: 2100000, guid: cb10c3baffacb406985ebab40e6ef15f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_210
+    second: {fileID: 2100000, guid: a5038baf6b8fd324eb94609cc1483a10, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_211
+    second: {fileID: 2100000, guid: dff788728b5244b758f2519046cbd7bb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_212
+    second: {fileID: 2100000, guid: 1b9d261deb1074710a3db9c7713c2624, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_213
+    second: {fileID: 2100000, guid: cb2bebffcf496ad48abde1b9216baf5a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_214
+    second: {fileID: 2100000, guid: f503988d45aed469ea7c2d37aea4cde6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_215
+    second: {fileID: 2100000, guid: a6b432619c90a413487ff4f59589ad9f, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -86,7 +126,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 2048
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
