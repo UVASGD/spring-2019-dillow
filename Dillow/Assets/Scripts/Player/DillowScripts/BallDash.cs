@@ -44,6 +44,7 @@ public class BallDash : DillowAttackAbility
         intensity = 1f;
         fx_anim?.SetTrigger("Start");
         Fx_Spawner.instance.SpawnFX(dash_fx, transform.position, Vector3.up);
+        StartCoroutine(AddDashing());
     }
 
     protected override void EndAction()

@@ -21,9 +21,9 @@ public class DillowBody : Body
 
     #region BALL
     [Header("Rolling")]
-    float ball_power = 200f;
+    float ball_power = 100f;
     float airball_power = 5f;
-    float ball_drag = 5f;
+    float ball_drag = 15f;
 
     float max_ball_speed = 50f;
 

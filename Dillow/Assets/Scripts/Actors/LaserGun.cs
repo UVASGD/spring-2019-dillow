@@ -100,7 +100,7 @@ public class LaserGun : MonoBehaviour
 
         laser.SetPosition(0, barrel.transform.position);
         TagHandler t = target.GetComponent<TagHandler>();
-        if (!t || !t.HasTag(Tag.Dashing)) aimDirection = barrel.transform.forward;
+        if (t && t.HasTag(Tag.Dashing)) aimDirection = barrel.transform.forward;
         RaycastHit hit;
         if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range, Physics.AllLayers, QueryTriggerInteraction.Ignore))
         {
