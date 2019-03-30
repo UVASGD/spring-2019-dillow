@@ -72,7 +72,7 @@ public class Mob : Body, ILockable
 
     public override void Collide(Vector3 pos, List<Tag> tags, GameObject obj, Vector3 direction, Vector3 impact)
     {
-        if (tags.Contains(Tag.Player) && impact.magnitude >= impactThresh)
+        if (tags.Contains(Tag.Player) && tags.Contains(Tag.Attacking) && impact.magnitude >= impactThresh)
         {
             Die(direction, pos);
         }

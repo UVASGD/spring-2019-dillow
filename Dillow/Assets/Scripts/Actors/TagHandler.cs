@@ -7,6 +7,7 @@ public enum Tag
     Damage,
     SuperDamage,
     Water,
+    Attacking,
 }
 
 public class TagHandler : MonoBehaviour
