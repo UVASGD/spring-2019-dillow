@@ -21,7 +21,7 @@ public class Locker :  Follower
         reticle.gameObject.SetActive(false);
         range = GetComponent<SphereCollider>().radius;
 
-        layermask = LayerMask.GetMask("Player");
+        layermask = LayerMask.GetMask("Player", "Ground", "GroundTerrain");
         layermask = ~layermask;
     }
 

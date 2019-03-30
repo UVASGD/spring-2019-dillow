@@ -56,7 +56,7 @@ public class DillowBody : Body
     #endregion
 
     #region MOVEMENT
-    float max_speed = 50f;
+    float max_speed = 50f, fall_speed = 30f;
     public event MoveDel MoveEvent;
     public event EndDel EndEvent;
     public event TransformDel TransformEvent;
@@ -194,7 +194,8 @@ public class DillowBody : Body
             rb.velocity = rb.velocity.normalized * max_speed;
         }
 
-        float speed_rate = (rb.velocity.magnitude / max_speed) * anim_multiplier;
+        float speed_rate = rb.velocity.magnitude / max_speed * anim_multiplier;
+        speed_rate = Mathf.Clamp01(speed_rate);
         anim.SetFloat(speed_hash, speed_rate);
 
         OnFall();
@@ -223,6 +224,14 @@ public class DillowBody : Body
         if (rb.velocity.y > 0f)
         {
             rb.velocity += Vector3.up * Physics.gravity.y * (jump_multiplier - 1f) * Time.deltaTime;
+        }
+        if (Mathf.Abs(rb.velocity.y) > 30f && !ball)
+        {
+            anim.SetBool(fall_hash, true);
+        }
+        else
+        {
+            anim.SetBool(fall_hash, false);
         }
     }
 

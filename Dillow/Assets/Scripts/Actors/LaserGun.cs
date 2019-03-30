@@ -93,14 +93,23 @@ public class LaserGun : MonoBehaviour
 
         if (target)
         {
-            aimDirection = target.transform.position - barrel.transform.position;
+            TagHandler t = target.GetComponent<TagHandler>();
+            if (t && t.HasTag(Tag.Dashing))
+            {
+                aimDirection = (target.transform.position - (target.GetComponent<Rigidbody>().velocity / 10f)) - barrel.transform.position;
+            }
+            else
+            {
+                aimDirection = target.transform.position - barrel.transform.position;
+            }
         }
+
+        aimDirection = aimDirection.normalized;
 
         if (shot_fx) Fx_Spawner.instance.SpawnFX(shot_fx, barrel.transform.position, barrel.transform.forward);
 
         laser.SetPosition(0, barrel.transform.position);
-        TagHandler t = target.GetComponent<TagHandler>();
-        if (t && t.HasTag(Tag.Dashing)) aimDirection = barrel.transform.forward;
+
         RaycastHit hit;
         if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range, Physics.AllLayers, QueryTriggerInteraction.Ignore))
         {
