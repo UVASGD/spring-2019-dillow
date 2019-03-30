@@ -12,6 +12,7 @@ public class BallDash : DillowAttackAbility
     {
 		if (action == 2 && move && action_ready && body.CheckPriority(2))
         {
+            body.can_be_damaged = false;
             attack_dir = dir;
 
             if (body.lock_enemy)
@@ -48,6 +49,7 @@ public class BallDash : DillowAttackAbility
 
     protected override void EndAction()
     {
+        body.can_be_damaged = true;
         intensity = 0f;
         fx_anim?.SetTrigger("Stop");
         //body.collision_state.RemoveState(CollisionState.attacking);

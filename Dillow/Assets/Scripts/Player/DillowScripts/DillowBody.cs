@@ -68,11 +68,14 @@ public class DillowBody : Body
     [Header("FX")]
     public GameObject impact_fx;
     public GameObject jump_sound;
+    public GameObject death_sound;
 
     [HideInInspector] public GameObject lock_enemy;
 
     public bool ready;
     private int curl_hash, speed_hash, fall_hash;
+
+    private float anim_multiplier = 4f;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -150,12 +153,20 @@ public class DillowBody : Body
 
     void Damage(Vector3 dir, Vector3 pos)
     {
-        if (next_hit_kills && !dead)
+        if (!dead)
         {
-            dead = true;
-            next_hit_kills = false;
-            anim.SetBool(fall_hash, true);
-            GameManager.instance.Respawn();
+            if (next_hit_kills)
+            {
+                dead = true;
+                next_hit_kills = false;
+                anim.SetBool(fall_hash, true);
+                Fx_Spawner.instance.SpawnFX(death_sound, transform.position, Vector3.up);
+                GameManager.instance.Respawn();
+            }
+            else
+            {
+                TransformToBall();
+            }
         }
         damager.Damage(dir, pos);
     }
@@ -183,7 +194,7 @@ public class DillowBody : Body
             rb.velocity = rb.velocity.normalized * max_speed;
         }
 
-        float speed_rate = (rb.velocity.magnitude / max_speed) * 2f;
+        float speed_rate = (rb.velocity.magnitude / max_speed) * anim_multiplier;
         anim.SetFloat(speed_hash, speed_rate);
 
         OnFall();
