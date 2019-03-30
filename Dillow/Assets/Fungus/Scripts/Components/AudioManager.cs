@@ -69,31 +69,51 @@ public class AudioManager : MonoBehaviour
 		if (true == instance.switchingMusic) return;
 
 		AudioSource[] sources = instance.GetAudioSources ();
-		AudioClip clip = instance.musicList.GetMusic(name);
+		AudioClip clip;
 
-		if (null != clip) {
-			instance.StartCoroutine(instance.MusicCoroutine(clip, sources[0], sources[1], loop, crossfade, fadein, fadeDuration, syncTimes));
+		if (name == "") {
+			clip = null;
+		} else {
+			clip = instance.musicList.GetMusic(name);
 		}
+
+
+		//if (null != clip) {
+		instance.StartCoroutine(instance.MusicCoroutine(clip, sources[0], sources[1], loop, crossfade, fadein, fadeDuration, syncTimes));
+		//}
 	}
 
 	public IEnumerator MusicCoroutine (AudioClip clip, AudioSource current, AudioSource previous, 
 										bool loop, bool crossfade, bool fadein, float fadeDuration, bool syncTimes) {
 		switchingMusic = true;
-		print("Switching to " + clip.name);
 		current.loop = loop;
-		current.clip = clip;
+
+		bool revertMusic;
+		if (clip != null) {
+			current.clip = clip;
+			revertMusic = false;
+		} else {
+			clip = current.clip;
+			revertMusic = true;
+		}
+		print("Switching to " + clip.name);
 
 		if (syncTimes) {
 			current.time = previous.time % clip.length;
 		} else {
-			current.time = 0f;
+			if (!revertMusic) {
+				current.time = 0f;
+			}
 		}
 
 		float fadeTime = 0f;
 		float previousStartVolume = previous.volume;
 		float currentStartVolume = current.volume;
 		if (crossfade) {
-			current.Play();
+			if (!revertMusic) {
+				current.Play();
+			}
+
 			while (fadeTime < fadeDuration) {
 				previous.volume = Mathf.Lerp(previousStartVolume, 0f, fadeTime / fadeDuration);
 				current.volume = Mathf.Lerp(currentStartVolume, previousStartVolume, fadeTime / fadeDuration);
@@ -115,8 +135,9 @@ public class AudioManager : MonoBehaviour
 			if (!fadein) {
 				fadeDuration = 0.25f;
 			}
-
-			current.Play();
+			if (!revertMusic) {
+				current.Play();
+			}
 
 			while (fadeTime < fadeDuration) {
 				current.volume = Mathf.Lerp(currentStartVolume, previousStartVolume, fadeTime / fadeDuration);
