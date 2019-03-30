@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2875792094272482844}
-  - component: {fileID: 2003321497590055463}
+  - component: {fileID: 883949041381267572}
   m_Layer: 0
   m_Name: FX_Object (RANGED)
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2003321497590055463
+--- !u!114 &883949041381267572
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,13 +44,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vol: -1
-  mixerGroup: {fileID: 24300002, guid: ea3a05cef8ecd29418f8d1f8ce03d340, type: 2}
+  mixerGroup: {fileID: 0}
   sounds:
-  - sound: Assets/Resources/Audio/wood_soft.wav
+  - sound: wood_soft13696
     threshold: 0.25
-  - sound: Assets/Resources/Audio/wood_medium.wav
+  - sound: wood_medium16178
     threshold: 0.5
-  - sound: Assets/Resources/Audio/wood_harsh.wav
+  - sound: wood_harsh14766
     threshold: 0.75
-  - sound: Assets/Resources/Audio/wood_heavy.wav
+  - sound: wood_heavy16828
     threshold: 1
+  range: {x: 30, y: 500}
+  amplify: 1.2

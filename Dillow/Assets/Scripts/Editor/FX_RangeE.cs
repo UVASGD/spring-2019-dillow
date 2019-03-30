@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -8,18 +9,12 @@ using System.Reflection;
 [CustomEditor(typeof(Fx_Object_Ranged))]
 public class FX_RangeE : Editor {
 
-    //private static GUIContent
-    //    moveButtonContent = new GUIContent("\u21b4", "move down"),
-    //    duplicateButtonContent = new GUIContent("+", "duplicate"),
-    //    deleteButtonContent = new GUIContent("-", "delete");
-
     bool foldout = true;
     Fx_Object_Ranged fx;
 
 
     void OnEnable() {
         fx = (Fx_Object_Ranged)target;
-
     }
 
     public override void OnInspectorGUI() {
@@ -36,6 +31,7 @@ public class FX_RangeE : Editor {
                     break;
                 case "vol":
                 case "mixergroup":
+                case "range":
                     EditorGUILayout.PropertyField(serProp);
                     break;
                 default:
@@ -54,17 +50,22 @@ public class FX_RangeE : Editor {
                 EditorGUILayout.BeginHorizontal();
                 var property = list.GetArrayElementAtIndex(i);
                 SoundRange sndRange = (SoundRange)GetTargetObjectOfProperty(property);
+                string[] ill = ACList.audioClips.Keys.ToArray();
                 int init = -1;
                 if (!string.IsNullOrEmpty(sndRange.sound)){
                     for (int s = 0; s < ACList.audioClips.Count;s++) {
-                        if (ACList.audioClips[s].Equals(sndRange.sound)) {
+                        if (ill[s].Equals(sndRange.sound)) {
                             init = s; break;
                         }
                     }
                 }
 
-                init = EditorGUILayout.Popup(init, ACList.audioClips.ToArray());
-                sndRange.sound = init >=0 ? ACList.audioClips[init] : "";
+                int temp = EditorGUILayout.Popup(init, ill);
+                if (temp != init) {
+                    sndRange.sound = temp >= 0 ? ill[temp] : "";
+                    list.InsertArrayElementAtIndex(list.arraySize);
+                    list.DeleteArrayElementAtIndex(list.arraySize - 1);
+                }
                 sndRange.threshold = EditorGUILayout.FloatField(sndRange.threshold);
                 fx.sounds[i] = sndRange;
                 
@@ -139,16 +140,4 @@ public class FX_RangeE : Editor {
         return enm.Current;
     }
 
-}
-
-public static class ACList {
-
-    public static List<string> audioClips;
-    static ACList() {
-        audioClips = new List<string>();
-        List<AudioClip> temp = new List<AudioClip>(Resources.LoadAll<AudioClip>("Audio"));
-        foreach (AudioClip ac in temp) {
-            audioClips.Add(AssetDatabase.GetAssetPath(ac));
-        }
-    }
 }

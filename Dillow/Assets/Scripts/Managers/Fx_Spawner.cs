@@ -26,7 +26,6 @@ public class Fx_Spawner : MonoBehaviour {
     public void SpawnFX(GameObject fx,  Vector3 position, Vector3 rotation, float vol = -1, Transform parent = null)
     {
         GameObject spawned_fx = Instantiate(fx, position, Quaternion.identity);
-        Debug.Log(spawned_fx.name + " | " + vol);
         if (parent)
         {
             spawned_fx.transform.parent = parent;

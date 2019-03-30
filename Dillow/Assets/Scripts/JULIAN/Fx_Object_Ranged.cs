@@ -6,39 +6,31 @@ using UnityEngine.Audio;
 public class Fx_Object_Ranged : Fx_Object { 
 
     public List<SoundRange> sounds;
-    void OnEnable() {
-        sounds = new List<SoundRange>();
-    }
+    public Vector2 range;
+    public float amplify = 1.2f;
 
     // Start is called before the first frame update
     void Start() {
         float max_audio_len = 0, max_part_len = 0;
-        SoundRange upper = new SoundRange(null, 0);
-        SoundRange lower = new SoundRange(null, 1);
         if(sounds.Count > 0) {
+            sounds.Sort(delegate (SoundRange c1, SoundRange c2) { return c1.threshold.CompareTo(c2.threshold); });
+            SoundRange i = new SoundRange(null, 0);
+
             // Choose a sound to play within the range of the list of sounds
-            // Think of it like a grouping, with the range a sound can play by
-            // default being from 0 to its threshold, the minimum overriden by
-            // sounds of lower thresholds
+            for (int s = 0; s<sounds.Count;s++) if(vol <= sounds[s].threshold && vol > (s < 1 ? 0 : sounds[s - 1].threshold)) i = sounds[s];
 
-            // calculated this way to save time on sorting (over the top)
-            foreach(SoundRange sound in sounds) {
-                print(string.Format("{0} >= {1} || {0} > {2} ) && {3} <= {0}", sound.threshold, lower.threshold, upper.threshold, vol));
-                if ((sound.threshold >= lower.threshold || sound.threshold > upper.threshold)
-                    && vol <= sound.threshold)upper = sound;
-                else lower = sound.threshold < lower.threshold ? sound : lower;
-            }
-
-            if (upper.sound != null) {
-                AudioClip sound = Resources.Load<AudioClip>(upper.sound);
+            if (i.sound != null) {
+                AudioClip sound = ACList.audioClips[i.sound];
                 gameObject.name = sound.name;
                 AudioSource source = gameObject.AddComponent<AudioSource>();
                 source.outputAudioMixerGroup = mixerGroup;
-                source.volume = vol;
+                source.volume = vol * amplify;
+                source.minDistance = range.x;
+                source.maxDistance = range.y;
                 source.pitch += Random.Range(-pitch_range, pitch_range);
                 source.playOnAwake = true;
-                source.clip = sound;
                 source.loop = false;
+                source.PlayOneShot(sound);
                 max_audio_len = sound.length;
             }
         }
@@ -58,5 +50,20 @@ public struct SoundRange {
     public SoundRange(string clip, float _threshold) {
         sound = clip;
         threshold = _threshold;
+    }
+}
+
+
+public static class ACList {
+
+    public static Dictionary<string, AudioClip> audioClips;
+    static ACList() {
+        audioClips = new Dictionary<string, AudioClip>();
+        List<AudioClip> temp = new List<AudioClip>(Resources.LoadAll<AudioClip>("Sounds"));
+        foreach (AudioClip ac in temp) {
+            var ass = ac.name + ac.GetHashCode();
+            //Debug.Log(ass + " : " + ac);
+            audioClips[ass] = ac;
+        }
     }
 }
