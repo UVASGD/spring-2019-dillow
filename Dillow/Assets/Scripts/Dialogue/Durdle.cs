@@ -27,12 +27,15 @@ public class Durdle : MonoBehaviour
         }
         else {
             source.volume = (Vector3.Angle(transform.up, Vector3.up) / 180f);
-
-            if (source.volume > 0.2f)
-            {
-                chart.SetBooleanVariable("screaming", true);
-            }
         }
+        if (source.volume > 0.2f)
+        {
+            chart.SetBooleanVariable("screaming", true);
+        }
+        else {
+            chart.SetBooleanVariable("screaming", false);
+        }
+
     }
 
     public void Scream()
