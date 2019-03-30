@@ -12,17 +12,17 @@ public class DillowBody : Body
 
     #region DILLOW
     [Header("Dillow")]
-    float dillow_speed = 200f;
+    float dillow_speed = 100f;
     float turn_speed = 1f;
     float dillow_jump_power = 20f;
-    float dillow_drag = 20f;
+    float dillow_drag = 50f;
     CapsuleCollider dillow_collider;
     #endregion
 
     #region BALL
     [Header("Rolling")]
     float ball_power = 200f;
-    float airball_power = 10f;
+    float airball_power = 5f;
     float ball_drag = 5f;
 
     float max_ball_speed = 50f;
@@ -40,7 +40,7 @@ public class DillowBody : Body
     public float jump_hold_time = 1f;
     private float jump_hold_timer;
 
-    private float jump_cooldown_time = 0.5f;
+    private float jump_cooldown_time = 1f;
     private bool jump_cooling_down;
 
     private JumpDetector jump_dectector;
@@ -96,7 +96,7 @@ public class DillowBody : Body
         #region INITIALIZATION
         MoveEvent += OnDash;
         MoveEvent += OnJumpHold;
-        TransformToBall();
+        TransformToBall(true);
 
         damager = GetComponent<Damager>();
         damager.StunEvent += OnStun;
@@ -273,8 +273,8 @@ public class DillowBody : Body
         {
             Fx_Spawner.instance.SpawnFX(jump_sound, transform.position, Vector3.up);
             rb.AddForce(jump_vector * ball_jump_power, ForceMode.Impulse);
-            StartCoroutine(JumpCD());
             TransformToDillow();
+            StartCoroutine(JumpCD());
         }
     }
 
@@ -293,7 +293,6 @@ public class DillowBody : Body
             }
             else
             {
-                print("Move this fucker");
                 rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * dillow_speed);
             }
         }
@@ -303,6 +302,7 @@ public class DillowBody : Body
     {
         if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
         {
+            print("JUMP BOY");
             Fx_Spawner.instance.SpawnFX(jump_sound, transform.position, Vector3.up);
             rb.AddForce(Vector3.up * jump_power, ForceMode.Impulse);
             StartCoroutine(JumpCD());
@@ -346,42 +346,48 @@ public class DillowBody : Body
         }
     }
 
-    public void TransformToBall()
+    public void TransformToBall(bool first = false)
     {
-        ball = true;
-        jump_power = ball_jump_power;
-    
-        MoveEvent += OnBallMove;
-        MoveEvent += OnBallJump;
-        MoveEvent -= OnDillowMove;
-        MoveEvent -= OnDillowJump;
+        if (!ball || first)
+        {
+            ball = true;
+            jump_power = ball_jump_power;
 
-        //ball_collider.enabled = true;
-        //dillow_collider.enabled = false;
+            MoveEvent += OnBallMove;
+            MoveEvent += OnBallJump;
+            MoveEvent -= OnDillowMove;
+            MoveEvent -= OnDillowJump;
 
-        rb.angularDrag = ball_drag;
-        //rb.constraints = RigidbodyConstraints.None;
+            //ball_collider.enabled = true;
+            //dillow_collider.enabled = false;
 
-        TransformEvent?.Invoke(true);
+            rb.angularDrag = ball_drag;
+            //rb.constraints = RigidbodyConstraints.None;
+
+            TransformEvent?.Invoke(true);
+        }
     }
 
-    public void TransformToDillow()
+    public void TransformToDillow(bool first = false)
     {
-        ball = false;
-        jump_power = dillow_jump_power;
+        if (ball || first)
+        {
+            ball = false;
+            jump_power = dillow_jump_power;
 
-        MoveEvent += OnDillowMove;
-        MoveEvent += OnDillowJump;
-        MoveEvent -= OnBallMove;
-        MoveEvent -= OnBallJump;
+            MoveEvent += OnDillowMove;
+            MoveEvent += OnDillowJump;
+            MoveEvent -= OnBallMove;
+            MoveEvent -= OnBallJump;
 
-        //ball_collider.enabled = false;
-        //dillow_collider.enabled = true;
+            //ball_collider.enabled = false;
+            //dillow_collider.enabled = true;
 
-        rb.angularDrag = dillow_drag;
-        //rb.constraints = RigidbodyConstraints.FreezeRotation;
+            rb.angularDrag = dillow_drag;
+            //rb.constraints = RigidbodyConstraints.FreezeRotation;
 
-        TransformEvent?.Invoke(false);
+            TransformEvent?.Invoke(false);
+        }
     }
 
     #endregion

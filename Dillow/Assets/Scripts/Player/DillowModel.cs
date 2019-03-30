@@ -8,6 +8,7 @@ public class DillowModel : Follower
     Rigidbody bodyrb, rb;
     float rot_speed = 50, turn_speed = 1f;
     GameObject spinning_body;
+
     bool ball;
     
     // Start is called before the first frame update
@@ -16,14 +17,12 @@ public class DillowModel : Follower
         rb = GetComponentInChildren<Rigidbody>();
         spinning_body = rb.gameObject;
         body = transform.parent.GetComponentInChildren<DillowBody>();
-        body.TransformEvent += DillowTransform;
 
         while (!body.ready) {
             yield return null;
         }
         bodyrb = body.rb;
         body.damager.AddFlasher(GetComponentInChildren<Flasher>());
-        DillowTransform(body.ball);
     }
 
     void Update()
@@ -31,12 +30,18 @@ public class DillowModel : Follower
         if (!bodyrb)
             return;
 
-        if (ball)
+        if (body.ball)
         {
+            ball = true;
             BallUpdate();
         }
         else
         {
+            if (!ball)
+            {
+                spinning_body.transform.up = Vector3.up;
+                transform.up = Vector3.up;
+            }
             DillowUpdate();
         }
     }
@@ -60,16 +65,6 @@ public class DillowModel : Follower
             Vector3 velocity = bodyrb.velocity.normalized;
             transform.rotation = Quaternion.Slerp(transform.rotation,
         Quaternion.LookRotation(velocity), turn_speed);
-        }
-    }
-
-    void DillowTransform(bool is_ball)
-    {
-        ball = is_ball;
-        if (!is_ball)
-        {
-            transform.up = Vector3.up;
-            spinning_body.transform.up = Vector3.up;
         }
     }
 }
