@@ -34,6 +34,8 @@ public class DillowModel : Follower
         if (!bodyrb)
             return;
 
+        spinning_body.transform.localPosition = Vector3.zero;
+
         if (body.ball)
         {
             ball = true;

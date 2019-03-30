@@ -14,7 +14,7 @@ public class LaserGun : MonoBehaviour
 
     List<Tag> hit_tags;
 
-    float laser_time = 0.25f, laserCD = 5f;
+    float laser_time = 0.25f;
     bool can_fire = true;
 
     public LineRenderer aim_laser;
@@ -22,8 +22,8 @@ public class LaserGun : MonoBehaviour
 
     public GameObject shot_fx;
     public GameObject hit_fx;
-    public GameObject charge_fx; 
-    float charge_time = 1f, fuckingwait = 50f; //must be slightly less than charge fx time
+    public GameObject charge_fx;
+    float charge_time = 1f; 
     bool charging;
 
     // Start is called before the first frame update
@@ -99,6 +99,8 @@ public class LaserGun : MonoBehaviour
         if (shot_fx) Fx_Spawner.instance.SpawnFX(shot_fx, barrel.transform.position, barrel.transform.forward);
 
         laser.SetPosition(0, barrel.transform.position);
+        TagHandler t = target.GetComponent<TagHandler>();
+        if (!t || !t.HasTag(Tag.Dashing)) aimDirection = barrel.transform.forward;
         RaycastHit hit;
         if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range, Physics.AllLayers, QueryTriggerInteraction.Ignore))
         {
@@ -120,7 +122,7 @@ public class LaserGun : MonoBehaviour
         laser.enabled = true;
         yield return new WaitForSeconds(laser_time);
         laser.enabled = false;
-        yield return new WaitForSeconds(laserCD);
+        //yield return new WaitForSeconds(laserCD);
         can_fire = true;
     }
 
@@ -137,14 +139,14 @@ public class LaserGun : MonoBehaviour
 
     public void Charge(float aim_time)
     {
-        if (!charging && aim_time < charge_time) StartCoroutine(ChargeCo());
+        if (can_fire && !charging && aim_time < charge_time) StartCoroutine(ChargeCo());
     }
 
     IEnumerator ChargeCo()
     {
         charging = true;
         if (charge_fx) Fx_Spawner.instance.SpawnFX(charge_fx, barrel.transform.position, barrel.transform.forward);
-        yield return new WaitForSeconds(charge_time + 5f);
+        yield return new WaitForSeconds(charge_time);
         charging = false;
     }
 }
