@@ -72,6 +72,7 @@ public class DillowBody : Body
     [HideInInspector] public GameObject lock_enemy;
 
     public bool ready;
+    private int curl_hash, speed_hash, fall_hash;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -94,6 +95,11 @@ public class DillowBody : Body
         #endregion
 
         #region INITIALIZATION
+        anim = transform.parent.GetComponentInChildren<DillowModel>().GetComponentInChildren<Animator>();
+        curl_hash = Animator.StringToHash("Curled");
+        speed_hash = Animator.StringToHash("Speed");
+        fall_hash = Animator.StringToHash("Falling");
+
         MoveEvent += OnDash;
         MoveEvent += OnJumpHold;
         TransformToBall(true);
@@ -148,9 +154,17 @@ public class DillowBody : Body
         {
             dead = true;
             next_hit_kills = false;
+            anim.SetBool(fall_hash, true);
             GameManager.instance.Respawn();
         }
         damager.Damage(dir, pos);
+    }
+
+    public void Live()
+    {
+        dead = false;
+        next_hit_kills = false;
+        anim.SetBool(fall_hash, false);
     }
 
     #endregion
@@ -168,6 +182,10 @@ public class DillowBody : Body
         {
             rb.velocity = rb.velocity.normalized * max_speed;
         }
+
+        float speed_rate = (rb.velocity.magnitude / max_speed) * 2f;
+        anim.SetFloat(speed_hash, speed_rate);
+
         OnFall();
     }
 
@@ -302,7 +320,6 @@ public class DillowBody : Body
     {
         if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
         {
-            print("JUMP BOY");
             Fx_Spawner.instance.SpawnFX(jump_sound, transform.position, Vector3.up);
             rb.AddForce(Vector3.up * jump_power, ForceMode.Impulse);
             StartCoroutine(JumpCD());
@@ -350,6 +367,8 @@ public class DillowBody : Body
     {
         if (!ball || first)
         {
+            anim.SetBool(curl_hash, true);
+
             ball = true;
             jump_power = ball_jump_power;
 
@@ -372,6 +391,8 @@ public class DillowBody : Body
     {
         if (ball || first)
         {
+            anim.SetBool(curl_hash, false);
+
             ball = false;
             jump_power = dillow_jump_power;
 
