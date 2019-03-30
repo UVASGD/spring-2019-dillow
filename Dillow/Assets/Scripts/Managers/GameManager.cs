@@ -15,13 +15,13 @@ public struct SaveData {
 	//public Dictionary<int, bool> obtainedCollectibles;
 	//public Dictionary<CollectibleType, int> collectiblesCount;
 	//public Dictionary<int, bool> abilities;
-	public List<string> obtainedCollectibles;
+	public List<ulong> obtainedCollectibles;
 	public int[] collectibleCounts;
 	public List<int> abilities;
 	public List<GameObject> inventory;
 
 	public SaveData (Vector3 playerSpawnLocation, string currentScene, string targetScene, 
-	                 List<string> obtainedCollectibles, int[] collectibleCounts,
+	                 List<ulong> obtainedCollectibles, int[] collectibleCounts,
 					 List<int> abilities, List<GameObject> inventory) {
 		this.playerSpawnLocation = playerSpawnLocation;
 		this.currentScene = currentScene;
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour {
     bool spawned;
 
 	public static SaveData saveData;
-	public static HashSet<string> obtainedCollectibles;
+	public static HashSet<ulong> obtainedCollectibles;
     public static Dictionary<CollectibleType, int> collectibleCounts;
 
     private void Awake () {
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour {
     public static void Save () {
         //print("Saving!");
         SaveData saveData = new SaveData();
-		saveData.obtainedCollectibles = new List<string>(obtainedCollectibles);
+		saveData.obtainedCollectibles = new List<ulong>(obtainedCollectibles);
         int N = Enum.GetValues(typeof(CollectibleType)).Cast<int>().Max() + 1;
         saveData.collectibleCounts = new int[N];
         foreach (var item in collectibleCounts)
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour {
 			//print("File found");
 			string jsonData = File.ReadAllText(filePath);
 			SaveData saveData = JsonUtility.FromJson<SaveData>(jsonData);
-            obtainedCollectibles = new HashSet<string>(saveData.obtainedCollectibles);
+            obtainedCollectibles = new HashSet<ulong>(saveData.obtainedCollectibles);
             collectibleCounts = new Dictionary<CollectibleType, int>();
             for (int i=0; i < saveData.collectibleCounts.Length; i++)
             {
