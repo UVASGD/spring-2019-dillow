@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1746150708}
   - component: {fileID: 1746150706}
   - component: {fileID: 1746150711}
-  - component: {fileID: 2781897588141450325}
+  - component: {fileID: 9115363916535841206}
   m_Layer: 0
   m_Name: WoodCrate
   m_TagString: Untagged
@@ -28,9 +28,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1746150705}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.51405436, y: 0.57, z: 3.1892533}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalScale: {x: 4.3215, y: 4.3215, z: 4.3215}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -109,7 +109,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.6, y: 0.6000005, z: 0.59999895}
   m_Center: {x: 0.00020699203, y: 0.30002075, z: -0.001780495}
---- !u!114 &2781897588141450325
+--- !u!114 &9115363916535841206
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,7 +118,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1746150705}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 031b812b1687fd74cabf8477e49b8f7e, type: 3}
+  m_Script: {fileID: 11500000, guid: ee08da59fcf0f9042b0996658b99e81a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fx_objs: []
+  collisionEffects: {fileID: 2975708306406226853, guid: 42cb756508c8a294bbda1a9368caa6ec,
+    type: 3}
+  impactThreshold: 0.2
+  maxThreshold: 4
+  softLimit: 0

@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Fx_Object : MonoBehaviour
 {
-    float pitch_range = 0.2f, amp_range = 0.02f;
+    protected float pitch_range = 0.2f, amp_range = 0.02f;
     public float vol = -1f;
+    public AudioMixerGroup mixerGroup;
     // Start is called before the first frame update
     void Start()
     {

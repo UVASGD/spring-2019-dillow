@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(JumpDetector), typeof(ParticleSystem))]
 public class GroundParticles : MonoBehaviour
 {
 
