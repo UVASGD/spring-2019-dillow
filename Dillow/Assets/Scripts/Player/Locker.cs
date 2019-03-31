@@ -19,15 +19,17 @@ public class Locker : MonoBehaviour
         main = Camera.main;
         reticle = GameObject.FindGameObjectWithTag("Reticle").GetComponent<Reticle>();
         reticle.gameObject.SetActive(false);
-        range = GetComponent<SphereCollider>().radius;
+        range = GetComponent<SphereCollider>().radius*2f;
 
-        layermask = LayerMask.GetMask("Player", "Ground", "GroundTerrain");
+        layermask = LayerMask.GetMask("Player", "Ground");
         layermask = ~layermask;
     }
 
     // Update is called once per frame
     void Update()
     {
+        transform.rotation = main.transform.rotation;
+
         if (locked)
         {
             TagHandler t = locked.GetComponentInParent<TagHandler>();

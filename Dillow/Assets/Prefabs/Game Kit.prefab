@@ -633,32 +633,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mixer: {fileID: 24300002, guid: ea3a05cef8ecd29418f8d1f8ce03d340, type: 2}
   fx_objs: []
---- !u!1773428102 &9155806451644929340
-ParentConstraint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6530227970613878041}
-  m_Enabled: 1
-  m_Weight: 1
-  m_TranslationAtRest: {x: 0, y: 0, z: 0}
-  m_RotationAtRest: {x: 0, y: 0, z: 0}
-  m_TranslationOffsets:
-  - {x: 0, y: 0, z: 0}
-  m_RotationOffsets:
-  - {x: 0, y: 0, z: 0}
-  m_AffectTranslationX: 1
-  m_AffectTranslationY: 1
-  m_AffectTranslationZ: 1
-  m_AffectRotationX: 0
-  m_AffectRotationY: 1
-  m_AffectRotationZ: 0
-  m_IsContraintActive: 1
-  m_IsLocked: 1
-  m_Sources:
-  - sourceTransform: {fileID: 4828472970282004362}
-    weight: 1
 --- !u!114 &6530227970648779592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -672,6 +646,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   locked: {fileID: 0}
+--- !u!1818360608 &1911470361617647711
+PositionConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6530227970613878041}
+  m_Enabled: 1
+  m_Weight: 1
+  m_TranslationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationOffset: {x: 0, y: 0, z: 0}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_IsContraintActive: 1
+  m_IsLocked: 1
+  m_Sources:
+  - sourceTransform: {fileID: 8385080744236288621}
+    weight: 1
 --- !u!1 &8385080744236258893
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,9 +721,14 @@ MonoBehaviour:
   can_be_damaged: 1
   next_hit_kills: 0
   dead: 0
-  ball_collider: {fileID: 0}
-  jump_power: 0
-  jump_hold_time: 1
+  dillow_speed: 175
+  dillow_drag: 20
+  d_staticFriction: 5
+  d_dynoFriction: 5
+  ball_power: 200
+  ball_drag: 15
+  b_staticFriction: 5
+  b_dynoFriction: 5
   speed_vector: {x: 0, y: 0, z: 0}
   jump_ready: 0
   mid_air: 0
@@ -1058,7 +1056,7 @@ PrefabInstance:
     - target: {fileID: 5403027007737897291, guid: 26dd41189bd5e9e4db65444a974484c0,
         type: 3}
       propertyPath: m_Center.y
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5403027007737897291, guid: 26dd41189bd5e9e4db65444a974484c0,
         type: 3}
@@ -1811,12 +1809,12 @@ PrefabInstance:
     - target: {fileID: 5649285567732968048, guid: b3a80d2e83e3d431ca9105d02caacab8,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000013316661
+      value: -0.000000030131805
       objectReference: {fileID: 0}
     - target: {fileID: 5649285567732968048, guid: b3a80d2e83e3d431ca9105d02caacab8,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00000009830182
+      value: 0.000000101950185
       objectReference: {fileID: 0}
     - target: {fileID: 5649285566241038038, guid: b3a80d2e83e3d431ca9105d02caacab8,
         type: 3}
