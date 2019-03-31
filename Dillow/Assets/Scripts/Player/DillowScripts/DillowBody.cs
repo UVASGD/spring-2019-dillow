@@ -67,8 +67,8 @@ public class DillowBody : Body
     public event EndDel EndEvent;
     public event TransformDel TransformEvent;
     [HideInInspector ]public bool can_move = true;
+    [HideInInspector] public bool ball = true;
     int priority = 0;
-    bool ball = true;
     #endregion
 
     #region ANIMS AND FX
