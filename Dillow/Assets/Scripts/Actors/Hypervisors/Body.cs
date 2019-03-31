@@ -67,12 +67,15 @@ public class Body : MonoBehaviour, IMortal
     }
 
     public virtual void Collide(Vector3 pos, List<Tag> tags, GameObject obj, Vector3 direction, Vector3 impact) {
-        if (tags.Contains(Tag.Water) && impact.magnitude > 0f)
+        if (tags.Contains(Tag.Water))
         {
             rb.velocity = Vector3.down;
             obj.GetComponent<Water>().AddVictim(rb.gameObject, rb.GetComponent<Collider>());
         }
     }
 
-    public virtual void Die() { }
+    public virtual void Die()
+    {
+        Destroy(gameObject);
+    }
 }

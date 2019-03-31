@@ -12,78 +12,86 @@ public class DillowBody : Body
 
     #region DILLOW
     [Header("Dillow")]
-    float dillow_speed = 150f;
+    public float dillow_speed = 175f;
+    public float dillow_drag = 20f;
+
+    public float d_staticFriction = 5;
+    public float d_dynoFriction = 5;
+
     float turn_speed = 1f;
     float dillow_jump_power = 20f;
-    float dillow_drag = 20f;
-    CapsuleCollider dillow_collider;
     #endregion
 
     #region BALL
     [Header("Rolling")]
-    float ball_power = 100f;
-    float airball_power = 5f;
-    float ball_drag = 15f;
+    public float ball_power = 200f;
+    public float ball_drag = 15f;
 
+    public float b_staticFriction = 5;
+    public float b_dynoFriction = 5;
+
+    float airball_power = 10f;
     float max_ball_speed = 50f;
 
     float ball_jump_power = 10f;
     float speed_jump_threshold = 20f;
-
-    public SphereCollider ball_collider;
     #endregion
 
     #region JUMPING
     [Header("Jumping")]
-    public float jump_power;
+    float jump_power = 10f;
 
-    public float jump_hold_time = 1f;
-    private float jump_hold_timer;
+    float jump_hold_time = 1f;
+     float jump_hold_timer;
 
-    private float jump_cooldown_time = 1f;
-    private bool jump_cooling_down;
+     float jump_cooldown_time = 1f;
+     bool jump_cooling_down;
 
-    private JumpDetector jump_dectector;
+     JumpDetector jump_dectector;
 
-    private float jump_multiplier = 3f; 
-    private float fall_multiplier = 3.5f;
-    private Vector3 jump_vector;
+     float jump_multiplier = 3f; 
+     float fall_multiplier = 3.5f;
+     Vector3 jump_vector;
     [HideInInspector] public Vector3 speed_vector;
 
-    public bool jump_ready;
+    [HideInInspector] public bool jump_ready;
     [HideInInspector] public bool mid_air;
     [HideInInspector] public bool air_ready;
     #endregion
 
     #region MOVEMENT
-    float max_speed = 50f, fall_speed = 30f;
+    SphereCollider coll;
+    PhysicMaterial physMat;
+    float max_speed = 50f;
     public event MoveDel MoveEvent;
     public event EndDel EndEvent;
     public event TransformDel TransformEvent;
     [HideInInspector ]public bool can_move = true;
     int priority = 0;
-    public bool ball = true;
+    bool ball = true;
     #endregion
 
+    #region ANIMS AND FX
     [Header("FX")]
     public GameObject impact_fx;
     public GameObject jump_sound;
     public GameObject death_sound;
 
     [HideInInspector] public GameObject lock_enemy;
-
-    public bool ready;
     private int curl_hash, speed_hash, fall_hash;
 
     private float anim_multiplier = 4f;
+    #endregion
+
+    [HideInInspector] public bool ready;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         #region MOVEMENT_INITIALIZATION
         base.Start();
-        //dillow_collider = GetComponent<CapsuleCollider>();
-        ball_collider = GetComponent<SphereCollider>();
+        coll = GetComponent<SphereCollider>();
+        physMat = coll.material;
 
         rb.maxAngularVelocity = max_ball_speed;
 
@@ -142,7 +150,7 @@ public class DillowBody : Body
     {
         base.Collide(pos, tags, obj, direction, impact);
 
-        if ((tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage)))
+        if ((tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage)) && !tagH.HasTag(Tag.Dashing))
         {
             Damage(direction, pos);
         }
@@ -224,14 +232,6 @@ public class DillowBody : Body
         if (rb.velocity.y > 0f)
         {
             rb.velocity += Vector3.up * Physics.gravity.y * (jump_multiplier - 1f) * Time.deltaTime;
-        }
-        if (Mathf.Abs(rb.velocity.y) > 30f && !ball)
-        {
-            anim.SetBool(fall_hash, true);
-        }
-        else
-        {
-            anim.SetBool(fall_hash, false);
         }
     }
 
@@ -357,6 +357,7 @@ public class DillowBody : Body
         jump_hold_timer = jump_hold_time;
         mid_air = false;
         air_ready = false;
+        //tell the model to straighten up or something
     }
 
     private void OnAir()
@@ -396,16 +397,15 @@ public class DillowBody : Body
             ball = true;
             jump_power = ball_jump_power;
 
+            physMat.staticFriction = b_staticFriction;
+            physMat.dynamicFriction = b_dynoFriction;
+
             MoveEvent += OnBallMove;
             MoveEvent += OnBallJump;
             MoveEvent -= OnDillowMove;
             MoveEvent -= OnDillowJump;
 
-            //ball_collider.enabled = true;
-            //dillow_collider.enabled = false;
-
             rb.angularDrag = ball_drag;
-            //rb.constraints = RigidbodyConstraints.None;
 
             TransformEvent?.Invoke(true);
         }
@@ -422,16 +422,15 @@ public class DillowBody : Body
             ball = false;
             jump_power = dillow_jump_power;
 
+            physMat.staticFriction = d_staticFriction;
+            physMat.dynamicFriction = d_dynoFriction;
+
             MoveEvent += OnDillowMove;
             MoveEvent += OnDillowJump;
             MoveEvent -= OnBallMove;
             MoveEvent -= OnBallJump;
 
-            //ball_collider.enabled = false;
-            //dillow_collider.enabled = true;
-
             rb.angularDrag = dillow_drag;
-            //rb.constraints = RigidbodyConstraints.FreezeRotation;
 
             TransformEvent?.Invoke(false);
         }
