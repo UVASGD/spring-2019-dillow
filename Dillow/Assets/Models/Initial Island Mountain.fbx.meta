@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: 6f925232e12f54af794d593f77007b20
+guid: 5362c40bbb327b649b9a748646484d4e
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    2186277476908879412: ImportLogs
+    100000: //RootNode
+    400000: //RootNode
+    2100000: None
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: initial_island_object
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -84,7 +89,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

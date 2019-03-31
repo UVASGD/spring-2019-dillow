@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: 6f925232e12f54af794d593f77007b20
+guid: b9be62dc8d890ed428b878068285da94
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    2186277476908879412: ImportLogs
+    100000: Camera.001
+    100002: Japanese_Shrine
+    100004: //RootNode
+    400000: Camera.001
+    400002: Japanese_Shrine
+    400004: //RootNode
+    2000000: Camera.001
+    2100000: Japanese_Shrine_Mat
+    2300000: Japanese_Shrine
+    3300000: Japanese_Shrine
+    4300000: Japanese_Shrine
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -84,7 +94,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
