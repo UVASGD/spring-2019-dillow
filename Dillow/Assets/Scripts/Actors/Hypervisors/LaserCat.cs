@@ -33,6 +33,8 @@ public class LaserCat : Mob
         idle_hash = Animator.StringToHash("Idle");
         aim_hash = Animator.StringToHash("Aim");
         blasting_hash = Animator.StringToHash("Blasting");
+
+        print(anim);
     }
 
 	protected override void OnNotice (TagHandler t)

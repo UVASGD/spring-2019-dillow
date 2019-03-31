@@ -4,7 +4,7 @@ using UnityEngine;
 public class Ragdoll : MonoBehaviour
 {
     public List<Rigidbody> rigidList;
-    public Rigidbody rb;
+    [HideInInspector] public Rigidbody rb;
     Animator ani;
 
 
@@ -15,9 +15,12 @@ public class Ragdoll : MonoBehaviour
         rb = gameObject.GetMainRigidbody();
 
         Body body = GetComponent<Body>();
-        foreach(Rigidbody r in rigidList)
+
+        for (int i = rigidList.Count-1; i >= 0; i--)
         {
-            r.gameObject.AddComponent<SubCollider>().body = body;
+            Rigidbody r = rigidList[i];
+            if (r.CompareTag("Follower")) rigidList.Remove(r);
+            else r.gameObject.AddComponent<SubCollider>().body = body;
         }
         ActivateRagdoll(false);
     }
