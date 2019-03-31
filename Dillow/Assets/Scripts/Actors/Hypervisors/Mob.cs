@@ -59,8 +59,14 @@ public class Mob : Body, ILockable
 
 	protected virtual void Update()
     {
+        Act();
+    }
+
+    protected virtual void Act()
+    {
         if (!dead)
         {
+            print("I'm not dead and I'm still acting.");
             current_behavior?.Invoke();
         }
     }

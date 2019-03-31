@@ -58,9 +58,9 @@ public class LaserCat : Mob
         }
     }
 
-    protected override void Update()
+    protected override void Act()
     {
-        base.Update();
+        base.Act();
 
         speed_rate = mover.agent.velocity.magnitude / mover.agent.speed;
         speed_rate *= anim_speed_multiplier;

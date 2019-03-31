@@ -44,6 +44,7 @@ public class LaserGun : MonoBehaviour
     {
         if (activated)
         {
+            print("I'm still aiming, fuck you");
             aim_laser.SetPosition(0, barrel.transform.position);
 
             RaycastHit hit;
@@ -62,6 +63,7 @@ public class LaserGun : MonoBehaviour
     {
         activated = act;
         aim_laser.enabled = act;
+        print("Disable that stupid laser");
     }
 
     public bool Aim(GameObject target)
