@@ -10,12 +10,14 @@ public class Noticer : MonoBehaviour
     public CollisionDel NoticeEvent, UnnoticeEvent;
 
     Collider col;
+    [HideInInspector] public float range = 50f;
 
     bool detecting = true;
 
-    private void Start()
+    private void Awake()
     {
         col = GetComponent<Collider>();
+        range = col.bounds.size.magnitude;
     }
 
     private void OnTriggerEnter(Collider other)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LaserGun : MonoBehaviour
 {
-    public float range = 50;
+    [HideInInspector] public float range = 500;
 
     public GameObject barrel;
     public LineRenderer laser;

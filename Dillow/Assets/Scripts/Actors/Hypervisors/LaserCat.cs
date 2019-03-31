@@ -22,6 +22,7 @@ public class LaserCat : Mob
         base.Start();
 
         gun = GetComponentInChildren<LaserGun>();
+        gun.range = noticer.range;
         aim_timer = aim_max;
         rotator = GetComponent<Rotator>();
         mover = GetComponent<MobMover>();
