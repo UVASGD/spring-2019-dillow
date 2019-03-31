@@ -10,7 +10,7 @@ public class DillowModel : Follower
     GameObject spinning_body;
 
     bool ball;
-    
+
     // Start is called before the first frame update
     IEnumerator Start()
     {
@@ -18,7 +18,8 @@ public class DillowModel : Follower
         spinning_body = rb.gameObject;
         body = transform.parent.GetComponentInChildren<DillowBody>();
 
-        while (!body.ready) {
+        while (!body.ready)
+        {
             yield return null;
         }
         bodyrb = body.rb;
@@ -27,6 +28,12 @@ public class DillowModel : Follower
             GetComponentInChildren<SkinnedMeshRenderer>().gameObject.AddComponent<Flasher>();
         }
         body.damager.AddFlasher(GetComponentInChildren<Flasher>());
+
+        body.jump_dectector.CanJumpEvent += delegate {
+            spinning_body.transform.localRotation = new Quaternion(0, spinning_body.transform.localRotation.y,
+                                                                      spinning_body.transform.localRotation.z,
+                                                                      spinning_body.transform.localRotation.w);
+        };
     }
 
     void Update()
@@ -46,7 +53,7 @@ public class DillowModel : Follower
             if (ball)
             {
                 ball = false;
-                spinning_body.transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
+                    spinning_body.transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
             DillowUpdate();
         }
@@ -69,11 +76,12 @@ public class DillowModel : Follower
 
     private void DillowUpdate()
     {
-        if (bodyrb.velocity.magnitude > 2f)
+        if (bodyrb.velocity.magnitude > 5f)
         {
             Vector3 velocity = bodyrb.velocity.normalized;
             transform.rotation = Quaternion.Slerp(transform.rotation,
         Quaternion.LookRotation(velocity), turn_speed);
+            transform.rotation = new Quaternion(0f, transform.rotation.y, 0f, transform.rotation.w);
         }
     }
 }

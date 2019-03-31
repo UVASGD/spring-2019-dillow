@@ -47,7 +47,7 @@ public class DillowBody : Body
      float jump_cooldown_time = 1f;
      bool jump_cooling_down;
 
-     JumpDetector jump_dectector;
+     [HideInInspector] public JumpDetector jump_dectector;
 
      float jump_multiplier = 3f; 
      float fall_multiplier = 3.5f;
