@@ -45,11 +45,8 @@ public class Water : MonoBehaviour
         TagHandler t = victim.GetComponent<TagHandler>();
         if (victim.GetComponent<IMortal>() != null && !victims.ContainsKey(victim))
         {
-            if (!t || !t.HasTag(Tag.Dashing))
-            {
-                victims.Add(victim, drowning_collider);
-                Physics.IgnoreCollision(coll, drowning_collider);
-            }
+            victims.Add(victim, drowning_collider);
+            Physics.IgnoreCollision(coll, drowning_collider);
         }
     }
 }
