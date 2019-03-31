@@ -5,12 +5,12 @@ using UnityEngine.AI;
 
 public class MobMover : MonoBehaviour
 {
-    public bool walk;
+    [HideInInspector] public bool walk;
+    bool walking;
 
-    [HideInInspector] public NavMeshAgent agent;
     public NodeArea nodeArea;
-    public float wanderTime;  // Time before NPC chooses another random node seconds
-    float nextWanderTime;
+    [HideInInspector] public NavMeshAgent agent;
+    float wanderTime = 20f, min_wander_time = 5f;  // Time before NPC chooses another random node seconds
 
     private void Awake()
     {
@@ -19,20 +19,30 @@ public class MobMover : MonoBehaviour
 
     void Update()
     {
+        if (!nodeArea)
+            return;
         if (!walk && agent.isOnNavMesh)
         {
             agent.ResetPath();
         }
-        if (walk && Time.time > nextWanderTime + Random.Range(-3f,3f) && nodeArea)
+        if (walk && !walking)
         {
-            nextWanderTime = Time.time + wanderTime;
-            agent.SetDestination(nodeArea.GetRandomNode(agent.gameObject));
+            StartCoroutine(Move());
         }
         
     }
 
     public void MoveToTarget(Vector3 target)
     {
+        StopAllCoroutines();
         agent.SetDestination(target);
+    }
+
+    IEnumerator Move()
+    {
+        walking = true;
+        agent.SetDestination(nodeArea.GetRandomNode(agent.gameObject));
+        yield return new WaitForSeconds(Random.Range(min_wander_time, wanderTime));
+        walking = false;
     }
 }
