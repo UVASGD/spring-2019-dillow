@@ -3,6 +3,97 @@ guid: 0930ecfaec23048218fa8dbf9fc7db49
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
+    100000: Armature
+    100002: //RootNode
+    100004: mixamorig_Head
+    100006: mixamorig_HeadTop_End
+    100008: mixamorig_Hips
+    100010: mixamorig_Hips_001
+    100012: mixamorig_Hips_002
+    100014: mixamorig_Hips_003
+    100016: mixamorig_Hips_004
+    100018: mixamorig_Hips_005
+    100020: mixamorig_Hips_006
+    100022: mixamorig_LeftArm
+    100024: mixamorig_LeftFoot
+    100026: mixamorig_LeftForeArm
+    100028: mixamorig_LeftHand
+    100030: mixamorig_LeftHandIndex1
+    100032: mixamorig_LeftHandIndex2
+    100034: mixamorig_LeftHandIndex3
+    100036: mixamorig_LeftHandIndex4
+    100038: mixamorig_LeftLeg
+    100040: mixamorig_LeftShoulder
+    100042: mixamorig_LeftToe_End
+    100044: mixamorig_LeftToeBase
+    100046: mixamorig_LeftUpLeg
+    100048: mixamorig_Neck
+    100050: mixamorig_RightArm
+    100052: mixamorig_RightFoot
+    100054: mixamorig_RightForeArm
+    100056: mixamorig_RightHand
+    100058: mixamorig_RightHandIndex1
+    100060: mixamorig_RightHandIndex2
+    100062: mixamorig_RightHandIndex3
+    100064: mixamorig_RightHandIndex4
+    100066: mixamorig_RightLeg
+    100068: mixamorig_RightShoulder
+    100070: mixamorig_RightToe_End
+    100072: mixamorig_RightToeBase
+    100074: mixamorig_RightUpLeg
+    100076: mixamorig_Spine
+    100078: mixamorig_Spine1
+    100080: mixamorig_Spine2
+    100082: polySurface2
+    400000: Armature
+    400002: //RootNode
+    400004: mixamorig_Head
+    400006: mixamorig_HeadTop_End
+    400008: mixamorig_Hips
+    400010: mixamorig_Hips_001
+    400012: mixamorig_Hips_002
+    400014: mixamorig_Hips_003
+    400016: mixamorig_Hips_004
+    400018: mixamorig_Hips_005
+    400020: mixamorig_Hips_006
+    400022: mixamorig_LeftArm
+    400024: mixamorig_LeftFoot
+    400026: mixamorig_LeftForeArm
+    400028: mixamorig_LeftHand
+    400030: mixamorig_LeftHandIndex1
+    400032: mixamorig_LeftHandIndex2
+    400034: mixamorig_LeftHandIndex3
+    400036: mixamorig_LeftHandIndex4
+    400038: mixamorig_LeftLeg
+    400040: mixamorig_LeftShoulder
+    400042: mixamorig_LeftToe_End
+    400044: mixamorig_LeftToeBase
+    400046: mixamorig_LeftUpLeg
+    400048: mixamorig_Neck
+    400050: mixamorig_RightArm
+    400052: mixamorig_RightFoot
+    400054: mixamorig_RightForeArm
+    400056: mixamorig_RightHand
+    400058: mixamorig_RightHandIndex1
+    400060: mixamorig_RightHandIndex2
+    400062: mixamorig_RightHandIndex3
+    400064: mixamorig_RightHandIndex4
+    400066: mixamorig_RightLeg
+    400068: mixamorig_RightShoulder
+    400070: mixamorig_RightToe_End
+    400072: mixamorig_RightToeBase
+    400074: mixamorig_RightUpLeg
+    400076: mixamorig_Spine
+    400078: mixamorig_Spine1
+    400080: mixamorig_Spine2
+    400082: polySurface2
+    2100000: unnamed
+    4300000: polySurface2
+    7400000: BLASTE
+    7400002: ArmatureAction
+    7400004: Armature_mixamo_com_Layer0
+    9500000: //RootNode
+    13700000: polySurface2
     2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
@@ -141,7 +232,7 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
     previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0

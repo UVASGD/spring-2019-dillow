@@ -3,6 +3,41 @@ guid: 6f925232e12f54af794d593f77007b20
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
+    100000: Armature
+    100002: Bone
+    100004: Bone_001
+    100006: Bone_002
+    100008: Bone_003
+    100010: Bone_004
+    100012: Bone_005
+    100014: Bone_007
+    100016: Bone_008
+    100018: Bone_009
+    100020: Bone_010
+    100022: Bone_011
+    100024: Bone_014
+    100026: node_id56
+    100028: //RootNode
+    400000: Armature
+    400002: Bone
+    400004: Bone_001
+    400006: Bone_002
+    400008: Bone_003
+    400010: Bone_004
+    400012: Bone_005
+    400014: Bone_007
+    400016: Bone_008
+    400018: Bone_009
+    400020: Bone_010
+    400022: Bone_011
+    400024: Bone_014
+    400026: node_id56
+    400028: //RootNode
+    2100000: Material_83_002
+    4300000: node_id56
+    7400000: Default Take
+    9500000: //RootNode
+    13700000: node_id56
     2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
@@ -57,7 +92,7 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
     previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
