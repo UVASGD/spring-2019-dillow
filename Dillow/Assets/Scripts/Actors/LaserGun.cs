@@ -63,7 +63,6 @@ public class LaserGun : MonoBehaviour
     {
         activated = act;
         aim_laser.enabled = act;
-        print("Disable that stupid laser");
     }
 
     public bool Aim(GameObject target)

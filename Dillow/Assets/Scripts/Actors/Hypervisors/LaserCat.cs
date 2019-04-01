@@ -116,16 +116,15 @@ public class LaserCat : Mob
         current_behavior = Idle;
     }
 
-    protected override void Damage(Vector3 dir, Vector3 pos)
+    public override void Die()
     {
         if (!dead)
         {
-            current_behavior = null;
+            base.Die();
             target = null;
             gun.Activate(false);
             noticer.NoticeEvent -= OnNotice;
             noticer.UnnoticeEvent -= OnUnnotice;
-            base.Damage(dir, pos);
         }
     }
 }

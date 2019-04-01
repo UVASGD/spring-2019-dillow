@@ -63,9 +63,12 @@ public class Hypervisor : Mob
         SnowThrower.SetActive(false);
     }
 
-    protected override void Damage(Vector3 dir, Vector3 pos)
+    public override void Die()
     {
-        SnowThrower.SetActive(false);
-        base.Damage(dir, pos);
+        if (!dead)
+        {
+            base.Die();
+            SnowThrower.SetActive(false);
+        }
     }
 }
