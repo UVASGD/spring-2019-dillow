@@ -20,7 +20,7 @@ public class Fx_Object_Ranged : Fx_Object {
             for (int s = 0; s<sounds.Count;s++) if(vol <= sounds[s].threshold && vol > (s < 1 ? 0 : sounds[s - 1].threshold)) i = sounds[s];
 
             if (i.sound != null) {
-                AudioClip sound = ACList.audioClips[i.sound];
+                AudioClip sound = i.sound;
                 gameObject.name = sound.name;
                 AudioSource source = gameObject.AddComponent<AudioSource>();
                 source.outputAudioMixerGroup = mixerGroup;
@@ -45,25 +45,10 @@ public class Fx_Object_Ranged : Fx_Object {
 
 [System.Serializable]
 public struct SoundRange {
-    public string sound;
+    public AudioClip sound;
     public float threshold;
-    public SoundRange(string clip, float _threshold) {
+    public SoundRange(AudioClip clip, float _threshold) {
         sound = clip;
         threshold = _threshold;
-    }
-}
-
-
-public static class ACList {
-
-    public static Dictionary<string, AudioClip> audioClips;
-    static ACList() {
-        audioClips = new Dictionary<string, AudioClip>();
-        List<AudioClip> temp = new List<AudioClip>(Resources.LoadAll<AudioClip>("Sounds"));
-        foreach (AudioClip ac in temp) {
-            var ass = ac.name + ac.GetHashCode();
-            //Debug.Log(ass + " : " + ac);
-            audioClips[ass] = ac;
-        }
     }
 }

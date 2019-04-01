@@ -44,15 +44,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vol: -1
+  clips: []
   mixerGroup: {fileID: 0}
   sounds:
-  - sound: wood_soft13696
+  - sound: {fileID: 8300000, guid: b1eed771df9498e4fa1c4f07731d94ea, type: 3}
     threshold: 0.25
-  - sound: wood_medium16178
+  - sound: {fileID: 8300000, guid: 3cfdb428ea5bbe94aacfd8482d0d4feb, type: 3}
     threshold: 0.5
-  - sound: wood_harsh14766
+  - sound: {fileID: 8300000, guid: dfe69e44682e6d14aae41b323c72330d, type: 3}
     threshold: 0.75
-  - sound: wood_heavy16828
+  - sound: {fileID: 8300000, guid: 9fea41d99dd694648a60a6f82e332b28, type: 3}
+    threshold: 1
+  - sound: {fileID: 8300000, guid: 9fea41d99dd694648a60a6f82e332b28, type: 3}
+    threshold: 1
+  - sound: {fileID: 8300000, guid: 9fea41d99dd694648a60a6f82e332b28, type: 3}
+    threshold: 1
+  - sound: {fileID: 8300000, guid: 9fea41d99dd694648a60a6f82e332b28, type: 3}
+    threshold: 1
+  - sound: {fileID: 8300000, guid: 9fea41d99dd694648a60a6f82e332b28, type: 3}
     threshold: 1
   range: {x: 30, y: 500}
   amplify: 1.2
