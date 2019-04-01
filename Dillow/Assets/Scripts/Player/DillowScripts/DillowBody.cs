@@ -16,7 +16,7 @@ public class DillowBody : Body
     public float dillow_power = 175f;
     public float dillow_roll_drag = 20f;
 
-    float dillow_static_threshold = 5f;
+    public float dillow_static_threshold = 5f;
 
     public float d_staticFriction = 5;
     public float d_dynoFriction = 5;
