@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Idle_Manager : MonoBehaviour
+public class IdleSounds : MonoBehaviour
 {
     public List<GameObject> sounds = new List<GameObject>();
     public float soundTime = 10f;
