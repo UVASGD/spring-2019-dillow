@@ -19,9 +19,8 @@ public class Fx_Object_Ranged : Fx_Object {
             // Choose a sound to play within the range of the list of sounds
             for (int s = 0; s<sounds.Count;s++) if(vol <= sounds[s].threshold && vol > (s < 1 ? 0 : sounds[s - 1].threshold)) i = sounds[s];
 
-            if (i.sound != null && ACList.audioClips.ContainsKey(i.sound)) {
-                AudioClip sound = ACList.audioClips[i.sound];
-                gameObject.name = sound.name;
+            if (i.sound != null) {
+                AudioClip sound = i.sound;
                 AudioSource source = gameObject.AddComponent<AudioSource>();
                 source.outputAudioMixerGroup = mixerGroup;
                 source.volume = vol * amplify;
