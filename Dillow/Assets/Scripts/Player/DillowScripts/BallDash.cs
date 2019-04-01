@@ -8,7 +8,7 @@ public class BallDash : DillowAttackAbility
     bool locked;
     float dash_multiplier = 1.5f;
 
-    public override void OnAction(bool move, Vector3 dir, int jump, int action)
+    public override void OnAction(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)
     {
 		if (action == 2 && move && action_ready && body.CheckPriority(2))
         {

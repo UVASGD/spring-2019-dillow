@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void MoveDel(bool move, Vector3 dir, int jump, int action);
+public delegate void MoveDel(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap);
 public delegate void EndDel();
 public delegate void TransformDel(bool ball);
 
@@ -89,6 +89,7 @@ public class DillowBody : Body
     #endregion
 
     [HideInInspector] public bool ready;
+    private Locker locker;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -116,8 +117,11 @@ public class DillowBody : Body
         speed_hash = Animator.StringToHash("Speed");
         fall_hash = Animator.StringToHash("Falling");
 
+        locker = transform.parent.GetComponentInChildren<Locker>();
+
         MoveEvent += OnDash;
         MoveEvent += OnJumpHold;
+        MoveEvent += OnLock;
         TransformToBall(true);
 
         damager = GetComponent<Damager>();
@@ -131,7 +135,7 @@ public class DillowBody : Body
 
     #region BALL MOVEMENT
 
-    private void OnBallMove(bool move, Vector3 dir, int jump, int action)
+    private void OnBallMove(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)
     {
        if (move)
         {
@@ -156,7 +160,7 @@ public class DillowBody : Body
             jump_vector = Vector3.up;
     }
 
-    private void OnBallJump(bool move, Vector3 dir, int jump, int action)
+    private void OnBallJump(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)
     {
         if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
         {
@@ -170,7 +174,7 @@ public class DillowBody : Body
     #endregion
 
     #region DILLOW MOVEMENT
-    private void OnDillowMove(bool move, Vector3 dir, int jump, int action)
+    private void OnDillowMove(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)
     {
         if (move)
         {
@@ -191,7 +195,7 @@ public class DillowBody : Body
         }
     }
 
-    private void OnDillowJump(bool move, Vector3 dir, int jump, int action)
+    private void OnDillowJump(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)
     {
         if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
         {
@@ -314,7 +318,7 @@ public class DillowBody : Body
         }
     }
 
-    private void OnJumpHold(bool move, Vector3 dir, int jump, int action)
+    private void OnJumpHold(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)
     {
         if (mid_air && !air_ready)
         {
@@ -330,11 +334,19 @@ public class DillowBody : Body
         }
     }
 
-    public void Input(bool move, Vector3 dir, int jump, int action)
+    public void OnLock(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)
+    {
+        if (lockon == 2)
+            locker.Lock(!locker.locked);
+        else if (lockswap == 2)
+            locker.Lock(true);
+    }
+
+    public void Input(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)
     {
         if (can_move && MoveEvent != null)
         {
-            MoveEvent(move, dir, jump, action);
+            MoveEvent(move, dir, jump, action, lockon, lockswap);
         }
     }
 
@@ -388,7 +400,7 @@ public class DillowBody : Body
 
     #region TRANSFORM
 
-    private void OnDash(bool move, Vector3 dir, int jump, int action)
+    private void OnDash(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)
     {
         if (action == 2)
         {

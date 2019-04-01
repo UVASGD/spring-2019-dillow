@@ -12,13 +12,10 @@ public class DillowController : MonoBehaviour
 
     private Transform cam; // A reference to the main camera in the scenes transform
     private Vector3 camForward; // The current forward direction of the camera
-    private int jump; // whether the jump button is currently pressed
-    private int action;
+    private int jump, action, lockon, lockswap;
     public static int interact;
 
     public bool can_input = true;
-
-    private Locker locker;
 
     private void Awake()
     {
@@ -34,7 +31,6 @@ public class DillowController : MonoBehaviour
 
         // Set up the reference.
         body = GetComponent<DillowBody>();
-        locker = transform.parent.GetComponentInChildren<Locker>();
 
         // get the transform of the main camera
         if (Camera.main != null)
@@ -61,6 +57,8 @@ public class DillowController : MonoBehaviour
         GetButton(ref jump, "Jump");
         GetButton(ref action, "Action");
         GetButton(ref interact, "Interact");
+        GetButton(ref lockon, "LockOn");
+        GetButton(ref lockswap, "LockSwap");
 
         // calculate move direction
         if (cam != null)
@@ -74,21 +72,12 @@ public class DillowController : MonoBehaviour
             // we use world-relative directions in the case of no main camera
             move = (v * Vector3.forward + h * Vector3.right).normalized;
         }
-
-        if (Input.GetButtonDown("LockOn"))
-        {
-            locker.Lock(!locker.locked);
-        }
-        else if (Input.GetButtonDown("Swap"))
-        {
-            locker.Lock(true);
-        }
     }
 
     private void FixedUpdate()
     {
         if (can_input)
-            body.Input(move.magnitude > 0f, move, jump, action);
+            body.Input(move.magnitude > 0f, move, jump, action, lockon, lockswap);
     }
 
     private void GetButton(ref int button, string axisName)

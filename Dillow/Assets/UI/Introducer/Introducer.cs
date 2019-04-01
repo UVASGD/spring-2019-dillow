@@ -1,0 +1,136 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+/*
+ has_moved
+ has_movedCamera
+ has_jumped
+ has_dashed
+ has_interacted
+ has_locked
+ has_swapLocked
+*/
+
+public class Introducer : MonoBehaviour
+{
+    public static Introducer instance;
+
+    public bool RESET_MODE = true;
+
+    Animator anim;
+    int intro_hash, fadeOut_hash;
+
+    public Text text;
+
+    //using a tuple to maintain order of entries
+    List<Tuple<string, string>> intro_messages = new List<Tuple<string, string>>() 
+    {
+        new Tuple<string, string>("has_moved", "WASD to move"),
+        new Tuple<string, string>("has_movedCamera", "ARROW KEYS to move camera"),
+        new Tuple<string, string>("has_jumped", "SPACE to jump"),
+        new Tuple<string, string>("has_dashed", "MOVE and SHIFT to dash/curl up"),
+        new Tuple<string, string>("has_interacted", "F to interact"),
+        new Tuple<string, string>("has_locked", "Q to lock on/off"),
+        new Tuple<string, string>("has_swapLocked", "E to swap locked target"),
+    };
+    Dictionary<string, string> intro_dict = new Dictionary<string, string>();
+    bool interact_detected, movedCamera_detected; //this is an anomalous button, so we need a special flag
+
+    float message_time = 5f, wait_time = 3f;
+    bool ready;
+
+    IEnumerator Start()
+    {
+        if (instance == null)
+            instance = this;
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        anim = GetComponent<Animator>();
+        intro_hash = Animator.StringToHash("Introduce");
+        fadeOut_hash = Animator.StringToHash("FadeOut");
+
+        foreach (Tuple<string, string> t in intro_messages)
+        {
+            if (PlayerPrefs.GetInt(t.Item1, 0) == 0 || RESET_MODE)
+            {
+                intro_dict.Add(t.Item1, t.Item2);
+            }
+        }
+
+        while (!DillowController.instance.body.ready)
+            yield return null;
+        ready = true;
+        DillowController.instance.body.MoveEvent += OnMoved;
+
+        StartCoroutine(DisplayMessages());
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!ready)
+            return;
+        if (!interact_detected && Input.GetButtonDown("Interact"))
+        {
+            RemoveKey("has_interacted");
+        }
+        if (!movedCamera_detected && (Mathf.Abs(Input.GetAxisRaw("Camera Y")) > 0 || (Mathf.Abs(Input.GetAxisRaw("Camera X")) > 0)))
+        {
+            RemoveKey("has_movedCamera");
+        } 
+
+        if (intro_dict.Count == 0)
+        {
+            DillowController.instance.body.MoveEvent -= OnMoved;
+            gameObject.SetActive(false);
+        }
+    }
+
+    void OnMoved(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)
+    {
+        if (move)
+            RemoveKey("has_moved");
+        if (jump == 2)
+            RemoveKey("has_jumped");
+        if (action == 2)
+            RemoveKey("has_dashed");
+        if (lockon == 2)
+            RemoveKey("has_locked");
+        if (lockswap == 2)
+            RemoveKey("has_swapLocked");
+    }
+
+    void RemoveKey(string key)
+    {
+        if (intro_dict.ContainsKey(key))
+        {
+            intro_dict.Remove(key);
+            PlayerPrefs.SetInt(key, 1);
+        }
+    }
+
+    IEnumerator DisplayMessages()
+    {
+        foreach (Tuple<string, string> t in intro_messages)
+        {
+            if (intro_dict.ContainsKey(t.Item1))
+            {
+                intro_dict.Remove(t.Item1);
+                anim.SetBool(intro_hash, true);
+                text.text = t.Item2;
+                yield return new WaitForSeconds(message_time);
+                anim.SetBool(intro_hash, false);
+                anim.SetTrigger(fadeOut_hash);
+                yield return new WaitForSeconds(wait_time);
+            }
+        }
+        anim.SetBool(intro_hash, false);
+        anim.SetTrigger(fadeOut_hash);
+    }
+}

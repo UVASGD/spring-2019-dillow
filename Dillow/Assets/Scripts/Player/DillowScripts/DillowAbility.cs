@@ -20,7 +20,7 @@ public abstract class DillowAbility : MonoBehaviour
         in_action = false;
     }
 
-    public virtual void OnAction(bool move, Vector3 dir, int jump, int action)
+    public virtual void OnAction(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)
     {
     }
 
