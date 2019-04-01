@@ -5,6 +5,7 @@ using UnityEngine;
 public class Rotator : MonoBehaviour
 {
     float smooth_speed = 0.1f;
+    GameObject target;
 
     public void Face(GameObject target, bool lockX = true, bool lockY = true, bool lockZ = true)
     {
@@ -28,19 +29,19 @@ public class Rotator : MonoBehaviour
                                             transform.rotation.w);
     }
 
-    public void TurnTo(GameObject target, bool lockX = true, bool lockY = true, bool lockZ = true)
+    public void TurnTo(GameObject target, bool lockX = true, bool lockY = true, bool lockZ = true, bool follow = false)
     {
         Vector3 direction = (target.transform.position - transform.position).normalized;
-        TurnTo(direction, lockX, lockY, lockZ);
+        TurnTo(direction, lockX, lockY, lockZ, follow);
     }
 
-    public void TurnTo(Vector3 direction, bool lockX = true, bool lockY = true, bool lockZ = true)
+    public void TurnTo(Vector3 direction, bool lockX = true, bool lockY = true, bool lockZ = true, bool follow = false)
     {
         StopAllCoroutines();
-        StartCoroutine(TurnToCo(direction, lockX, lockY, lockZ));
+        StartCoroutine(TurnToCo(direction, lockX, lockY, lockZ, follow));
     }
 
-    private IEnumerator TurnToCo( Vector3 direction, bool lockX = true, bool lockY = true, bool lockZ = true)
+    private IEnumerator TurnToCo( Vector3 direction, bool lockX = true, bool lockY = true, bool lockZ = true, bool follow = false)
     {
         Quaternion to = Quaternion.LookRotation(direction);
         Quaternion from = transform.rotation;
@@ -50,7 +51,7 @@ public class Rotator : MonoBehaviour
             (lockZ) ? 0: to.z - from.z 
             );
 
-        while ( diff.magnitude > 0.05f )
+        while ( diff.magnitude > 0.05f  || (follow && target))
         {
             Face(direction, lockX, lockY, lockZ, false);
             yield return null;
