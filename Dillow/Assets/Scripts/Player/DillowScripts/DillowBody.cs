@@ -89,6 +89,7 @@ public class DillowBody : Body
     #endregion
 
     #region DEBUG
+    [Header("DEBUG")]
     public bool INVINCIBILITY;
     #endregion
 
