@@ -240,7 +240,7 @@ public class DillowBody : Body
     {
         base.Collide(pos, tags, obj, direction, impact);
 
-        if (tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage)) && !tagH.HasTag(Tag.Dashing))
+        if (tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage) && !tagH.HasTag(Tag.Dashing))
         {
             if (!tagH.HasTag(Tag.Invincible))
                 Damage(direction, pos);

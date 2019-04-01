@@ -35,9 +35,10 @@ public class Introducer : MonoBehaviour
         new Tuple<string, string>("has_interacted", "F to interact"),
         new Tuple<string, string>("has_locked", "Q to lock on/off"),
         new Tuple<string, string>("has_swapLocked", "E to swap locked target"),
+        new Tuple<string, string>("has_paused", "ESC/P to pause"),
     };
     Dictionary<string, string> intro_dict = new Dictionary<string, string>();
-    bool interact_detected, movedCamera_detected; //this is an anomalous button, so we need a special flag
+    bool interact_detected, movedCamera_detected, pause_detected; //this is an anomalous button, so we need a special flag
 
     float message_time = 5f, wait_time = 3f;
     bool ready;
@@ -57,7 +58,9 @@ public class Introducer : MonoBehaviour
 
         foreach (Tuple<string, string> t in intro_messages)
         {
-            if (PlayerPrefs.GetInt(t.Item1, 0) == 0 || RESET_MODE)
+            if (RESET_MODE)
+                PlayerPrefs.SetInt(t.Item1, 0);
+            if (PlayerPrefs.GetInt(t.Item1, 0) == 0)
             {
                 intro_dict.Add(t.Item1, t.Item2);
             }
@@ -84,6 +87,10 @@ public class Introducer : MonoBehaviour
         {
             RemoveKey("has_movedCamera");
         } 
+        if (!pause_detected && Input.GetButtonDown("Pause"))
+        {
+            RemoveKey("has_paused");
+        }
 
         if (intro_dict.Count == 0)
         {
@@ -121,7 +128,7 @@ public class Introducer : MonoBehaviour
         {
             if (intro_dict.ContainsKey(t.Item1))
             {
-                intro_dict.Remove(t.Item1);
+                RemoveKey(t.Item1);
                 anim.SetBool(intro_hash, true);
                 text.text = t.Item2;
                 yield return new WaitForSeconds(message_time);
