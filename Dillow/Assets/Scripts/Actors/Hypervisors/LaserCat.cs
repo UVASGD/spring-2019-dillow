@@ -108,6 +108,7 @@ public class LaserCat : Mob
 
     void Calm()
     {
+        //print("I calmed my tits");
         anim.SetBool(aim_hash, false);
         aim_timer = aim_max;
         target = null;
