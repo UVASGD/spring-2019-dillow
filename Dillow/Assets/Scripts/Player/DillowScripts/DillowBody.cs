@@ -53,9 +53,6 @@ public class DillowBody : Body
      bool jump_cooling_down;
 
      [HideInInspector] public JumpDetector jump_dectector;
-
-     float jump_multiplier = 3f; 
-     float fall_multiplier = 3.5f;
      Vector3 jump_vector;
     [HideInInspector] public Vector3 speed_vector;
 
@@ -287,7 +284,7 @@ public class DillowBody : Body
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    protected override void FixedUpdate()
     {
         if (rb.velocity.magnitude > max_speed)
         {
@@ -298,7 +295,7 @@ public class DillowBody : Body
         speed_rate = Mathf.Clamp01(speed_rate);
         anim.SetFloat(speed_hash, speed_rate);
 
-        OnFall();
+        base.FixedUpdate();
     }
 
     public override void OnCollisionEnter(Collision c)
@@ -311,20 +308,6 @@ public class DillowBody : Body
                 float vol = Mathf.Clamp01(c.impulse.magnitude / 40f);
                 Fx_Spawner.instance.SpawnFX(impact_fx, c.contacts[0].point, c.contacts[0].normal, vol);
             }
-    }
-
-    private void OnFall()
-    {
-        if (!rb.useGravity)
-            return;
-        if (rb.velocity.y < 0f)
-        {
-            rb.velocity += Vector3.up * Physics.gravity.y * (fall_multiplier - 1f) * Time.deltaTime;
-        }
-        if (rb.velocity.y > 0f)
-        {
-            rb.velocity += Vector3.up * Physics.gravity.y * (jump_multiplier - 1f) * Time.deltaTime;
-        }
     }
 
     private void OnJumpHold(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)

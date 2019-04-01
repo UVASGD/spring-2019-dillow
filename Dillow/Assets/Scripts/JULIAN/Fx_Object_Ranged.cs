@@ -8,6 +8,7 @@ public class Fx_Object_Ranged : Fx_Object {
     public List<SoundRange> sounds;
     public Vector2 range;
     public float amplify = 1.2f;
+    public float blend_ratio = 1f;
 
     // Start is called before the first frame update
     void Start() {
@@ -26,6 +27,7 @@ public class Fx_Object_Ranged : Fx_Object {
                 source.volume = vol * amplify;
                 source.minDistance = range.x;
                 source.maxDistance = range.y;
+                source.spatialBlend = blend_ratio;
                 source.pitch += Random.Range(-pitch_range, pitch_range);
                 source.playOnAwake = true;
                 source.loop = false;

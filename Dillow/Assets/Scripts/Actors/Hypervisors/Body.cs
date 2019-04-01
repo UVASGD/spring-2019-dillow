@@ -10,6 +10,9 @@ public class Body : MonoBehaviour, IMortal
     [HideInInspector] public TagHandler tagH;
     [HideInInspector] public Damager damager;
 
+    float jump_multiplier = 3f;
+    float fall_multiplier = 3.5f;
+
     [HideInInspector] public bool can_be_damaged = true, next_hit_kills, dead;
 
     // Start is called before the first frame update
@@ -23,6 +26,25 @@ public class Body : MonoBehaviour, IMortal
         }
         anim = GetComponent<Animator>();
         damager = GetComponent<Damager>();
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        OnFall();
+    }
+
+    private void OnFall()
+    {
+        if (!rb.useGravity)
+            return;
+        if (rb.velocity.y < 0f)
+        {
+            rb.velocity += Vector3.up * Physics.gravity.y * (fall_multiplier - 1f) * Time.deltaTime;
+        }
+        if (rb.velocity.y > 0f)
+        {
+            rb.velocity += Vector3.up * Physics.gravity.y * (jump_multiplier - 1f) * Time.deltaTime;
+        }
     }
 
     public virtual void OnCollisionEnter(Collision c)
