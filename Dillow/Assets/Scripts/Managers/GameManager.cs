@@ -104,6 +104,36 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+#if UNITY_EDITOR
+    public static void SaveFromEditor() {
+        int N = Enum.GetValues(typeof(CollectibleType)).Cast<int>().Max() + 1;
+        int[] saveCollectibleCounts = new int[N];
+        foreach (var item in collectibleCounts) {
+            saveCollectibleCounts[(int)item.Key] = item.Value;
+        }
+
+        SaveData data = PreLoad();
+        SaveData saveData = new SaveData(
+            data.playerSpawnLocation,
+            null,
+            null,
+            new List<ulong>(obtainedCollectibles),
+            saveCollectibleCounts,
+            new List<int>()
+        );
+
+        string jsonData = JsonUtility.ToJson(saveData);
+        string filePath = Application.dataPath + dataSubpath;
+        File.WriteAllText(filePath, jsonData);
+    }
+#endif
+
+    public static SaveData PreLoad() {
+        string filePath = Application.dataPath + dataSubpath;
+        return File.Exists(filePath) ? JsonUtility.FromJson<SaveData>(File.ReadAllText(filePath)) 
+            : new SaveData();
+    }
+
     public static void AddCollectible(Collectible collectible)
     {
         obtainedCollectibles.Add(collectible.id);
@@ -120,6 +150,10 @@ public class GameManager : MonoBehaviour {
     public static bool HasCollectible(Collectible collectible)
     {
         return obtainedCollectibles.Contains(collectible.id);
+    }
+
+    public static bool RemoveCollectible(Collectible collectible) {
+        return obtainedCollectibles.Remove(collectible.id);
     }
 
     public void Respawn()
