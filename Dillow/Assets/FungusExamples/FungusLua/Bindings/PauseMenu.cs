@@ -9,6 +9,15 @@ public class PauseMenu : MonoBehaviour
     public static bool gameIsPaused = false;
     public GameObject pauseMenuUI;
 
+    AudioLowPassFilter af;
+    float filter_level, pause_level = 1000;
+
+    private void Start()
+    {
+        af = Camera.main.GetComponent<AudioLowPassFilter>();
+        filter_level = af.cutoffFrequency;
+    }
+
     private void Update()
     {
        if( Input.GetKeyDown(KeyCode.Escape) )
@@ -26,6 +35,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
+        af.cutoffFrequency = filter_level;
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         gameIsPaused = false;
@@ -33,6 +43,7 @@ public class PauseMenu : MonoBehaviour
 
     void Pause()
     {
+        af.cutoffFrequency = pause_level;
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         gameIsPaused = true;
