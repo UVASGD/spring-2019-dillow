@@ -21,6 +21,8 @@ public class JumpDetector : Follower
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.isTrigger || other.CompareTag("Water"))
+            return;
         groundCount++;
 
         if (groundCount == 1)
@@ -32,6 +34,8 @@ public class JumpDetector : Follower
 
     private void OnTriggerExit(Collider other)
     {
+        if (other.isTrigger || other.CompareTag("Water"))
+            return;
         groundCount--;
 
         if (groundCount <= 0)
@@ -46,5 +50,10 @@ public class JumpDetector : Follower
         GroundExitEvent?.Invoke();
         yield return new WaitForSeconds(leeway);
         StopJumpEvent?.Invoke();
+    }
+
+    public void ResetJump()
+    {
+        groundCount = 0;
     }
 }

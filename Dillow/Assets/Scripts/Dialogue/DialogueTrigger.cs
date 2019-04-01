@@ -18,7 +18,7 @@ public class DialogueTrigger : MonoBehaviour
         sphere.isTrigger = true;
 
         talkPrompt = GetComponent<ParticleSystem>();
-        Debug.Log("talkPrompt: " + talkPrompt.ToString());
+        //Debug.Log("talkPrompt: " + talkPrompt.ToString());
         if (talkPrompt != null && ! talkPrompt.isStopped) {
             talkPrompt.Stop();
         }

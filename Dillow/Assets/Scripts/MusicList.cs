@@ -17,7 +17,7 @@ public class MusicList {
 		musicTable = new Dictionary<string, AudioClip>();
 		foreach (var song in music) {
 			musicTable.Add(song.name, song.track);
-			Debug.Log("Song: " + song.name + ", " + song.track.name);
+			//Debug.Log("Song: " + song.name + ", " + song.track.name);
 		}
 	}
 

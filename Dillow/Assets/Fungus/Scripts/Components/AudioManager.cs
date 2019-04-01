@@ -96,7 +96,7 @@ public class AudioManager : MonoBehaviour
 			clip = current.clip;
 			revertMusic = true;
 		}
-		print("Switching to " + clip.name);
+		//print("Switching to " + clip.name);
 
 		if (syncTimes) {
 			current.time = previous.time % clip.length;

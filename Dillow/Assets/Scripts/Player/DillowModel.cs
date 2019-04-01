@@ -29,11 +29,13 @@ public class DillowModel : Follower
         }
         body.damager.AddFlasher(GetComponentInChildren<Flasher>());
 
+        /*
         body.jump_dectector.CanJumpEvent += delegate {
             spinning_body.transform.localRotation = new Quaternion(0, spinning_body.transform.localRotation.y,
                                                                       spinning_body.transform.localRotation.z,
-                                                                      spinning_body.transform.localRotation.w);
+                                                                      spinning_body.transform.localRotation.w);                                                            
         };
+        */
     }
 
     void Update()
@@ -53,7 +55,7 @@ public class DillowModel : Follower
             if (ball)
             {
                 ball = false;
-                    spinning_body.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                spinning_body.transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
             DillowUpdate();
         }
@@ -79,9 +81,13 @@ public class DillowModel : Follower
         if (bodyrb.velocity.magnitude > 5f)
         {
             Vector3 velocity = bodyrb.velocity.normalized;
+            Quaternion vel_look = Quaternion.LookRotation(velocity);
+            Quaternion look_rot = new Quaternion((body.mid_air) ? 0f : vel_look.x,
+                                                 vel_look.y,
+                                                 (body.mid_air) ? 0f : vel_look.z,
+                                                 vel_look.w);
             transform.rotation = Quaternion.Slerp(transform.rotation,
-        Quaternion.LookRotation(velocity), turn_speed);
-            transform.rotation = new Quaternion(0f, transform.rotation.y, 0f, transform.rotation.w);
+                look_rot, turn_speed);
         }
     }
 }

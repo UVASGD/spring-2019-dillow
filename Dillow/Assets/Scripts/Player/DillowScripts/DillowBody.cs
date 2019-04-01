@@ -12,11 +12,15 @@ public class DillowBody : Body
 
     #region DILLOW
     [Header("Dillow")]
-    public float dillow_speed = 175f;
-    public float dillow_drag = 20f;
+    //public float dillow_speed = 20f;
+    public float dillow_power = 175f;
+    public float dillow_roll_drag = 20f;
+
+    float dillow_static_threshold = 5f;
 
     public float d_staticFriction = 5;
     public float d_dynoFriction = 5;
+    float d_bounciness = 0f;
 
     float turn_speed = 1f;
     float dillow_jump_power = 20f;
@@ -29,6 +33,7 @@ public class DillowBody : Body
 
     public float b_staticFriction = 5;
     public float b_dynoFriction = 5;
+    float b_bounciness = 0.5f;
 
     float airball_power = 10f;
     float max_ball_speed = 50f;
@@ -124,6 +129,79 @@ public class DillowBody : Body
         #endregion
     }
 
+    #region BALL MOVEMENT
+
+    private void OnBallMove(bool move, Vector3 dir, int jump, int action)
+    {
+       if (move)
+        {
+            if (mid_air)
+            {
+                rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * airball_power);
+                if (CheckPriority(1))
+                    rb.AddForce(dir * airball_power);
+            }
+            else
+            {
+                rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * ball_power);
+            }
+        }
+        //Calculate jump direction
+        if (rb.velocity.magnitude > speed_jump_threshold)
+        {
+            if (Vector3.Cross(rb.angularVelocity, rb.velocity).y > 0f)
+                jump_vector = (-rb.velocity.normalized + Vector3.up * 2f).normalized;
+        }
+        else
+            jump_vector = Vector3.up;
+    }
+
+    private void OnBallJump(bool move, Vector3 dir, int jump, int action)
+    {
+        if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
+        {
+            Fx_Spawner.instance.SpawnFX(jump_sound, transform.position, Vector3.up);
+            rb.AddForce(jump_vector * ball_jump_power, ForceMode.Impulse);
+            TransformToDillow();
+            StartCoroutine(JumpCD());
+        }
+    }
+
+    #endregion
+
+    #region DILLOW MOVEMENT
+    private void OnDillowMove(bool move, Vector3 dir, int jump, int action)
+    {
+        if (move)
+        {
+            if (mid_air)
+            {
+                if (CheckPriority(1))
+                    rb.AddForce(dir * airball_power);
+            }
+            else
+            {
+                rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * dillow_power);
+                //rb.AddForce(dir * dillow_speed);
+            }
+        }
+        else if (!ball && !mid_air && rb.velocity.magnitude < dillow_static_threshold)
+        {
+            rb.velocity = Vector2.zero;
+        }
+    }
+
+    private void OnDillowJump(bool move, Vector3 dir, int jump, int action)
+    {
+        if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
+        {
+            Fx_Spawner.instance.SpawnFX(jump_sound, transform.position, Vector3.up);
+            rb.AddForce(Vector3.up * jump_power, ForceMode.Impulse);
+            StartCoroutine(JumpCD());
+        }
+    }
+    #endregion
+
     #region DAMAGE
 
     public void OnStun()
@@ -169,11 +247,12 @@ public class DillowBody : Body
     {
         if (!dead)
         {
+            jump_dectector.ResetJump();
             dead = true;
             next_hit_kills = false;
             anim.SetBool(fall_hash, true);
             Fx_Spawner.instance.SpawnFX(death_sound, transform.position, Vector3.up);
-			AudioManager.PlayMusic("Death", false, true, false, 0.25f, false);
+            AudioManager.PlayMusic("Death", false, true, false, 0.25f, false);
             GameManager.instance.Respawn();
         }
     }
@@ -183,8 +262,8 @@ public class DillowBody : Body
         dead = false;
         next_hit_kills = false;
         anim.SetBool(fall_hash, false);
-		AudioManager.PlayMusic("", false, true, false, 0.25f, false);
-	}
+        AudioManager.PlayMusic("", false, true, false, 0.25f, false);
+    }
 
     #endregion
 
@@ -253,7 +332,7 @@ public class DillowBody : Body
 
     public void Input(bool move, Vector3 dir, int jump, int action)
     {
-       if (can_move && MoveEvent != null)
+        if (can_move && MoveEvent != null)
         {
             MoveEvent(move, dir, jump, action);
         }
@@ -266,7 +345,8 @@ public class DillowBody : Body
 
     public bool CheckPriority(int priority, bool set = false)
     {
-        if (priority >= this.priority) {
+        if (priority >= this.priority)
+        {
             if (set)
                 this.priority = priority;
             return true;
@@ -280,75 +360,6 @@ public class DillowBody : Body
     }
     #endregion
 
-    #region BALL MOVEMENT
-
-    private void OnBallMove(bool move, Vector3 dir, int jump, int action)
-    {
-       if (move)
-        {
-            if (mid_air)
-            {
-                rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * airball_power);
-                if (CheckPriority(1))
-                    rb.AddForce(dir * airball_power);
-            }
-            else
-            {
-                rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * ball_power);
-            }
-        }
-        //Calculate jump direction
-        if (rb.velocity.magnitude > speed_jump_threshold)
-        {
-            if (Vector3.Cross(rb.angularVelocity, rb.velocity).y > 0f)
-                jump_vector = (-rb.velocity.normalized + Vector3.up * 2f).normalized;
-        }
-        else
-            jump_vector = Vector3.up;
-    }
-
-    private void OnBallJump(bool move, Vector3 dir, int jump, int action)
-    {
-        if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
-        {
-            Fx_Spawner.instance.SpawnFX(jump_sound, transform.position, Vector3.up);
-            rb.AddForce(jump_vector * ball_jump_power, ForceMode.Impulse);
-            TransformToDillow();
-            StartCoroutine(JumpCD());
-        }
-    }
-
-    #endregion
-
-    #region DILLOW MOVEMENT
-    private void OnDillowMove(bool move, Vector3 dir, int jump, int action)
-    {
-        if (move)
-        {
-            if (mid_air)
-            {
-                rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * airball_power);
-                if (CheckPriority(1))
-                    rb.AddForce(dir * airball_power);
-            }
-            else
-            {
-                rb.AddTorque(new Vector3(dir.z, 0, -dir.x) * dillow_speed);
-            }
-        }
-    }
-
-    private void OnDillowJump(bool move, Vector3 dir, int jump, int action)
-    {
-        if (jump == 2 && jump_ready && !jump_cooling_down && CheckPriority(1))
-        {
-            Fx_Spawner.instance.SpawnFX(jump_sound, transform.position, Vector3.up);
-            rb.AddForce(Vector3.up * jump_power, ForceMode.Impulse);
-            StartCoroutine(JumpCD());
-        }
-    }
-    #endregion
-
     #region PHYSICS FLAGS
 
     private void OnGround()
@@ -357,7 +368,6 @@ public class DillowBody : Body
         jump_hold_timer = jump_hold_time;
         mid_air = false;
         air_ready = false;
-        //tell the model to straighten up or something
     }
 
     private void OnAir()
@@ -399,6 +409,7 @@ public class DillowBody : Body
 
             physMat.staticFriction = b_staticFriction;
             physMat.dynamicFriction = b_dynoFriction;
+            physMat.bounciness = b_bounciness;
 
             MoveEvent += OnBallMove;
             MoveEvent += OnBallJump;
@@ -424,13 +435,14 @@ public class DillowBody : Body
 
             physMat.staticFriction = d_staticFriction;
             physMat.dynamicFriction = d_dynoFriction;
+            physMat.bounciness = d_bounciness;
 
             MoveEvent += OnDillowMove;
             MoveEvent += OnDillowJump;
             MoveEvent -= OnBallMove;
             MoveEvent -= OnBallJump;
 
-            rb.angularDrag = dillow_drag;
+            rb.angularDrag = dillow_roll_drag;
 
             TransformEvent?.Invoke(false);
         }

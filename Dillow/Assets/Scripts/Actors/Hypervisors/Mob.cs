@@ -66,7 +66,6 @@ public class Mob : Body, ILockable
     {
         if (!dead)
         {
-            print("I'm not dead and I'm still acting.");
             current_behavior?.Invoke();
         }
     }
