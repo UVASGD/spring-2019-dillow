@@ -116,7 +116,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5880820335569981053}
+      - m_Target: {fileID: 0}
         m_MethodName: Resume
         m_Mode: 1
         m_Arguments:
@@ -648,7 +648,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5880820335569981053}
+      - m_Target: {fileID: 0}
         m_MethodName: Quit
         m_Mode: 1
         m_Arguments:
@@ -751,9 +751,9 @@ GameObject:
   - component: {fileID: 5880820335569981042}
   - component: {fileID: 5880820335569981043}
   - component: {fileID: 5880820335569981052}
-  - component: {fileID: 5880820335569981053}
+  - component: {fileID: 733689439547557821}
   m_Layer: 5
-  m_Name: Canvas (1)
+  m_Name: PauseMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -839,7 +839,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &5880820335569981053
+--- !u!114 &733689439547557821
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -848,7 +848,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5880820335569981054}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b86bc38308c3942b88cfbc3b0b068787, type: 3}
+  m_Script: {fileID: 11500000, guid: dc21784d10cfa41d496a8cd32c6299f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 5880820335559891070}
