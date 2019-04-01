@@ -36,7 +36,7 @@ public class Collectible : MonoBehaviour {
 #if UNITY_EDITOR
     private static System.Random rand = new System.Random();
 
-    private void Reset()
+    public void ResetID()
     {
         byte[] buf = new byte[8];
         rand.NextBytes(buf);

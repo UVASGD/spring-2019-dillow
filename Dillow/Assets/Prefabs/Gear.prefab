@@ -9572,8 +9572,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  replenishable: 1
-  id: 1256439156865120099
+  replenishable: 0
+  id: 3240636865425832420
   anim: {fileID: 2223684422124197710}
 --- !u!135 &2648416827161232893
 SphereCollider:
@@ -9586,8 +9586,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.51
-  m_Center: {x: 0, y: 0.45, z: 0}
+  m_Radius: 1.4
+  m_Center: {x: 0, y: -0.37, z: 0}
 --- !u!82 &7201131627886084422
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9600,7 +9600,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 682fe1817a668354d986bb418c9a75fe, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.622
   m_Pitch: 1
   Loop: 0
   Mute: 0

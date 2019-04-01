@@ -50,22 +50,8 @@ public class FX_RangeE : Editor {
                 EditorGUILayout.BeginHorizontal();
                 var property = list.GetArrayElementAtIndex(i);
                 SoundRange sndRange = (SoundRange)GetTargetObjectOfProperty(property);
-                string[] ill = ACList.audioClips.Keys.ToArray();
-                int init = -1;
-                if (!string.IsNullOrEmpty(sndRange.sound)){
-                    for (int s = 0; s < ACList.audioClips.Count;s++) {
-                        if (ill[s].Equals(sndRange.sound)) {
-                            init = s; break;
-                        }
-                    }
-                }
-
-                int temp = EditorGUILayout.Popup(init, ill);
-                if (temp != init) {
-                    sndRange.sound = temp >= 0 ? ill[temp] : "";
-                    list.InsertArrayElementAtIndex(list.arraySize);
-                    list.DeleteArrayElementAtIndex(list.arraySize - 1);
-                }
+                
+                sndRange.sound = (AudioClip)EditorGUILayout.ObjectField(sndRange.sound, typeof(AudioClip), false);
                 sndRange.threshold = EditorGUILayout.FloatField(sndRange.threshold);
                 fx.sounds[i] = sndRange;
                 
