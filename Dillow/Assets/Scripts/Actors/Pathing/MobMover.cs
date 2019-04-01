@@ -12,6 +12,8 @@ public class MobMover : MonoBehaviour
     [HideInInspector] public NavMeshAgent agent;
     float wanderTime = 20f, min_wander_time = 5f;  // Time before NPC chooses another random node seconds
 
+    public float stall_chance = 0f; //percentage chance to stall
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -41,7 +43,10 @@ public class MobMover : MonoBehaviour
     IEnumerator Move()
     {
         walking = true;
-        agent.SetDestination(nodeArea.GetRandomNode(agent.gameObject));
+        if (Random.value >= stall_chance)
+            agent.SetDestination(nodeArea.GetRandomNode(agent.gameObject));
+        else
+            agent.ResetPath();
         yield return new WaitForSeconds(Random.Range(min_wander_time, wanderTime));
         walking = false;
     }
