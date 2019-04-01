@@ -44,7 +44,6 @@ public class LaserGun : MonoBehaviour
     {
         if (activated)
         {
-            print("I'm still aiming, fuck you");
             aim_laser.SetPosition(0, barrel.transform.position);
 
             RaycastHit hit;
