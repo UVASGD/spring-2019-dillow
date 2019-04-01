@@ -42,10 +42,16 @@ public class Locker : MonoBehaviour
                 }
             }
 
+            /*
             RaycastHit hit;
             if (Physics.Raycast(transform.position, (locked.transform.position - transform.position).normalized, out hit, range, layermask, QueryTriggerInteraction.Ignore))
             {
                 reticle.SetReticle(main.WorldToScreenPoint(hit.collider.transform.position));
+            }
+            */
+            if (Vector3.Distance(transform.position, locked.transform.position) < range)
+            {
+                reticle.SetReticle(main.WorldToScreenPoint(locked.transform.position));
             }
             else
             {
@@ -78,6 +84,7 @@ public class Locker : MonoBehaviour
                     lockables.Remove(lockable);
                     continue;
                 }
+
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, (lockable.transform.position - transform.position).normalized, out hit, range, layermask, QueryTriggerInteraction.Ignore))
                 {
