@@ -88,6 +88,10 @@ public class DillowBody : Body
     private float anim_multiplier = 4f;
     #endregion
 
+    #region DEBUG
+    public bool INVINCIBILITY;
+    #endregion
+
     [HideInInspector] public bool ready;
     private Locker locker;
 
@@ -130,6 +134,9 @@ public class DillowBody : Body
         damager.DamageAllowEvent += OnDamageAllow;
         damager.DamageEndEvent += OnDamageEnd;
         ready = true;
+
+        if (INVINCIBILITY)
+            tagH.Add(Tag.Invincible);
         #endregion
     }
 
@@ -232,9 +239,10 @@ public class DillowBody : Body
     {
         base.Collide(pos, tags, obj, direction, impact);
 
-        if ((tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage)) && !tagH.HasTag(Tag.Dashing))
+        if (tags.Contains(Tag.Damage) || tags.Contains(Tag.SuperDamage)) && !tagH.HasTag(Tag.Dashing))
         {
-            Damage(direction, pos);
+            if (!tagH.HasTag(Tag.Invincible))
+                Damage(direction, pos);
         }
     }
 

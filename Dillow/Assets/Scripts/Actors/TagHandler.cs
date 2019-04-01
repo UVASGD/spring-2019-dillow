@@ -11,6 +11,7 @@ public enum Tag
     Dead,
     Marine,
     Dashing,
+    Invincible,
 }
 
 public class TagHandler : MonoBehaviour
