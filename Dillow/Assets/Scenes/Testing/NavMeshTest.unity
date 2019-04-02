@@ -2724,6 +2724,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LaserCat
       objectReference: {fileID: 0}
+    - target: {fileID: 5970111878307859690, guid: a03593973938265488f2e0ba6752aba0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5970111878308221130, guid: a03593973938265488f2e0ba6752aba0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2898,6 +2903,16 @@ PrefabInstance:
     - target: {fileID: 2023534089, guid: a03593973938265488f2e0ba6752aba0, type: 3}
       propertyPath: m_ConnectedAnchor.z
       value: -1.7462301e-10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1055025618962218127, guid: a03593973938265488f2e0ba6752aba0,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1055025618962218127, guid: a03593973938265488f2e0ba6752aba0,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a03593973938265488f2e0ba6752aba0, type: 3}
