@@ -8,7 +8,7 @@ public class CollectibleRehasher : EditorWindow {
 
     static string MAIN_TITLE = "Collectible Rehasher";
 
-    [MenuItem("Tools/Collectible Rehaser")]
+    [MenuItem("Tools/Collectible Rehasher")]
     private static void OpenFromMenu() {
         EditorWindow window = EditorWindow.GetWindow(typeof(CollectibleRehasher));
         window.name = MAIN_TITLE;
