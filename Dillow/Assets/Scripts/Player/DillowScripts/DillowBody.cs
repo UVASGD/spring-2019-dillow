@@ -194,7 +194,7 @@ public class DillowBody : Body
                 //rb.AddForce(dir * dillow_speed);
             }
         }
-        else if (!ball && !mid_air && rb.velocity.magnitude < dillow_static_threshold)
+        else if (!mid_air && rb.velocity.magnitude < dillow_static_threshold)
         {
             rb.velocity = Vector2.zero;
         }
