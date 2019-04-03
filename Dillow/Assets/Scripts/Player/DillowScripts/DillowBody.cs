@@ -195,7 +195,7 @@ public class DillowBody : Body
         }
         else if (!mid_air && rb.velocity.magnitude < dillow_static_threshold)
         {
-            rb.velocity = Vector2.zero;
+            rb.velocity = Vector3.zero;
         }
     }
 
