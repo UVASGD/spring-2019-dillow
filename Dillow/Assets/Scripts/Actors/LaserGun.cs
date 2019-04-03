@@ -71,10 +71,6 @@ public class LaserGun : MonoBehaviour {
         Fire();
     }
 
-    void OnParticleCollision(GameObject other) {
-        print("COLDOE");
-    }
-
     public void Fire(GameObject target = null) {
         if (!can_fire)
             return;
@@ -90,15 +86,10 @@ public class LaserGun : MonoBehaviour {
 
         aimDirection = aimDirection.normalized;
 
-        if (shot_fx) Fx_Spawner.instance.SpawnFX(shot_fx, barrel.transform.position, barrel.transform.forward);
+        if (shot_fx)
+            Fx_Spawner.instance.SpawnFX(shot_fx, barrel.transform.position, barrel.transform.forward);
 
         barrel.transform.LookAt(target.transform);
-
-        RaycastHit hit;
-        if (Physics.Raycast(barrel.transform.position, aimDirection, out hit, range, Physics.AllLayers, QueryTriggerInteraction.Ignore)) {
-            Hit(hit.collider.gameObject, hit.point, hit.normal);
-            //if (hit_fx) Fx_Spawner.instance.SpawnFX(hit_fx, hit.point, hit.normal);
-        }
 
         StartCoroutine(LaserFlash());
     }
@@ -106,15 +97,7 @@ public class LaserGun : MonoBehaviour {
     IEnumerator LaserFlash() {
         can_fire = false;
         yield return new WaitForSeconds(laser_time);
-        //yield return new WaitForSeconds(laserCD);
         can_fire = true;
-    }
-
-    public void Hit(GameObject hit, Vector3 position, Vector3 normal) {
-        if (hit.CompareTag("Ground")) {
-        } else if (hit.GetComponent<Body>()) {
-            hit.GetComponent<Body>().Collide(position, hit_tags, direction: -normal);
-        }
     }
 
     public void Charge(float aim_time) {
