@@ -22,7 +22,7 @@ public class IdleSounds : MonoBehaviour
         playing = true;
         yield return new WaitForSeconds(Random.Range(1f, soundTime));
         GameObject fx = sounds[Random.Range(0, sounds.Count)];
-        Fx_Spawner.instance.SpawnFX(fx, fx.transform.position, fx.transform.forward);
+        Fx_Spawner.instance.SpawnFX(fx, transform.position, transform.up);
         playing = false;
     }
 }
