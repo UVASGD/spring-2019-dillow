@@ -26,6 +26,7 @@ public class InteractableBody : Body
     public override void Collide(Vector3 pos, List<Tag> tags, GameObject obj, Vector3 direction, Vector3 impact)
     {
         base.Collide(pos, tags, obj, direction, impact);
+        print("Googoogaga: " + impact.magnitude);
 
         if (impact.magnitude > wiggle_threshold)
         {

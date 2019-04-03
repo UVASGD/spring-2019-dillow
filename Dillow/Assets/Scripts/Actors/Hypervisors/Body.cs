@@ -54,6 +54,7 @@ public class Body : MonoBehaviour, IMortal
     {
         if (c.collider.GetComponent<TagHandler>() )
         {
+            print(c.impulse);
             TagHandler th = c.collider.GetComponent<TagHandler>();
             Collide(c.contacts[0].point, tagHandler: th, direction: c.contacts[0].normal, impact: c.impulse);
         }

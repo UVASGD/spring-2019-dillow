@@ -81,5 +81,6 @@ public class DialogueTrigger : MonoBehaviour
         if (body) body.StopTalk();
         DillowController.instance.can_input = true;
         DillowController.instance.body.rb.isKinematic = false;
+        DillowController.instance.body.rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
 }
