@@ -8,16 +8,10 @@ public class IdleSounds : MonoBehaviour
     public float soundTime = 10f;
     bool playing;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (!playing)
+        if (!playing && sounds.Count > 0)
         {
             StartCoroutine(PlayIdle());
         }

@@ -75,7 +75,6 @@ public class DillowBody : Body
 
     #region ANIMS AND FX
     [Header("FX")]
-    public GameObject impact_fx;
     public GameObject jump_sound;
     public GameObject death_sound;
 
@@ -298,18 +297,6 @@ public class DillowBody : Body
         base.FixedUpdate();
     }
 
-    public override void OnCollisionEnter(Collision c)
-    {
-        base.OnCollisionEnter(c);
-
-        if (impact_fx && (c.collider.CompareTag("Ground") || c.collider.CompareTag("Ground Terrain")))
-            if (c.impulse.magnitude > 10f)
-            {
-                float vol = Mathf.Clamp01(c.impulse.magnitude / 40f);
-                Fx_Spawner.instance.SpawnFX(impact_fx, c.contacts[0].point, c.contacts[0].normal, vol);
-            }
-    }
-
     private void OnJumpHold(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)
     {
         if (mid_air && !air_ready)
@@ -329,7 +316,9 @@ public class DillowBody : Body
     public void OnLock(bool move, Vector3 dir, int jump, int action, int lockon, int lockswap)
     {
         if (lockon == 2)
+        {
             locker.Lock(!locker.locked);
+        }
         else if (lockswap == 2)
             locker.Lock(true);
     }

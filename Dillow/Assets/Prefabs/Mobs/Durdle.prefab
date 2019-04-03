@@ -2926,7 +2926,6 @@ GameObject:
   - component: {fileID: 7094111113309182175}
   - component: {fileID: 7094111113265813680}
   - component: {fileID: 7094111113307178524}
-  - component: {fileID: 7094111113307178527}
   - component: {fileID: 7094111113307178521}
   - component: {fileID: 7094111113307178526}
   m_Layer: 0
@@ -3028,18 +3027,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7094111113307178527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7094111113307178525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0fa1fa55ca204e4698f13f5dee7d651, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &7094111113307178521
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3274,16 +3261,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TriggerDialogue
       objectReference: {fileID: 0}
-    - target: {fileID: 2598000636542804574, guid: a5975c488465aa5429581e06821169c3,
-        type: 3}
-      propertyPath: selectedBlocks.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2598000636542804574, guid: a5975c488465aa5429581e06821169c3,
-        type: 3}
-      propertyPath: selectedCommands.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4407849275541152949, guid: a5975c488465aa5429581e06821169c3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3354,16 +3331,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.2
       objectReference: {fileID: 0}
-    - target: {fileID: 5455901049622727122, guid: a5975c488465aa5429581e06821169c3,
-        type: 3}
-      propertyPath: targetFlowchart
-      value: 
-      objectReference: {fileID: 2374172304379128484}
-    - target: {fileID: 5455901049622727122, guid: a5975c488465aa5429581e06821169c3,
-        type: 3}
-      propertyPath: targetBlock
-      value: 
-      objectReference: {fileID: 2374172304379128498}
     - target: {fileID: 7734760441638658075, guid: a5975c488465aa5429581e06821169c3,
         type: 3}
       propertyPath: targetFlowchart
@@ -3374,6 +3341,26 @@ PrefabInstance:
       propertyPath: targetBlock
       value: 
       objectReference: {fileID: 3347108282748942045}
+    - target: {fileID: 5455901049622727122, guid: a5975c488465aa5429581e06821169c3,
+        type: 3}
+      propertyPath: targetFlowchart
+      value: 
+      objectReference: {fileID: 2374172304379128484}
+    - target: {fileID: 5455901049622727122, guid: a5975c488465aa5429581e06821169c3,
+        type: 3}
+      propertyPath: targetBlock
+      value: 
+      objectReference: {fileID: 2374172304379128498}
+    - target: {fileID: 2598000636542804574, guid: a5975c488465aa5429581e06821169c3,
+        type: 3}
+      propertyPath: selectedBlocks.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2598000636542804574, guid: a5975c488465aa5429581e06821169c3,
+        type: 3}
+      propertyPath: selectedCommands.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5975c488465aa5429581e06821169c3, type: 3}
 --- !u!114 &658717264067426214 stripped

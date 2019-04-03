@@ -8,8 +8,6 @@ public class Fx_Object : MonoBehaviour
     protected float pitch_range = 0.2f, amp_range = 0.02f;
     public float vol = -1f;
 
-    public List<AudioClip> clips = new List<AudioClip>();
-
     public AudioMixerGroup mixerGroup;
     // Start is called before the first frame update
     void Start()
@@ -22,6 +20,7 @@ public class Fx_Object : MonoBehaviour
             }
             aud.pitch += Random.Range(-pitch_range, pitch_range);
             aud.volume += Random.Range(-amp_range, 0);
+            if (mixerGroup) aud.outputAudioMixerGroup = mixerGroup;
             if (aud.clip.length > max_audio_len) max_audio_len = aud.clip.length;
         }
         foreach (ParticleSystem part in GetComponentsInChildren<ParticleSystem>())

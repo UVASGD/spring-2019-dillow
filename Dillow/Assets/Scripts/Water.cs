@@ -18,10 +18,9 @@ public class Water : MonoBehaviour
         List<GameObject> removed = new List<GameObject>();
         foreach (GameObject victim in victims.Keys)
         {
-            TagHandler t = victim.GetComponent<TagHandler>();
             if (victims[victim].bounds.max.y < transform.position.y)
             {
-                if (!t || !t.HasTag(Tag.Marine))
+                if (!victim.HasTag(Tag.Marine))
                 {
                     victim.GetComponent<IMortal>().Die();
                     removed.Add(victim);
@@ -42,7 +41,6 @@ public class Water : MonoBehaviour
 
     public void AddVictim(GameObject victim, Collider drowning_collider)
     {
-        TagHandler t = victim.GetComponent<TagHandler>();
         if (victim.GetComponent<IMortal>() != null && !victims.ContainsKey(victim))
         {
             victims.Add(victim, drowning_collider);

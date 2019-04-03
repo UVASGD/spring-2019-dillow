@@ -93,8 +93,7 @@ public class LaserGun : MonoBehaviour
 
         if (target)
         {
-            TagHandler t = target.GetComponent<TagHandler>();
-            if (t && t.HasTag(Tag.Dashing))
+            if (target.HasTag(Tag.Dashing))
             {
                 aimDirection = (target.transform.position - (target.GetComponent<Rigidbody>().velocity / 10f)) - barrel.transform.position;
             }

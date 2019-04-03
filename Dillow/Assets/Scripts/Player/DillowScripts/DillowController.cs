@@ -72,12 +72,13 @@ public class DillowController : MonoBehaviour
             // we use world-relative directions in the case of no main camera
             move = (v * Vector3.forward + h * Vector3.right).normalized;
         }
+
+        if (can_input)
+            body.Input(move.magnitude > 0f, move, jump, action, lockon, lockswap);
     }
 
     private void FixedUpdate()
     {
-        if (can_input)
-            body.Input(move.magnitude > 0f, move, jump, action, lockon, lockswap);
     }
 
     private void GetButton(ref int button, string axisName)

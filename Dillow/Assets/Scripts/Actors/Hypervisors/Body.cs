@@ -10,6 +10,9 @@ public class Body : MonoBehaviour, IMortal
     [HideInInspector] public TagHandler tagH;
     [HideInInspector] public Damager damager;
 
+    public GameObject impact_fx;
+    float ground_impact_threshold = 10f, ground_impact_max = 40f;
+
     float jump_multiplier = 3f;
     float fall_multiplier = 3.5f;
 
@@ -54,6 +57,13 @@ public class Body : MonoBehaviour, IMortal
             TagHandler th = c.collider.GetComponent<TagHandler>();
             Collide(c.contacts[0].point, tagHandler: th, direction: c.contacts[0].normal, impact: c.impulse);
         }
+
+        if (impact_fx && (c.collider.CompareTag("Ground") || c.collider.CompareTag("Ground Terrain")))
+            if (c.impulse.magnitude > ground_impact_threshold)
+            {
+                float vol = Mathf.Clamp01(c.impulse.magnitude / ground_impact_max);
+                Fx_Spawner.instance.SpawnFX(impact_fx, c.contacts[0].point, c.contacts[0].normal, vol);
+            }
     }
 
     public virtual void OnTriggerEnter(Collider c)
@@ -91,7 +101,7 @@ public class Body : MonoBehaviour, IMortal
         if (tags.Contains(Tag.Water))
         {
             rb.velocity = Vector3.down;
-            obj.GetComponent<Water>().AddVictim(rb.gameObject, rb.GetComponent<Collider>());
+            obj.GetComponent<Water>().AddVictim(rb.gameObject, rb.gameObject.GetAnyComponent<Collider>(in_parent:false));
         }
     }
 

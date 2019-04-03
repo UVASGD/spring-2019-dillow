@@ -6,56 +6,56 @@ using Fungus;
 [RequireComponent(typeof(Collider))]
 public class DialogueTrigger : MonoBehaviour
 {
+    InteractableBody body;
     ParticleSystem interactPrompt;
+    DialogSpin dialogSpin;
 
     public Flowchart chart;
 
     // Start is called before the first frame update
     void Start()
     {
-		GetComponent<Collider>().isTrigger = true;
-        interactPrompt = GetComponent<ParticleSystem>();
+        body = gameObject.GetAnyComponent<InteractableBody>(in_children:false, neighbor_depth:1);
 
-        if (interactPrompt != null && ! interactPrompt.isStopped) {
-            interactPrompt.Stop();
+        Collider dialog_trigger = GetComponent<Collider>();
+        dialog_trigger.isTrigger = true;
+
+        interactPrompt = GetComponent<ParticleSystem>();
+        if (interactPrompt)
+        {
+            var sh = interactPrompt.shape;
+            sh.radius = dialog_trigger.bounds.extents.x;
         }
+
+        dialogSpin = GetComponent<DialogSpin>();
+
+        HidePrompt();
     }
 
     private void ShowPrompt() {
-        if (interactPrompt != null) {
-            interactPrompt.Play();
-        }
+        if (dialogSpin) dialogSpin.enabled = true;
+        interactPrompt?.Play();
     }
 
     private void HidePrompt() {
-        if (interactPrompt != null) {
-            interactPrompt.Stop();
-            interactPrompt.Clear();
-        }
+        if (dialogSpin) dialogSpin.enabled = false;
+        interactPrompt?.Stop();
     }
 
     private void OnTriggerEnter(Collider other) {
-        TagHandler t = other.GetComponent<TagHandler>();
-
-        if (t && t.HasTag(Tag.Player)) {
+        if (other.gameObject.HasTag(Tag.Player)) {
             ShowPrompt();
         }
     }
 
     private void OnTriggerStay(Collider other) {
-        TagHandler t = other.GetComponent<TagHandler>();
-
-        if ((t && t.HasTag(Tag.Player)) && DillowController.interact == 2)
-        { 
+        if (other.gameObject.HasTag(Tag.Player) && DillowController.interact == 2) { 
             DoTrigger();
         }
     }
 
     private void OnTriggerExit(Collider other) {
-
-        GameObject go = other.gameObject;
-
-        if (go.CompareTag("Player")) {
+        if (other.gameObject.HasTag(Tag.Player)) {
             EndTrigger();
             HidePrompt();
         }
@@ -63,8 +63,8 @@ public class DialogueTrigger : MonoBehaviour
 
     void DoTrigger() {
         if (chart != null) {
+            if (body) body.Talk();
             chart.ExecuteBlock("Trigger");
-            //string chatType = chart.GetStringVariable("type");
             DillowController.instance.can_input = false;
             DillowController.instance.body.rb.isKinematic = true;
         }
@@ -78,6 +78,7 @@ public class DialogueTrigger : MonoBehaviour
     }
 
     public void FinishDialogue() {
+        if (body) body.StopTalk();
         DillowController.instance.can_input = true;
         DillowController.instance.body.rb.isKinematic = false;
     }

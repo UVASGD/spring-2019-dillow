@@ -32,23 +32,12 @@ public class Locker : MonoBehaviour
 
         if (locked)
         {
-            TagHandler t = locked.GetComponentInParent<TagHandler>();
-            if (t)
+            if (locked.HasTag(Tag.Dead))
             {
-                if (t.HasTag(Tag.Dead))
-                {
-                    Lock(false);
-                    return;
-                }
+                Lock(false);
+                return;
             }
 
-            /*
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, (locked.transform.position - transform.position).normalized, out hit, range, layermask, QueryTriggerInteraction.Ignore))
-            {
-                reticle.SetReticle(main.WorldToScreenPoint(hit.collider.transform.position));
-            }
-            */
             if (Vector3.Distance(transform.position, locked.transform.position) < range)
             {
                 reticle.SetReticle(main.WorldToScreenPoint(locked.transform.position));

@@ -800,6 +800,26 @@ PrefabInstance:
       propertyPath: dillow_power
       value: 125
       objectReference: {fileID: 0}
+    - target: {fileID: 415973999715639682, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01,
+        type: 3}
+      propertyPath: ball_power
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 415973999715639682, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01,
+        type: 3}
+      propertyPath: ball_drag
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 415973999715639682, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01,
+        type: 3}
+      propertyPath: b_staticFriction
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 415973999715639682, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01,
+        type: 3}
+      propertyPath: b_dynoFriction
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01, type: 3}
 --- !u!4 &8385080744236288621 stripped
@@ -1848,17 +1868,17 @@ PrefabInstance:
     - target: {fileID: 5649285566241038036, guid: b3a80d2e83e3d431ca9105d02caacab8,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.09902557
+      value: 0.09902556
       objectReference: {fileID: 0}
     - target: {fileID: 5649285566241038036, guid: b3a80d2e83e3d431ca9105d02caacab8,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 6.571342e-10
+      value: -0.000000007903772
       objectReference: {fileID: 0}
     - target: {fileID: 5649285566241038036, guid: b3a80d2e83e3d431ca9105d02caacab8,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000035983916
+      value: 0.000000036835853
       objectReference: {fileID: 0}
     - target: {fileID: 5649285566241038036, guid: b3a80d2e83e3d431ca9105d02caacab8,
         type: 3}
