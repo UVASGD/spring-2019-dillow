@@ -8,6 +8,7 @@ public enum FXType {Generic, Wood}
 public class Fx_Spawner : MonoBehaviour {
     public AudioMixerGroup mixer;
     public List<GameObject> fx_objs = new List<GameObject>();
+    private GameObject holder;
 
     // Singleton code
     public static Fx_Spawner instance;
@@ -20,16 +21,16 @@ public class Fx_Spawner : MonoBehaviour {
         else {
             Destroy(gameObject);
         }
+
+        holder = new GameObject("FX Objects");
     }
 
 
     public GameObject SpawnFX(GameObject fx,  Vector3 position, Vector3 rotation, float vol = -1, Transform parent = null)
     {
         GameObject spawned_fx = Instantiate(fx, position, Quaternion.identity);
-        if (parent)
-        {
-            spawned_fx.transform.parent = parent;
-        }
+        spawned_fx.transform.parent = parent? parent : holder.transform;
+
         if (rotation != Vector3.zero)
             spawned_fx.transform.forward = rotation;
         Fx_Object fx_obj = spawned_fx.GetComponent<Fx_Object>();

@@ -13,6 +13,8 @@ public class LaserCat : Mob
     float aim_timer; //current timer
     float aim_max = 1.75f; //time it takes to fire
 
+    bool can_act = true; // lock for when game is in transition state
+
     int speed_hash, idle_hash, aim_hash, blasting_hash;
     float speed_rate, anim_speed_multiplier = 2f;
 
@@ -34,6 +36,11 @@ public class LaserCat : Mob
         idle_hash = Animator.StringToHash("Idle");
         aim_hash = Animator.StringToHash("Aim");
         blasting_hash = Animator.StringToHash("Blasting");
+
+
+        FadeController.FadeInStartedEvent += delegate { can_act = false; };
+        FadeController.FadeOutStartedEvent += delegate { can_act = false; };
+        FadeController.FadeInCompletedEvent += delegate { can_act = true; };
     }
 
 	protected override void OnNotice (TagHandler t)
@@ -60,6 +67,7 @@ public class LaserCat : Mob
 
     protected override void Act()
     {
+        if (!can_act) return;
         base.Act();
 
         speed_rate = mover.agent.velocity.magnitude / mover.agent.speed;
@@ -76,6 +84,7 @@ public class LaserCat : Mob
     {
         //print("Aggro");
         mover.walk = false;
+        if (!can_act) return;
         //mover.MoveToTarget(target.transform.position);
         if (target)
         {

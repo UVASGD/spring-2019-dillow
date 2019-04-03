@@ -1944,6 +1944,7 @@ MonoBehaviour:
   walk: 1
   nodeArea: {fileID: 0}
   agent: {fileID: 0}
+  stall_chance: 0
 --- !u!195 &2365140105744414029
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2705,7 +2706,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8203226965273122266}
   - component: {fileID: 8203226965273122260}
-  - component: {fileID: 1055025618962218127}
   m_Layer: 0
   m_Name: LaserCrystal
   m_TagString: Untagged
@@ -2743,108 +2743,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 50
   barrel: {fileID: 7759188589633424186}
-  laser: {fileID: 1055025618962218127}
   aim_laser: {fileID: 1892933627801520009}
   activated: 0
-  shot_fx: {fileID: 2865531046472692746, guid: 4fb17e5a227f3ae4a8593da1abdaa7dc, type: 3}
+  shot_fx: {fileID: 1933249818927496043, guid: a4f5683fc11dd89449c2942df9247a7a, type: 3}
   hit_fx: {fileID: 8823223493712109963, guid: 206c84bce083a494c86ec5d06642816d, type: 3}
-  charge_fx: {fileID: 7506653913096556021, guid: 3f4a24ed4ff3efe439080a5cdb8e4023,
+  charge_fx: {fileID: 990818571766754975, guid: 0c15cf3bce6bbd645b6753537c99082d,
     type: 3}
---- !u!120 &1055025618962218127
-LineRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8203226965273122263}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 0
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 5c736766e9e19534faecf05501de091f, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
-  m_Parameters:
-    serializedVersion: 3
-    widthMultiplier: 1
-    widthCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    colorGradient:
-      serializedVersion: 2
-      key0: {r: 0.038573265, g: 0, b: 1, a: 1}
-      key1: {r: 1, g: 0, b: 0.03486824, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    numCornerVertices: 0
-    numCapVertices: 50
-    alignment: 0
-    textureMode: 0
-    shadowBias: 0.5
-    generateLightingData: 0
-  m_UseWorldSpace: 0
-  m_Loop: 0
 --- !u!1 &8203226965683662146
 GameObject:
   m_ObjectHideFlags: 0
@@ -2856,6 +2760,7 @@ GameObject:
   - component: {fileID: 8203226965683662147}
   - component: {fileID: 8203226965683662150}
   - component: {fileID: 8203226965683662145}
+  - component: {fileID: 7414608139648886539}
   m_Layer: 0
   m_Name: Crystal
   m_TagString: Untagged
@@ -2922,6 +2827,25 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!95 &7414608139648886539
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8203226965683662146}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f5115ac9f479c3d4993dfcb1d2d62bd8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &3387041704265422375
 PrefabInstance:
   m_ObjectHideFlags: 0
