@@ -34,12 +34,12 @@ public class DialogueTrigger : MonoBehaviour
 
     private void ShowPrompt() {
         if (dialogSpin) dialogSpin.enabled = true;
-        interactPrompt?.Play();
+        if (interactPrompt) interactPrompt?.Play();
     }
 
     private void HidePrompt() {
         if (dialogSpin) dialogSpin.enabled = false;
-        interactPrompt?.Stop();
+        if (interactPrompt) interactPrompt?.Stop();
     }
 
     private void OnTriggerEnter(Collider other) {
