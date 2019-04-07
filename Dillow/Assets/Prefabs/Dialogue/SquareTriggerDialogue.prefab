@@ -79,7 +79,7 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 0}
+  - {fileID: 1607299716992087318}
   selectedCommands: []
   variables:
   - {fileID: 8445306014077333470}
@@ -322,7 +322,7 @@ BoxCollider:
 --- !u!199 &1607299716992087319
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
