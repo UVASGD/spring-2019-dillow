@@ -20,11 +20,6 @@ public class Introducer : MonoBehaviour
 
     public bool RESET_MODE = true;
 
-    Animator anim;
-    int intro_hash, fadeOut_hash;
-
-    public Text text;
-
     //using a tuple to maintain order of entries
     List<Tuple<string, string>> intro_messages = new List<Tuple<string, string>>() 
     {
@@ -48,22 +43,14 @@ public class Introducer : MonoBehaviour
         if (instance == null)
             instance = this;
         else
-        {
             Destroy(gameObject);
-        }
-
-        anim = GetComponent<Animator>();
-        intro_hash = Animator.StringToHash("Introduce");
-        fadeOut_hash = Animator.StringToHash("FadeOut");
 
         foreach (Tuple<string, string> t in intro_messages)
         {
             if (RESET_MODE)
                 PlayerPrefs.SetInt(t.Item1, 0);
             if (PlayerPrefs.GetInt(t.Item1, 0) == 0)
-            {
                 intro_dict.Add(t.Item1, t.Item2);
-            }
         }
 
         while (!DillowController.instance.body.ready)
@@ -71,7 +58,7 @@ public class Introducer : MonoBehaviour
         ready = true;
         DillowController.instance.body.MoveEvent += OnMoved;
 
-        StartCoroutine(DisplayMessages());
+        //DisplayMessages();
     }
 
     // Update is called once per frame
@@ -122,22 +109,14 @@ public class Introducer : MonoBehaviour
         }
     }
 
-    IEnumerator DisplayMessages()
+    void DisplayMessages()
     {
         foreach (Tuple<string, string> t in intro_messages)
         {
             if (intro_dict.ContainsKey(t.Item1))
             {
-                RemoveKey(t.Item1);
-                anim.SetBool(intro_hash, true);
-                text.text = t.Item2;
-                yield return new WaitForSeconds(message_time);
-                anim.SetBool(intro_hash, false);
-                anim.SetTrigger(fadeOut_hash);
-                yield return new WaitForSeconds(wait_time);
+                StartCoroutine(Messager.instance.DisplayMessage(t.Item2));
             }
         }
-        anim.SetBool(intro_hash, false);
-        anim.SetTrigger(fadeOut_hash);
     }
 }

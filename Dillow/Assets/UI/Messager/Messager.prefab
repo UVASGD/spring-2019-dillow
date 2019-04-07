@@ -108,10 +108,10 @@ GameObject:
   - component: {fileID: 4576909149636714188}
   - component: {fileID: 4576909149636714189}
   - component: {fileID: 4576909149636714190}
-  - component: {fileID: 4576909149636714187}
   - component: {fileID: 4576909149636714186}
+  - component: {fileID: 142933048963714011}
   m_Layer: 5
-  m_Name: Introducer
+  m_Name: Messager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -209,20 +209,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4576909149636714187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4576909149636714196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d37ddd3ba95ea9a488f015db56d7c53b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RESET_MODE: 1
-  text: {fileID: 4576909149796327977}
 --- !u!95 &4576909149636714186
 Animator:
   serializedVersion: 3
@@ -233,7 +219,7 @@ Animator:
   m_GameObject: {fileID: 4576909149636714196}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 02b0f2b4f241b2d4b9e16216a502a788, type: 2}
+  m_Controller: {fileID: 9100000, guid: 95a2c295f4554f844a284b48cd394208, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -242,6 +228,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &142933048963714011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4576909149636714196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b1eab6c577b3945b1afb66f5d9224e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 4576909149796327977}
 --- !u!1 &4576909149796327988
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +254,7 @@ GameObject:
   - component: {fileID: 4576909149796327977}
   - component: {fileID: 4576909149796327978}
   m_Layer: 5
-  m_Name: IntroducerText
+  m_Name: MessagerText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -355,7 +354,7 @@ GameObject:
   - component: {fileID: 4576909150629587200}
   - component: {fileID: 4576909150629587201}
   m_Layer: 5
-  m_Name: IntroducerPanel
+  m_Name: MessagerPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
