@@ -261,7 +261,7 @@ public class DillowBody : Body
             next_hit_kills = false;
             anim.SetBool(fall_hash, true);
             Fx_Spawner.instance.SpawnFX(death_sound, transform.position, Vector3.up);
-            AudioManager.PlayMusic("Death", false, true, false, 0.25f, false);
+            //AudioManager.PlayMusic("Death", false, true, false, 0.25f, false);
             GameManager.instance.Respawn();
         }
     }
@@ -271,7 +271,7 @@ public class DillowBody : Body
         dead = false;
         next_hit_kills = false;
         anim.SetBool(fall_hash, false);
-        AudioManager.PlayMusic("", false, true, false, 0.25f, false);
+        //AudioManager.PlayMusic("", false, true, false, 0.25f, false);
     }
 
     #endregion

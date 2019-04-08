@@ -14,13 +14,13 @@ public class MusicTrigger : MonoBehaviour {
 
 	private void OnTriggerEnter (Collider other) {
 		if (other.CompareTag("Player")) {
-			AudioManager.PlayMusic(enterMusic, loop, crossfade, fadein, fadeDuration, syncTimes);
+			//AudioManager.PlayMusic(enterMusic, loop, crossfade, fadein, fadeDuration, syncTimes);
 		}
 	}
 
 	private void OnTriggerExit (Collider other) {
 		if (other.CompareTag("Player")) {
-			AudioManager.PlayMusic(exitMusic, loop, crossfade, fadein, fadeDuration, syncTimes);
+			//AudioManager.PlayMusic(exitMusic, loop, crossfade, fadein, fadeDuration, syncTimes);
 		}
 	}
 }
