@@ -101,7 +101,6 @@ public class Body : MonoBehaviour, IMortal
         if (tags.Contains(Tag.Water))
         {
             rb.velocity = Vector3.down;
-            print(rb.gameObject.GetAnyComponent<Collider>(in_parent:false));
             obj.GetComponent<Water>().AddVictim(rb.gameObject, rb.gameObject.GetAnyComponent<Collider>(in_parent:false));
         }
     }
