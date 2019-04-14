@@ -47,7 +47,6 @@ public static class ExtensionMethods
     {
         if (g.GetComponent<T>() != null)
         {
-            Debug.Log("PLEASE " + (g.GetComponent<T>() == null));
             return g.GetComponent<T>();
         }
         else if (in_children && g.GetComponentInChildren<T>() != null)
