@@ -58,7 +58,7 @@ public class Introducer : MonoBehaviour
         ready = true;
         DillowController.instance.body.MoveEvent += OnMoved;
 
-        //DisplayMessages();
+        DisplayMessages();
     }
 
     // Update is called once per frame
