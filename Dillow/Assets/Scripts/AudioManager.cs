@@ -53,12 +53,20 @@ public class AudioManager : MonoBehaviour {
 	}
 
 	public static void PlayTrack (MusicTrack track, bool loop = true, bool crossfade = true, float fadeTime = 3f , bool syncTimes = false) {
-		instance.StartCoroutine(instance.FadeOut(instance.sourceIndex, fadeTime));
+		//instance.StartCoroutine(instance.FadeOut(instance.sourceIndex, fadeTime));
 
-
+		if (true == crossfade) {
+			//instance.StartCoroutine(instance.FadeIn(++instance.sourceIndex, fadeTime));
+		} else {
+			//instance.Invoke()
+		}
 	}
 
-	private IEnumerator FadeOut (int index, float fadeTime) {
+	private void FadeOut (int index, float fadeTime) {
+		StartCoroutine(FadeOutCR(index, fadeTime));
+	}
+
+	private IEnumerator FadeOutCR (int index, float fadeTime) {
 		AudioSource source = sources[index];
 		float fadeRate = 1 / fadeTime;
 		while (source.volume > 0f) {
@@ -68,7 +76,7 @@ public class AudioManager : MonoBehaviour {
 		source.volume = 0f;
 	}
 
-	private IEnumerator FadeIn (int index, float fadeTime) {
+	private IEnumerator FadeInCR (int index, float fadeTime) {
 		AudioSource source = sources[index];
 		float fadeRate = 1 / fadeTime;
 		while (source.volume > 0f) {
