@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(ParticleSystem))]
+//[RequireComponent(typeof(ParticleSystem))]
 public class ConfrontationEffects : MonoBehaviour
 {
-    ParticleSystem particles;
+    public ParticleSystem particles;
 
     int intensity = 1;
     float runTime = 0f;
@@ -14,7 +14,7 @@ public class ConfrontationEffects : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        particles = GetComponent<ParticleSystem>();
+        //particles = GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
