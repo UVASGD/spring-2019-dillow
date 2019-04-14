@@ -43,20 +43,27 @@ public static class ExtensionMethods
         else return th.HasTag(t);
     }
 
-    public static T GetAnyComponent<T>(this GameObject g, bool in_parent = true, bool in_children = true, int neighbor_depth = 0)
+    public static T GetAnyComponent<T>(this GameObject g, bool in_parent = true, bool in_children = true, int neighbor_depth = 0) where T : Component
     {
         if (g.GetComponent<T>() != null)
+        {
+            Debug.Log("PLEASE " + (g.GetComponent<T>() == null));
             return g.GetComponent<T>();
+        }
         else if (in_children && g.GetComponentInChildren<T>() != null)
+        {
             return g.GetComponentInChildren<T>();
+        }
         else if (in_parent)
             if (g.GetComponentInParent<T>() != null)
-            return g.GetComponentInParent<T>();
+                return g.GetComponentInParent<T>();
 
         GameObject current = g;
         while (neighbor_depth > 0)
         {
-            current = g.transform.parent.gameObject;
+            current = current.transform.parent.gameObject;
+            if (!current)
+                break;
             if (current.GetComponentInChildren<T>() != null)
             {
                 return current.GetComponentInChildren<T>();

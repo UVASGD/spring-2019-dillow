@@ -13,17 +13,14 @@ public class LaserGun : MonoBehaviour {
 
     List<Tag> hit_tags;
 
-    float laser_time = 0.25f;
-    bool can_fire = true;
-
-    public bool activated;
-
     [Header("FX")]
     public GameObject shot_fx;
-    //public GameObject hit_fx;
     public GameObject charge_fx;
+
     float charge_time = 1f;
     bool charging;
+    bool can_fire = true;
+    public bool activated;
 
     // Start is called before the first frame update
     void Start() {
@@ -72,9 +69,6 @@ public class LaserGun : MonoBehaviour {
     }
 
     public void Fire(GameObject target = null) {
-        if (!can_fire)
-            return;
-
         if (target)
         {
             if (target.HasTag(Tag.Dashing))
@@ -91,18 +85,10 @@ public class LaserGun : MonoBehaviour {
             Fx_Spawner.instance.SpawnFX(shot_fx, barrel.transform.position, barrel.transform.forward);
 
         barrel.transform.LookAt(target.transform);
-
-        StartCoroutine(LaserFlash());
-    }
-
-    IEnumerator LaserFlash() {
-        can_fire = false;
-        yield return new WaitForSeconds(laser_time);
-        can_fire = true;
     }
 
     public void Charge(float aim_time) {
-        if (can_fire && !charging && aim_time < charge_time) StartCoroutine(ChargeCo());
+        if (!charging && aim_time < charge_time) StartCoroutine(ChargeCo());
     }
 
     IEnumerator ChargeCo() {

@@ -23,7 +23,7 @@ public class Body : MonoBehaviour, IMortal
     {
         tagH = GetComponent<TagHandler>();
         rb = gameObject.GetMainRigidbody();
-        if (!rb.GetComponent<MainBody>())
+        if (!rb.gameObject.GetAnyComponent<MainBody>())
         {
             rb.gameObject.AddComponent<MainBody>().DeathEvent += Die;
         }
@@ -101,6 +101,7 @@ public class Body : MonoBehaviour, IMortal
         if (tags.Contains(Tag.Water))
         {
             rb.velocity = Vector3.down;
+            print(rb.gameObject.GetAnyComponent<Collider>(in_parent:false));
             obj.GetComponent<Water>().AddVictim(rb.gameObject, rb.gameObject.GetAnyComponent<Collider>(in_parent:false));
         }
     }

@@ -16,6 +16,7 @@ public class Durdle : MonoBehaviour
     void Start()
     {
         source = GetComponent<AudioSource>();
+        print(gameObject.GetAnyComponent<Collider>());
     }
 
     // Update is called once per frame
