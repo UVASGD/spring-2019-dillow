@@ -26,10 +26,10 @@ public class ConfrontationEffects : MonoBehaviour
     public void Rumble(int _intensity = 1) {
         Debug.Log("RUMBLE RUMBLE");
         intensity = _intensity;
-        StartCoroutine("Rumble");
+        StartCoroutine("DoRumble");
     }
 
-    IEnumerator Rumble() {
+    IEnumerator DoRumble() {
         particles.Play();
 
         Debug.Log("AAAAAAAAAG");
