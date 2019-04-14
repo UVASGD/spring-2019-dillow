@@ -33,11 +33,6 @@ public class Messager : MonoBehaviour
         fadeOut_hash = Animator.StringToHash("FadeOut");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     public IEnumerator DisplayMessage(string message)
     {
         print("DisplayMessage");
