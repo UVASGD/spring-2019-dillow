@@ -130,6 +130,7 @@ public class LaserCat : Mob
     {
         if (!dead)
         {
+            StopAllCoroutines();
             base.Die();
             target = null;
             gun.Activate(false);

@@ -87,6 +87,7 @@ public class Mob : Body, ILockable
             dead = true;
             ragdoll?.ActivateRagdoll(true);
             current_behavior = null;
+            FreezeFrame.instance.Freeze();
         }
     }
 
