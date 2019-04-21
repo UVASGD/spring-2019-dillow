@@ -29,7 +29,6 @@ public class ParticleHit : MonoBehaviour {
 
             for (int i = 0; i< numCollisionEvents; i++) {
                 if (rb) {
-                    print(collisionEvents[i]);
                     Vector3 pos = collisionEvents[i].intersection;
                     Vector3 normal = collisionEvents[i].normal;
 

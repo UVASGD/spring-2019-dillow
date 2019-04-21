@@ -82,9 +82,10 @@ public class LaserGun : MonoBehaviour {
         aimDirection = aimDirection.normalized;
 
         if (shot_fx)
-            Fx_Spawner.instance.SpawnFX(shot_fx, barrel.transform.position, barrel.transform.forward);
+            Fx_Spawner.instance.SpawnFX(shot_fx, barrel.transform.position, aimDirection);
 
-        barrel.transform.LookAt(target.transform);
+        if (target)
+            barrel.transform.LookAt(target.transform);
     }
 
     public void Charge(float aim_time) {
