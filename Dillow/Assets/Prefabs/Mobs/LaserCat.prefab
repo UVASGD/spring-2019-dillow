@@ -155,7 +155,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: -1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0000000047440523, y: 0.0023929763, z: 0.0000000067230763}
+  m_ConnectedAnchor: {x: 4.3656922e-11, y: 0.002392982, z: 0}
   serializedVersion: 2
   m_SwingAxis: {x: 1, y: 0, z: 0}
   m_TwistLimitSpring:
@@ -450,7 +450,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: -1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.00000001875742, y: 0.00072181004, z: -0.000000016356356}
+  m_ConnectedAnchor: {x: 2.1827876e-10, y: 0.00072180707, z: -4.656614e-10}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: -1}
   m_TwistLimitSpring:
@@ -714,7 +714,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.00077914546, y: -0.0003967686, z: 0.0002825256}
+  m_ConnectedAnchor: {x: -0.0007791394, y: -0.0003967627, z: 0.00028249397}
   serializedVersion: 2
   m_SwingAxis: {x: 1, y: 0, z: 0}
   m_TwistLimitSpring:
@@ -885,7 +885,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: -1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0000000121653905, y: 0.0023953195, z: -0.000000016181719}
+  m_ConnectedAnchor: {x: -2.9103804e-11, y: 0.0023953377, z: -1.16415245e-10}
   serializedVersion: 2
   m_SwingAxis: {x: 1, y: 0, z: 0}
   m_TwistLimitSpring:
@@ -994,7 +994,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: -1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.00020833415, y: 0.0028278485, z: 0.00047358114}
+  m_ConnectedAnchor: {x: -0.0002083616, y: 0.0028278453, z: 0.00047353725}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: -1, z: 0}
   m_TwistLimitSpring:
@@ -1227,7 +1227,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.000000034742698, y: 0.00071378826, z: 0.00021421525}
+  m_ConnectedAnchor: {x: -2.1827873e-11, y: 0.0007137953, z: 0.00021416505}
   serializedVersion: 2
   m_SwingAxis: {x: -1, y: 0, z: 0}
   m_TwistLimitSpring:
@@ -1611,7 +1611,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.00077915133, y: -0.0003967699, z: 0.00024357131}
+  m_ConnectedAnchor: {x: 0.00077913934, y: -0.0003967631, z: 0.00024354603}
   serializedVersion: 2
   m_SwingAxis: {x: 1, y: 0, z: 0}
   m_TwistLimitSpring:
@@ -1922,6 +1922,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   tagH: {fileID: 0}
   damager: {fileID: 0}
+  impact_fx: {fileID: 0}
   can_be_damaged: 1
   next_hit_kills: 0
   dead: 0
@@ -2087,7 +2088,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.00078240735, y: 0.0033174483, z: 0.0005945449}
+  m_ConnectedAnchor: {x: -0.000782433, y: 0.0033174476, z: 0.0005945646}
   serializedVersion: 2
   m_SwingAxis: {x: -1, y: 0, z: 0}
   m_TwistLimitSpring:
@@ -2258,7 +2259,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: -1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0013826385, y: 0.0021698205, z: 0.00020470598}
+  m_ConnectedAnchor: {x: -0.0013826558, y: 0.0021698195, z: 0.00020476477}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -2398,7 +2399,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000000607106, y: 0.0013032423, z: -0.000000015017578}
+  m_ConnectedAnchor: {x: -2.3283067e-10, y: 0.0013032244, z: -1.7462301e-10}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -2744,11 +2745,10 @@ MonoBehaviour:
   range: 50
   barrel: {fileID: 7759188589633424186}
   aim_laser: {fileID: 1892933627801520009}
-  activated: 0
   shot_fx: {fileID: 1933249818927496043, guid: a4f5683fc11dd89449c2942df9247a7a, type: 3}
-  hit_fx: {fileID: 8823223493712109963, guid: 206c84bce083a494c86ec5d06642816d, type: 3}
   charge_fx: {fileID: 990818571766754975, guid: 0c15cf3bce6bbd645b6753537c99082d,
     type: 3}
+  activated: 0
 --- !u!1 &8203226965683662146
 GameObject:
   m_ObjectHideFlags: 0
