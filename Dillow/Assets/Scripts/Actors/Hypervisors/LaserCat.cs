@@ -12,6 +12,9 @@ public class LaserCat : Mob
 
     float aim_timer; //current timer
     float aim_max = 1.75f; //time it takes to fire
+    int fire_amount = 5;
+    float fire_interval = 0.25f;
+    bool firing = false;
 
     bool can_act = true; // lock for when game is in transition state
 
@@ -102,11 +105,9 @@ public class LaserCat : Mob
                     gun.Charge(aim_timer);
                 }
             }
-            else
+            else if (!firing)
             {
-                anim.SetTrigger(blasting_hash);
-                gun.Fire(target);
-                aim_timer = aim_max;
+                StartCoroutine(Fire());
             }
         }
         else
@@ -138,4 +139,19 @@ public class LaserCat : Mob
             noticer.UnnoticeEvent -= OnUnnotice;
         }
     }
+
+    IEnumerator Fire()
+    {
+        firing = true;
+        int count = fire_amount;
+        while (count > 0)
+        {
+            anim.SetTrigger(blasting_hash);
+            gun.Fire(target);
+            count--;
+            yield return new WaitForSeconds(fire_interval);
+        }
+        firing = false;
+        aim_timer = aim_max;
+    } 
 }
