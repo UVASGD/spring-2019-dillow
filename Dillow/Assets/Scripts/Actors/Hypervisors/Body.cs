@@ -23,7 +23,7 @@ public class Body : MonoBehaviour, IMortal
     {
         tagH = GetComponent<TagHandler>();
         rb = gameObject.GetMainRigidbody();
-        if (!rb.GetComponent<MainBody>())
+        if (!rb.gameObject.GetAnyComponent<MainBody>())
         {
             rb.gameObject.AddComponent<MainBody>().DeathEvent += Die;
         }
