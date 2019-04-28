@@ -3,10 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class MainMenuControl : MonoBehaviour {
 
-    public enum MenuState { Start, Options, Files, }
+    public enum MenuState {
+        Start,
+        Options,
+        Files,
+        Entry,
+    }
+
     public MenuState menuState;
+    private Animator anim;
 
     [Header("Start Menu items")]
     public Animator btnContinue, btnNewGame, btnOptions, btnQuit;
@@ -39,7 +47,7 @@ public class MainMenuControl : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         cursor = Vector2.zero;
-
+        anim = GetComponent<Animator>();
         startMenuButtons = new List<List<Tuple<Animator, Action>>>();
 
         // instantiate list of 3D buttons
@@ -49,11 +57,14 @@ public class MainMenuControl : MonoBehaviour {
         if (btnOptions) col.Add(new Tuple<Animator, Action>(btnOptions, OpenOptionsMenu));
         if (btnQuit) col.Add(new Tuple<Animator, Action>(btnQuit, Quit));
 
-        menuState = MenuState.Start;
+        menuState = MenuState.Entry;
+        lockInput = true;
     }
 
     // Update is called once per frame
     void Update() {
+        anim.SetInteger("State", (int)menuState);
+
         if (buttonDelay > 0) {
             buttonDelay -= Time.deltaTime;
             if (buttonDelay <= 0) buttonDelay = 0;
@@ -64,6 +75,11 @@ public class MainMenuControl : MonoBehaviour {
 
     public void ReleaseLock() {
         lockInput = false;
+    }
+
+    public void FinishEntry() {
+        menuState = MenuState.Start;
+        ReleaseLock();
     }
 
     /// <summary>
