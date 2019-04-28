@@ -61,7 +61,7 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-    void DoTrigger() {
+    public void DoTrigger() {
         if (chart != null) {
             if (body) body.Talk();
             chart.ExecuteBlock("Trigger");
