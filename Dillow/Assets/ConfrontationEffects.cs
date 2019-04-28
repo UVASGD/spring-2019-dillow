@@ -24,7 +24,6 @@ public class ConfrontationEffects : MonoBehaviour
     }
 
     public void Rumble(int _intensity = 1) {
-        Debug.Log("RUMBLE RUMBLE");
         intensity = _intensity;
         StartCoroutine("DoRumble");
     }
@@ -32,14 +31,10 @@ public class ConfrontationEffects : MonoBehaviour
     IEnumerator DoRumble() {
         particles.Play();
 
-        Debug.Log("AAAAAAAAAG");
-
         while (runTime < runLength) {
             runTime += Time.deltaTime;
             yield return null;
         }
-
-        Debug.Log("DONEA");
 
         runTime = 0f;
         particles.Stop();

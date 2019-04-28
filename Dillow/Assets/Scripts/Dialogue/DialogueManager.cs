@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fungus;
 
+[RequireComponent(typeof(Flowchart))]
 public class DialogueManager : MonoBehaviour
 {
     private static DialogueManager _instance;
@@ -19,7 +20,7 @@ public class DialogueManager : MonoBehaviour
     public Flowchart flowchart;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         flowchart = GetComponent<Flowchart>();
     }
