@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Menu Camera Blends
   m_EditorClassIdentifier: 
   m_CustomBlends:
-  - m_From: '**ANY CAMERA**'
-    m_To: 
+  - m_From: Entry View
+    m_To: Title View
     m_Blend:
       m_Style: 1
-      m_Time: 2
+      m_Time: 2.54
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
