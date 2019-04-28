@@ -43,6 +43,18 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _FlowMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Foam:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FoamGradient:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -66,19 +78,40 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _Depth: 0
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _EdgeLineWidth: 0
+    - _FlowMovementH: 0.1
+    - _FlowMovementV: 0.1
+    - _FlowPower: 0.5
+    - _FlowSpeed: 10
+    - _FoamFalloff: 0.2
+    - _FoamIntensity: 1
+    - _FoamSpeedH: 0
+    - _FoamSpeedV: 0
+    - _FoamSpread: 1
+    - _FoamSpreadH: 0
+    - _FoamSpreadV: 0
+    - _FoamStrength: 1
+    - _FoamTimeSpeed: 0
+    - _FpamOutlineFalloff: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _OpacityMinimum: 0.25
     - _Parallax: 0.02
+    - _ScaleFlow: 10
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _SwayFrequency: 1
+    - _SwayIntensity: 0.5
     - _TextureVisibility: 0.72
+    - _TilingDifference: 1.4
     - _UVSec: 0
     - _WaterHeight: 0
     - _WaveAmplitude: 1

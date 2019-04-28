@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WaterFoam
+  m_Shader: {fileID: 4800000, guid: 1a64fc887867f864dab0f40696f56582, type: 3}
+  m_ShaderKeywords: _EMISSION _TOGGLFLOWWITHOBJ_ON
+  m_LightmapFlags: 1
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _FlowMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Foam:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: b3b93417e764a48438369dfd5de14b56, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ReflectionTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Whitecap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Cutoff: 0.5
+    - _Depth: 2.21
+    - _EdgeLineWidth: 0
+    - _FarTesselationAmount: 2
+    - _FarTesselationCurve: 50
+    - _FlowMovementHorizontal: 0.1
+    - _FlowMovementVertical: 0.1
+    - _FlowPower: 0.5
+    - _FlowSpeed: 1
+    - _FoamFalloff: 0.2
+    - _FoamHorizontalSpeed: 0
+    - _FoamIntensity: 1
+    - _FoamOutlineFalloff: 1
+    - _FoamSpread: 1
+    - _FoamTimeSpeed: 0.009579911
+    - _FoamTransitionDistance: 100
+    - _FoamTransitionFade: 25
+    - _FoamVerticalSpeed: 0
+    - _Gloss: 0.9
+    - _Normal1HorizontalSpeed: 0.28
+    - _Normal1VerticalSpeed: 0.17
+    - _Normal2HorizSpeed: 0
+    - _Normal2VerticalSpeed: -0.16
+    - _NormalScrollSpeed: 0.29
+    - _NormalTilingDifference: 1.4
+    - _OpacityMinimum: 0.25
+    - _ReflectionDistortionIntensity: 0
+    - _ReflectionMax: 0.75
+    - _ReflectionMin: 0.25
+    - _ReflectionTint: 0
+    - _RefractionIntensity: 0
+    - _SwayFrequency: 1
+    - _SwayIntensity: 0.5
+    - _TesselationMax: 5
+    - _TesselationMin: 2
+    - _TogglFlowWithObj: 1
+    - _Wave1XDirection: 0
+    - _Wave1ZDirection: 0
+    - _Wave2XDirection: 0
+    - _Wave2ZDirection: 0
+    - _Wave3XDirection: 0
+    - _Wave3ZDirection: 0
+    - _WaveHeight: 1
+    - _WaveSharpness: 1
+    - _WaveSpeed: 1
+    - _WaveSpread: 1
+    - _WhitecapPower: 0.5
+    - _WhitecapScrollSpeedHorizontal: 0
+    - _WhitecapScrollSpeedVertical: 0
+    m_Colors:
+    - _Color: {r: 0, g: 0.5, b: 1, a: 1}
+    - _LightendColor: {r: 0, g: 0.6407184, b: 1, a: 1}
