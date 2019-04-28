@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 622158560442520246}
   m_Layer: 0
   m_Name: DurdleModel
-  m_TagString: Untagged
+  m_TagString: MainBody
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,11 +102,11 @@ GameObject:
   m_Component:
   - component: {fileID: 5693897314920661605}
   - component: {fileID: 5693897314920439366}
-  - component: {fileID: 5693897314920439364}
   - component: {fileID: 5693897314920439361}
   - component: {fileID: 2803803492277480576}
   - component: {fileID: 8202399391771659426}
   - component: {fileID: 6520175648875661312}
+  - component: {fileID: 1702102094615852234}
   m_Layer: 0
   m_Name: Durdle
   m_TagString: Untagged
@@ -145,22 +145,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chart: {fileID: 974273034987238140}
---- !u!54 &5693897314920439364
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5693897314920439365}
-  serializedVersion: 2
-  m_Mass: 3
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!82 &5693897314920439361
 AudioSource:
   m_ObjectHideFlags: 0
@@ -314,6 +298,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!54 &1702102094615852234
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5693897314920439365}
+  serializedVersion: 2
+  m_Mass: 3
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &291373508395147373
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -396,6 +396,16 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2330754081629179821, guid: 11200c418e1a52b45b8d08fdd36c23a2,
+        type: 3}
+      propertyPath: targetFlowchart
+      value: 
+      objectReference: {fileID: 974273034987238140}
+    - target: {fileID: 2330754081629179821, guid: 11200c418e1a52b45b8d08fdd36c23a2,
+        type: 3}
+      propertyPath: targetBlock
+      value: 
+      objectReference: {fileID: 217510027843726981}
     - target: {fileID: 2330754081629179797, guid: 11200c418e1a52b45b8d08fdd36c23a2,
         type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
@@ -411,16 +421,6 @@ PrefabInstance:
       propertyPath: InitialModule.startSize.scalar
       value: 0.6
       objectReference: {fileID: 0}
-    - target: {fileID: 2330754081629179821, guid: 11200c418e1a52b45b8d08fdd36c23a2,
-        type: 3}
-      propertyPath: targetFlowchart
-      value: 
-      objectReference: {fileID: 974273034987238140}
-    - target: {fileID: 2330754081629179821, guid: 11200c418e1a52b45b8d08fdd36c23a2,
-        type: 3}
-      propertyPath: targetBlock
-      value: 
-      objectReference: {fileID: 217510027843726981}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11200c418e1a52b45b8d08fdd36c23a2, type: 3}
 --- !u!4 &8227824728092240750 stripped
@@ -710,31 +710,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: DurdleChar
       objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
-      propertyPath: portraits.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
-      propertyPath: nameColor.r
-      value: 0.521
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
-      propertyPath: nameColor.g
-      value: 0.8679245
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
-      propertyPath: nameColor.b
-      value: 0.50356
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
-      propertyPath: nameText
-      value: Durdle
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
-      propertyPath: portraits.Array.data[0]
-      value: 
-      objectReference: {fileID: 21300000, guid: 54db20a4401dc214ea80c50e5343e054,
-        type: 3}
     - target: {fileID: 400000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -791,6 +766,31 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
+      propertyPath: portraits.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
+      propertyPath: nameColor.r
+      value: 0.521
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
+      propertyPath: nameColor.g
+      value: 0.8679245
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
+      propertyPath: nameColor.b
+      value: 0.50356
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
+      propertyPath: nameText
+      value: Durdle
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
+      propertyPath: portraits.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 54db20a4401dc214ea80c50e5343e054,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b20518d45890e4be59ba82946f88026c, type: 3}
 --- !u!4 &5693897314378529311 stripped
