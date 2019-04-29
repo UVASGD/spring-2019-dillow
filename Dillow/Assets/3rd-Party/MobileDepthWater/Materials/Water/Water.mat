@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Water
   m_Shader: {fileID: 4800000, guid: 12a8cc6f8fa05ab49a845b58de64c0ee, type: 3}
-  m_ShaderKeywords: _EMISSION
+  m_ShaderKeywords: _EMISSION _TOGGLFLOWWITHOBJ_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -43,11 +43,27 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _FlowMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Foam:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FoamGradient:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -59,36 +75,103 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ReflectionTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _WaterTex:
         m_Texture: {fileID: 2800000, guid: b3b93417e764a48438369dfd5de14b56, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Whitecap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _Depth: 0
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _EdgeLineWidth: 0
+    - _FarTesselationAmount: 2
+    - _FarTesselationCurve: 50
+    - _FlowMovementH: 0.1
+    - _FlowMovementHorizontal: 0.1
+    - _FlowMovementV: 0.1
+    - _FlowMovementVertical: 0.1
+    - _FlowPower: 0.5
+    - _FlowSpeed: 10
+    - _FoamFalloff: 0.2
+    - _FoamHorizontalSpeed: 0
+    - _FoamIntensity: 1
+    - _FoamOutlineFalloff: 1
+    - _FoamSpeedH: 0
+    - _FoamSpeedV: 0
+    - _FoamSpread: 1
+    - _FoamSpreadH: 0
+    - _FoamSpreadV: 0
+    - _FoamStrength: 1
+    - _FoamTimeSpeed: 0
+    - _FoamTransitionDistance: 100
+    - _FoamTransitionFade: 25
+    - _FoamVerticalSpeed: 0
+    - _FpamOutlineFalloff: 1
+    - _Gloss: 0.9
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
+    - _Normal1HorizontalSpeed: 0
+    - _Normal1VerticalSpeed: 0
+    - _Normal2HorizSpeed: 0
+    - _Normal2VerticalSpeed: 0
+    - _NormalScrollSpeed: 0.2
+    - _NormalTilingDifference: 1.4
     - _OcclusionStrength: 1
+    - _OpacityMinimum: 0.25
     - _Parallax: 0.02
+    - _ReflectionDistortionIntensity: 0
+    - _ReflectionMax: 0.75
+    - _ReflectionMin: 0.25
+    - _ReflectionTint: 0
+    - _RefractionIntensity: 0
+    - _ScaleFlow: 10
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _SwayFrequency: 1
+    - _SwayIntensity: 0.5
+    - _TesselationMax: 5
+    - _TesselationMin: 2
     - _TextureVisibility: 0.72
+    - _TilingDifference: 1.4
+    - _TogglFlowWithObj: 1
     - _UVSec: 0
     - _WaterHeight: 0
+    - _Wave1XDirection: 0
+    - _Wave1ZDirection: 0
+    - _Wave2XDirection: 0
+    - _Wave2ZDirection: 0
+    - _Wave3XDirection: 0
+    - _Wave3ZDirection: 0
     - _WaveAmplitude: 1
     - _WaveFrequency: 1
+    - _WaveHeight: 1
+    - _WaveSharpness: 1
     - _WaveSize: 1
+    - _WaveSpeed: 1
+    - _WaveSpread: 1
+    - _WhitecapPower: 0.5
+    - _WhitecapScrollSpeedHorizontal: 0
+    - _WhitecapScrollSpeedVertical: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DistTiling: {r: 0.2, g: 0.08, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _LightendColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _MoveDirection: {r: 0, g: 0, b: 0, a: 0}
     - _Tiling: {r: 0.01, g: 0.05, b: 0, a: 0}
     - _WaterColor: {r: 0.1372549, g: 0.5585406, b: 0.7921569, a: 1}

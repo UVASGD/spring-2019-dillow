@@ -1,115 +1,104 @@
-﻿using System.Collections;
+﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Locker : MonoBehaviour
-{
+public class Locker : MonoBehaviour {
     Camera main;
     Reticle reticle;
     List<GameObject> lockables = new List<GameObject>();
     public GameObject locked;
+
+    CinemachineTargetGroup ctg;
+    Transform playerLoc;
 
     float range;
 
     int layermask;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         main = Camera.main;
+        ctg = FindObjectOfType<CinemachineTargetGroup>();
+
         reticle = GameObject.FindGameObjectWithTag("Reticle").GetComponent<Reticle>();
         reticle.gameObject.SetActive(false);
-        range = GetComponent<SphereCollider>().radius*2f;
+        range = GetComponent<SphereCollider>().radius * 2f;
 
-        layermask = LayerMask.GetMask("Player", "Ground");
-        layermask = ~layermask;
+        layermask = ~LayerMask.GetMask("Player", "Ground");
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         transform.rotation = main.transform.rotation;
 
-        if (locked)
-        {
-            if (locked.HasTag(Tag.Dead))
-            {
+        if (locked) {
+            if (locked.HasTag(Tag.Dead)) {
                 Lock(false);
                 return;
             }
 
-            if (Vector3.Distance(transform.position, locked.transform.position) < range)
-            {
+            if (Vector3.Distance(transform.position, locked.transform.position) < range) {
                 reticle.SetReticle(main.WorldToScreenPoint(locked.transform.position));
-            }
-            else
-            {
+            } else {
                 Lock(false);
             }
-        }
-        else
-        {
+        } else {
             reticle.Deactivate();
         }
     }
 
-    public void Lock(bool lockon)
-    {
-        if (!lockon)
-        {
+    ///
+    public void Lock(bool lockon) {
+        if (!lockon) {
             reticle.Deactivate();
+            if (ctg) ctg.RemoveMember(locked.transform);
             locked = null;
-        }
-        else
-        {
+        } else {
             GameObject best_lock = locked;
             Vector3 target = (locked) ? locked.transform.position : Vector3.zero;
             float best_angle = float.PositiveInfinity;
-            for (int i = lockables.Count-1; i >= 0; i--)
-            {
+            for (int i = lockables.Count - 1; i >= 0; i--) {
                 GameObject lockable = lockables[i];
-                if (!lockable)
-                {
+                if (!lockable) {
                     lockables.Remove(lockable);
                     continue;
                 }
 
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, (lockable.transform.position - transform.position).normalized, out hit, range, layermask, QueryTriggerInteraction.Ignore))
-                {
-                    if (hit.collider.gameObject != locked)
-                    {
+                if (Physics.Raycast(transform.position, (lockable.transform.position - transform.position).normalized,
+                    out RaycastHit hit, range, layermask, QueryTriggerInteraction.Ignore)) {
+                    if (hit.collider.gameObject != locked) {
                         Vector3 lock_angle = Vector3.ProjectOnPlane(hit.collider.gameObject.transform.position - transform.position, Vector3.up);
                         Vector3 cam_angle = Vector3.ProjectOnPlane(main.transform.forward, Vector3.up);
                         float angle = Vector3.Angle(lock_angle, cam_angle);
-                        if (angle < best_angle)
-                        {
+                        if (angle < best_angle) {
                             best_angle = angle;
                             best_lock = hit.collider.gameObject;
                         }
                     }
                 }
             }
-            if (best_lock)
-            {
+            if (best_lock) {
+                if (locked != best_lock && locked)
+                    if (ctg) ctg.RemoveMember(locked.transform);
+                    
                 locked = best_lock;
                 reticle.gameObject.SetActive(true);
                 reticle.Activate(locked);
+                //if( locked != best_lock) 
+                if(ctg) ctg.AddMember(locked.transform, .5f, 1);
             }
         }
         DillowController.instance.body.lock_enemy = locked;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.GetComponent<ILockable>() != null)
-        {
+    private void OnTriggerEnter(Collider other) {
+        if (other.GetComponent<ILockable>() != null) {
             lockables.Add(other.gameObject);
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
+    private void OnTriggerExit(Collider other) {
         lockables.Remove(other.gameObject);
     }
 }

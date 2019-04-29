@@ -115,7 +115,7 @@ Shader "Custom/Diffuse Flat Snow Shader Vertex Colours" {
             }
             ENDCG
         }
-        Pass {
+        /* Pass {
             Name "FORWARD_DELTA"
             Tags {
                 "LightMode"="ForwardAdd"
@@ -207,7 +207,7 @@ Shader "Custom/Diffuse Flat Snow Shader Vertex Colours" {
                 return finalRGBA;
             }
             ENDCG
-        }
+        } */
     }
     FallBack "Diffuse"
     CustomEditor "ShaderForgeMaterialInspector"
