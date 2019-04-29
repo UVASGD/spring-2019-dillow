@@ -2555,6 +2555,51 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5329900621054365637, guid: 1b12373d00418478d8478fb860dd2b0b,
+        type: 3}
+      propertyPath: startOpen
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5329900621054365637, guid: 1b12373d00418478d8478fb860dd2b0b,
+        type: 3}
+      propertyPath: fadeColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5329900621054365637, guid: 1b12373d00418478d8478fb860dd2b0b,
+        type: 3}
+      propertyPath: fadeColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5329900621054365637, guid: 1b12373d00418478d8478fb860dd2b0b,
+        type: 3}
+      propertyPath: fadeColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5329900621054365637, guid: 1b12373d00418478d8478fb860dd2b0b,
+        type: 3}
+      propertyPath: animateOnStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5329900621054365637, guid: 1b12373d00418478d8478fb860dd2b0b,
+        type: 3}
+      propertyPath: speed
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4379296252567222757, guid: 1b12373d00418478d8478fb860dd2b0b,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4379296252567222757, guid: 1b12373d00418478d8478fb860dd2b0b,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4379296252567222757, guid: 1b12373d00418478d8478fb860dd2b0b,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b12373d00418478d8478fb860dd2b0b, type: 3}
 --- !u!4 &633295745 stripped
@@ -3244,7 +3289,7 @@ MonoBehaviour:
   m_Follow: {fileID: 0}
   m_AnimatedTarget: {fileID: 868343154}
   m_LayerIndex: 0
-  m_ShowDebugText: 1
+  m_ShowDebugText: 0
   m_ChildCameras:
   - {fileID: 1504475951}
   - {fileID: 1387337758}
