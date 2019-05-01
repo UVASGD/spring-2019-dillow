@@ -39,7 +39,8 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance;
 
     public static readonly string SAVE_FOLDER = "/Saves";
-    private static string dataSubpath = SAVE_FOLDER + "/data.json";
+    public static string currentSaveFile = "data.json";
+    private static string DataSubpath => SAVE_FOLDER + "/" + currentSaveFile;
 
     public GameObject player;
     public Vector3 playerSpawnLocation;
@@ -85,12 +86,12 @@ public class GameManager : MonoBehaviour {
         );
 
         string jsonData = JsonUtility.ToJson(saveData);
-        string filePath = Application.dataPath + dataSubpath;
+        string filePath = Application.dataPath + DataSubpath;
         File.WriteAllText(filePath, jsonData);
     }
 
     public static void Load () {
-        string filePath = Application.dataPath + dataSubpath;
+        string filePath = Application.dataPath + DataSubpath;
         //print("Loading to: " + filePath);
 
         if (File.Exists(filePath)) {
@@ -128,13 +129,13 @@ public class GameManager : MonoBehaviour {
         );
 
         string jsonData = JsonUtility.ToJson(saveData);
-        string filePath = Application.dataPath + dataSubpath;
+        string filePath = Application.dataPath + DataSubpath;
         File.WriteAllText(filePath, jsonData);
     }
 #endif
 
     public static SaveData PreLoad() {
-        string filePath = Application.dataPath + dataSubpath;
+        string filePath = Application.dataPath + DataSubpath;
         return File.Exists(filePath) ? JsonUtility.FromJson<SaveData>(File.ReadAllText(filePath)) 
             : new SaveData();
     }

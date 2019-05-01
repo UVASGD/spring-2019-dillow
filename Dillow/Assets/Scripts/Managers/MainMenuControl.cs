@@ -36,15 +36,22 @@ public class MainMenuControl : MonoBehaviour {
     [Header("Save Menu")]
     public List<FileOption> fileOptions;
 
+    /// <summary> deprecate ME! </summary>
     private int fileCount;
 
     [Header("Defaults")]
-    public Scene FirstIsland;
     public Sprite emptyFileSprite;
     public List<Sprite> saveFileSprites;
+    public string FirstIsland;
 
+    /// <summary>
+    /// used for locking input between viewing transitions
+    /// </summary>
     private bool IsLocked => transitionDelay > 0;
     
+    /// <summary>
+    /// The start button for the current menu
+    /// </summary>
     public ThreeDButton Menu {
         get {
             switch (menuState) {
@@ -55,6 +62,7 @@ public class MainMenuControl : MonoBehaviour {
         }
     }
 
+    // delay constants
     private const float BTN_DELAY = 0.35f;
     private const float TRA_DELAY = 1.5f;
 
@@ -68,15 +76,16 @@ public class MainMenuControl : MonoBehaviour {
         instance = this;
         StartCoroutine(LoadSaveFiles());
     }
-
-    // Start is called before the first frame update
+    
     void Start() {
         anim = GetComponent<Animator>();
         
         menuState = MenuState.Entry;
         cursor = Menu;
 
+        AudioManager.PlayMusic("Main Menu", fadeDuration:10f/3f);
         forceLockInput = true;
+        // make sure to unlock input by the time the game has finished fading in
         FadeController.FadeInCompletedEvent += FinishEntry;
     }
 
@@ -101,6 +110,9 @@ public class MainMenuControl : MonoBehaviour {
 
     #region ================= UNIVERSAL =================
 
+    /// <summary>
+    /// releases a manual lock
+    /// </summary>
     public void ReleaseLock() {
         forceLockInput = false;
     }
@@ -117,7 +129,7 @@ public class MainMenuControl : MonoBehaviour {
     /// this is handled largely by keyboard/controller input
     /// </summary>
     public void HandleInput() {
-        // navigate the menu
+        // horizontal control
         if (buttonDelay == 0) {
             if (Input.GetAxis("Horizontal") > 0 && cursor.right) {
                 // deactivate last button
@@ -133,6 +145,7 @@ public class MainMenuControl : MonoBehaviour {
                 buttonDelay = BTN_DELAY;
             }
 
+            // vertical control
             if (Input.GetAxis("Vertical") < 0 && cursor.down) {
                 cursor.Deactivate();
                 cursor = cursor.down;
@@ -153,6 +166,11 @@ public class MainMenuControl : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// Switch the submenu; basically triggers the cinemachine to move to
+    /// the new state and activates/deactivates the proper buttons
+    /// </summary>
+    /// <param name="newState"></param>
     private void ChangeState(MenuState newState) {
         cursor.Deactivate();
         menuState = newState;
@@ -182,14 +200,34 @@ public class MainMenuControl : MonoBehaviour {
 
     private SaveData dataToLoad;
 
+    /// <summary>
+    /// preload all save data files and set the File Options to them;
+    /// this is pretty trivial since there is a max number of files
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator LoadSaveFiles() {
         yield return null;
 
-
+        List<FileInfo> datas = new List<FileInfo>();
         DirectoryInfo dir = new DirectoryInfo(Application.dataPath + GameManager.SAVE_FOLDER);
         foreach(FileInfo file in dir.GetFiles()) {
-            //if(file.Extension.ToLower()!= "")
-            print(file.Extension);
+            if (file.Extension.ToLower() == ".json" && !file.Name.Contains("temp"))
+                datas.Add(file);
+        }
+
+        foreach(FileOption option in fileOptions) {
+            if (datas.Count == 0) option.SetAsEmpty();
+            else {
+                try {
+                    option.SetSaveData((SaveData)JsonUtility.FromJson(datas[0].FullName,
+                        typeof(SaveData)));
+                    datas.RemoveAt(0);
+                    fileCount++;
+                } catch(Exception e) {
+                    print("Error on Loading: " + datas[0]);
+                    datas.RemoveAt(0);
+                }
+            }
         }
     }
 
@@ -197,9 +235,9 @@ public class MainMenuControl : MonoBehaviour {
         ChangeState(MenuState.Files);
     }
 
-    public void LoadSelectedSaveFile(SaveData dat) {
+    public void LoadSelectedSaveFile(FileOption option) {
         FadeController.FadeOutCompletedEvent += CommitLoadSave;
-        dataToLoad = dat;
+        dataToLoad = option.data;
         FadeController.instance.DelayFadeOut(time:1f);
     }
 
@@ -214,24 +252,34 @@ public class MainMenuControl : MonoBehaviour {
 
     #region ================= NEW SAVE =================
 
+    /// <summary>
+    /// Creates a temporary save file 
+    /// </summary>
     public void NewSave() {
         ChangeState(MenuState.NewGame);
         FadeController.FadeOutCompletedEvent += CommitNewGame;
         FadeController.instance.DelayFadeOut(time: 1f, speed:1/6f);
+        AudioManager.PlayMusic("", fadeDuration: 3f);
         forceLockInput = true;
 
         int N = Enum.GetValues(typeof(CollectibleType)).Cast<int>().Max() + 1;
         int[] saveCollectibleCounts = new int[N];
         SaveData dat = new SaveData(
             Vector3.zero,
-            FirstIsland.name,
+            FirstIsland,
             null,
             new List<ulong>(),
             saveCollectibleCounts,
             new List<int>()
         );
 
+        // TODO: allow the player to choose the icon for their game!
+        dat.saveIconIndex = UnityEngine.Random.Range(0, saveFileSprites.Count);
+        
         string jsonData = JsonUtility.ToJson(dat);
+        string filePath = Application.dataPath + GameManager.SAVE_FOLDER 
+            + "temporary";
+
     }
 
     public void CommitNewGame() {
@@ -241,7 +289,7 @@ public class MainMenuControl : MonoBehaviour {
 
 
         // Load Scene
-        SceneManager.LoadScene(FirstIsland.name);
+        SceneManager.LoadScene(FirstIsland);
     }
 
     #endregion
@@ -253,6 +301,7 @@ public class MainMenuControl : MonoBehaviour {
         forceLockInput = true;
         FadeController.FadeOutCompletedEvent = CommitQuit;
         FadeController.instance.FadeOut(Color.black);
+        AudioManager.PlayMusic("", fadeDuration: 1f);
     }
 
     public void CommitQuit() {
