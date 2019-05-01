@@ -81,7 +81,8 @@ public class FadeController : MonoBehaviour {
     /// <param name="auto">Whether or not to start fading in automatically</param>
     public void FadeOut(Color fadeColor, float speed = 1f, bool auto = false) {
         lastColor = this.fadeColor;
-        this.fadeColor = fadeColor;
+        fadeImage.color = this.fadeColor = fadeColor;
+        
         FadeOut(speed, auto);
     }
 
@@ -145,7 +146,7 @@ public class FadeController : MonoBehaviour {
     /// </summary>
     public void HandleFadedIn() {
         if (OverrideColor) {
-            fadeColor = (Color)lastColor;
+            fadeImage.color = fadeColor = (Color)lastColor;
         }
         FadeInCompletedEvent?.Invoke();
     }

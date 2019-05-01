@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
 public class MainMenuControl : MonoBehaviour {
+
+    public static MainMenuControl instance;
 
     public enum MenuState {
         Start,
@@ -28,6 +33,16 @@ public class MainMenuControl : MonoBehaviour {
     private float buttonDelay;
     private float transitionDelay;
 
+    [Header("Save Menu")]
+    public List<FileOption> fileOptions;
+
+    private int fileCount;
+
+    [Header("Defaults")]
+    public Scene FirstIsland;
+    public Sprite emptyFileSprite;
+    public List<Sprite> saveFileSprites;
+
     private bool IsLocked => transitionDelay > 0;
     
     public ThreeDButton Menu {
@@ -43,13 +58,23 @@ public class MainMenuControl : MonoBehaviour {
     private const float BTN_DELAY = 0.35f;
     private const float TRA_DELAY = 1.5f;
 
+    private void Awake() {
+        if (null == instance) {
+            instance = this;
+        } else {
+            Destroy(gameObject);
+        }
+
+        instance = this;
+        StartCoroutine(LoadSaveFiles());
+    }
+
     // Start is called before the first frame update
     void Start() {
         anim = GetComponent<Animator>();
         
         menuState = MenuState.Entry;
         cursor = Menu;
-        cursor.Activate();
 
         forceLockInput = true;
         FadeController.FadeInCompletedEvent += FinishEntry;
@@ -73,6 +98,9 @@ public class MainMenuControl : MonoBehaviour {
         if (!forceLockInput && !IsLocked) HandleInput();
     }
 
+
+    #region ================= UNIVERSAL =================
+
     public void ReleaseLock() {
         forceLockInput = false;
     }
@@ -80,6 +108,7 @@ public class MainMenuControl : MonoBehaviour {
     public void FinishEntry() {
         FadeController.FadeInCompletedEvent -= FinishEntry;
         menuState = MenuState.Start;
+        cursor.Activate();
         ReleaseLock();
     }
 
@@ -137,17 +166,41 @@ public class MainMenuControl : MonoBehaviour {
         ChangeState(MenuState.Start);
     }
 
-    public void OpenContinueMenu() {
-        ChangeState(MenuState.Files);
-    }
+    #endregion
+
+
+    #region ================= OPTIONS =================
 
     public void OpenOptionsMenu() {
         ChangeState(MenuState.Options);
     }
 
-    public void LoadSelectedSaveFile() {
+    #endregion
+
+
+    #region ================= LOAD MENU =================
+
+    private SaveData dataToLoad;
+
+    public IEnumerator LoadSaveFiles() {
+        yield return null;
+
+
+        DirectoryInfo dir = new DirectoryInfo(Application.dataPath + GameManager.SAVE_FOLDER);
+        foreach(FileInfo file in dir.GetFiles()) {
+            //if(file.Extension.ToLower()!= "")
+            print(file.Extension);
+        }
+    }
+
+    public void OpenContinueMenu() {
+        ChangeState(MenuState.Files);
+    }
+
+    public void LoadSelectedSaveFile(SaveData dat) {
         FadeController.FadeOutCompletedEvent += CommitLoadSave;
-        FadeController.instance.FadeOut();
+        dataToLoad = dat;
+        FadeController.instance.DelayFadeOut(time:1f);
     }
 
     public void CommitLoadSave() {
@@ -156,18 +209,45 @@ public class MainMenuControl : MonoBehaviour {
         // load save file and start 
     }
 
+    #endregion
+
+
+    #region ================= NEW SAVE =================
+
     public void NewSave() {
         ChangeState(MenuState.NewGame);
         FadeController.FadeOutCompletedEvent += CommitNewGame;
-        FadeController.instance.DelayFadeOut(time: 0.5f);
+        FadeController.instance.DelayFadeOut(time: 1f, speed:1/6f);
         forceLockInput = true;
+
+        int N = Enum.GetValues(typeof(CollectibleType)).Cast<int>().Max() + 1;
+        int[] saveCollectibleCounts = new int[N];
+        SaveData dat = new SaveData(
+            Vector3.zero,
+            FirstIsland.name,
+            null,
+            new List<ulong>(),
+            saveCollectibleCounts,
+            new List<int>()
+        );
+
+        string jsonData = JsonUtility.ToJson(dat);
     }
 
     public void CommitNewGame() {
         FadeController.FadeOutCompletedEvent -= CommitNewGame;
 
-        // create a new save
+        // Initialize Proper GameKit
+
+
+        // Load Scene
+        SceneManager.LoadScene(FirstIsland.name);
     }
+
+    #endregion
+
+
+    #region ================= QUIT =================
 
     public void Quit() {
         forceLockInput = true;
@@ -176,7 +256,13 @@ public class MainMenuControl : MonoBehaviour {
     }
 
     public void CommitQuit() {
-        print("hufehiugfrhigfdsijefrsijgdrsij");
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+#if UNITY_STANDALONE
         Application.Quit();
+#endif
     }
+
+    #endregion
 }
