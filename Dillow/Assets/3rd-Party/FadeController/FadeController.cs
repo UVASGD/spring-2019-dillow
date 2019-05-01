@@ -21,9 +21,13 @@ public class FadeController : MonoBehaviour {
     public Color fadeColor = Color.black;
     public Image fadeImage;
     private bool automatic;
+    private float delayFade;
 
     public static FadeEvent FadeOutCompletedEvent, FadeInCompletedEvent, 
         FadeInStartedEvent, FadeOutStartedEvent;
+
+    private object lastColor;
+    private bool OverrideColor => lastColor != null;
 
     /// <summary>
     /// Whether the fade controller has completely faded out
@@ -71,10 +75,50 @@ public class FadeController : MonoBehaviour {
     }
 
     /// <summary>
+    /// Start the fade out animation with a different color than the default.
+    /// Default transition lasts 1/3 s
+    /// </summary>
+    /// <param name="auto">Whether or not to start fading in automatically</param>
+    public void FadeOut(Color fadeColor, float speed = 1f, bool auto = false) {
+        lastColor = this.fadeColor;
+        fadeImage.color = this.fadeColor = fadeColor;
+        
+        FadeOut(speed, auto);
+    }
+
+    /// <summary>
     /// Start the fade in animation. Default transition lasts 1/3 s
     /// </summary>
     public void FadeIn() {
         FadeIn(1f);
+    }
+
+    /// <summary>
+    /// Fade in after a delay
+    /// </summary>
+    /// <param name="time">time in seconds to delay</param>
+    /// <param name="speed"></param>
+    public void DelayFadeIn(float time = 1f, float speed = 1f) {
+        StartCoroutine(DelayFadeInCoroutine(time, speed));
+    }
+
+    private IEnumerator DelayFadeInCoroutine(float time, float speed) {
+        yield return new WaitForSeconds(time);
+        FadeIn(speed: speed);
+    }
+
+    /// <summary>
+    /// Fade out after a delay
+    /// </summary>
+    /// <param name="time">time in seconds to delay</param>
+    /// <param name="speed"></param>
+    public void DelayFadeOut(float time = 1f, float speed = 1f) {
+        StartCoroutine(DelayFadeOutCoroutine(time, speed));
+    }
+
+    private IEnumerator DelayFadeOutCoroutine(float time, float speed) {
+        yield return new WaitForSeconds(time);
+        FadeOut(speed: speed);
     }
 
     /// <summary>
@@ -101,6 +145,9 @@ public class FadeController : MonoBehaviour {
     /// Triggered when animation has completely faded in
     /// </summary>
     public void HandleFadedIn() {
+        if (OverrideColor) {
+            fadeImage.color = fadeColor = (Color)lastColor;
+        }
         FadeInCompletedEvent?.Invoke();
     }
 }

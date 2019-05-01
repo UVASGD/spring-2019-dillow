@@ -728,6 +728,11 @@ PrefabInstance:
       propertyPath: startOpen
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5329900621454375702, guid: ec20cc7b3693a2d4fa11927aec53ae65,
+        type: 3}
+      propertyPath: animateOnStart
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec20cc7b3693a2d4fa11927aec53ae65, type: 3}
 --- !u!224 &7441281107283241649 stripped
@@ -849,6 +854,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dillow
       objectReference: {fileID: 0}
+    - target: {fileID: 415973999715639682, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01,
+        type: 3}
+      propertyPath: dillow_power
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 415973999715639682, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01,
+        type: 3}
+      propertyPath: ball_drag
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 415973999715639682, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01,
+        type: 3}
+      propertyPath: b_staticFriction
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 415973999715639682, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01,
+        type: 3}
+      propertyPath: b_dynoFriction
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 6950705364826221979, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -903,26 +928,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 415973999715639682, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01,
-        type: 3}
-      propertyPath: dillow_power
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 415973999715639682, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01,
-        type: 3}
-      propertyPath: ball_drag
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 415973999715639682, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01,
-        type: 3}
-      propertyPath: b_staticFriction
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 415973999715639682, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01,
-        type: 3}
-      propertyPath: b_dynoFriction
-      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44a2ca1008ed843fbb4dadd6e0ee1b01, type: 3}
