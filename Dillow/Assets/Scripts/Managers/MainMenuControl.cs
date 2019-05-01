@@ -34,11 +34,13 @@ public class MainMenuControl : MonoBehaviour {
     private float buttonDelay;
     private float transitionDelay;
 
+    private const string HorizontalAxis1 = "Horizontal";
+    private const string HorizontalAxis2 = "Camera X";
+    private const string VerticalAxis1 = "Vertical";
+    private const string VerticalAxis2 = "Camera Y";
+
     [Header("Save Menu")]
     public List<FileOption> fileOptions;
-
-    /// <summary> deprecate ME! </summary>
-    private int fileCount;
 
     [Header("Defaults")]
     public AudioClip menuSound;
@@ -139,14 +141,16 @@ public class MainMenuControl : MonoBehaviour {
         // horizontal control
         if (buttonDelay == 0) {
             var old = cursor;
-            if (Input.GetAxis("Horizontal") > 0 && cursor.right) {
+            if ((Input.GetAxis(HorizontalAxis1) > 0
+                || Input.GetAxis(HorizontalAxis2) > 0) && cursor.right) {
                 // deactivate last button
                 cursor.Deactivate();
                 cursor = cursor.right;
                 // activate new button
                 cursor.Activate();
                 buttonDelay = BTN_DELAY;
-            } else if (Input.GetAxis("Horizontal") < 0 && cursor.left) {
+            } else if ((Input.GetAxis(HorizontalAxis1) < 0
+                || Input.GetAxis(HorizontalAxis2) < 0) && cursor.left) {
                 cursor.Deactivate();
                 cursor = cursor.left;
                 cursor.Activate();
@@ -154,12 +158,14 @@ public class MainMenuControl : MonoBehaviour {
             }
 
             // vertical control
-            if (Input.GetAxis("Vertical") < 0 && cursor.down) {
+            if ((Input.GetAxis(VerticalAxis1) < 0
+                || Input.GetAxis(VerticalAxis2) < 0) && cursor.down) {
                 cursor.Deactivate();
                 cursor = cursor.down;
                 cursor.Activate();
                 buttonDelay = BTN_DELAY;
-            } else if (Input.GetAxis("Vertical") > 0 && cursor.up) {
+            } else if ((Input.GetAxis(VerticalAxis1) > 0
+                || Input.GetAxis(VerticalAxis2) > 0) && cursor.up) {
                 cursor.Deactivate();
                 cursor = cursor.up;
                 cursor.Activate();
@@ -231,15 +237,15 @@ public class MainMenuControl : MonoBehaviour {
             if (datas.Count == 0) option.SetAsEmpty();
             else {
                 try {
-                    SaveData data = (SaveData)JsonUtility.FromJson(datas[0].FullName,
-                        typeof(SaveData));
+                    SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(datas[0].ToString()));
                     data.fileName = datas[0].FullName;
                     option.SetSaveData(data);
                     datas.RemoveAt(0);
-                    fileCount++;
+                    GameManager.fileCount++;
                 } catch(Exception e) {
-                    print("Error on Loading: " + datas[0]);
+                    print("Error on Loading: " + datas[0].ToString());
                     Debug.LogError(e);
+                    option.SetAsEmpty();
                     datas.RemoveAt(0);
                 }
             }
@@ -267,7 +273,7 @@ public class MainMenuControl : MonoBehaviour {
         dataToLoad = option.data;
         FadeController.instance.DelayFadeOut(time:1f, speed:1/6f);
         StartCoroutine(DelayedFadeOut(1f, 2f));
-        GameManager.instance.currentSaveFile = dataToLoad.fileName;
+        GameManager.currentSaveFile = dataToLoad.fileName;
     }
 
     /// <summary>
@@ -322,7 +328,7 @@ public class MainMenuControl : MonoBehaviour {
             + TEMP_FILE;
         File.WriteAllText(filePath, jsonData);
 
-        GameManager.instance.currentSaveFile = TEMP_FILE;
+        GameManager.currentSaveFile = TEMP_FILE;
     }
 
     public void CommitNewGame() {

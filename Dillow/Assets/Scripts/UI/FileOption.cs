@@ -26,12 +26,13 @@ public class FileOption : MonoBehaviour {
         data = dat;
         icon.sprite = MainMenuControl.instance.saveFileSprites[data.saveIconIndex];
         levelText.text = data.currentScene;
-        fileText.text = data.fileName;
+        var key = data.fileName.Contains("/") ? "/" : "\\";
+        fileText.text = data.fileName.Substring(data.fileName.LastIndexOf(key) + 1,
+            data.fileName.IndexOf(".json"));
     }
 
     public void SetAsEmpty() {
         icon.sprite = MainMenuControl.instance.emptyFileSprite;
         levelText.text = "Empty";
-        //fileText.text =
     }
 }

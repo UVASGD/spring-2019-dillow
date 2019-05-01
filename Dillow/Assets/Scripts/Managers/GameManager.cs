@@ -22,8 +22,7 @@ public class SaveData {
     public List<ulong> obtainedCollectibles;
     public int[] collectibleCounts;
     public List<int> abilities;
-
-    public SaveData() { }
+    
     public SaveData (Vector3 playerSpawnLocation, string currentScene, string targetScene, 
                      List<ulong> obtainedCollectibles, int[] collectibleCounts,
                      List<int> abilities) {
@@ -39,10 +38,11 @@ public class SaveData {
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
 
+    public static int fileCount;
     public static readonly string SAVE_FOLDER = "/Saves";
     public static readonly string TEST_LOC = "data.json";
-    public string currentSaveFile = TEST_LOC;
-    private string DataSubpath => SAVE_FOLDER + "/" + instance.currentSaveFile;
+    public static string currentSaveFile = TEST_LOC;
+    private static string DataSubpath => SAVE_FOLDER + "/" + currentSaveFile;
 
     public GameObject player;
     public Vector3 playerSpawnLocation;
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour {
         FadeController.FadeOutCompletedEvent += delegate { if (!spawned) StartCoroutine(RespawnCo()); };
     }
 
-    public void Save () {
+    public static void Save () {
         //print("Saving!");
         int N = Enum.GetValues(typeof(CollectibleType)).Cast<int>().Max() + 1;
         int[] saveCollectibleCounts = new int[N];
@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour {
         File.WriteAllText(filePath, jsonData);
     }
 
-    public void Load () {
+    public static void Load () {
         string filePath = Application.dataPath + DataSubpath;
         //print("Loading to: " + filePath);
 
@@ -139,14 +139,14 @@ public class GameManager : MonoBehaviour {
     public static SaveData PreLoad() {
         string filePath = Application.dataPath + SAVE_FOLDER + "/" + TEST_LOC;
         return File.Exists(filePath) ? JsonUtility.FromJson<SaveData>(File.ReadAllText(filePath)) 
-            : new SaveData();
+            : new SaveData(Vector3.zero, "","", null,null, null);
     }
 
     public static void AddCollectible(Collectible collectible)
     {
         obtainedCollectibles.Add(collectible.id);
         collectibleCounts[collectible.type]++;
-        instance.Save();
+        Save();
 
         switch (collectible.type) {
             case CollectibleType.Gear:
@@ -161,7 +161,9 @@ public class GameManager : MonoBehaviour {
     }
 
     public static bool RemoveCollectible(Collectible collectible) {
-        return obtainedCollectibles.Remove(collectible.id);
+        bool success =  obtainedCollectibles.Remove(collectible.id);
+        if(success) collectibleCounts[collectible.type]--;
+        return success;
     }
 
     public void Respawn()
