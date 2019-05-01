@@ -10,45 +10,32 @@ public class MainMenuControl : MonoBehaviour {
         Start,
         Options,
         Files,
+        NewGame,
         Entry,
     }
 
     public MenuState menuState;
     private Animator anim;
 
-    [Header("Start Menu items")]
-    public Animator btnContinue;
-    public Animator btnNewGame;
-    public Animator btnOptions;
-    public Animator btnQuit;
+    [Header("Root Menu Buttons")]
+    public ThreeDButton startMenu;
+    public ThreeDButton optionMenu;
+    public ThreeDButton fileMenu;
 
-    [Header("Options Menu Items")]
-    public Animator btnAudio;
-    public Animator btnVisual;
-    public Animator btnControls;
-    public Animator btnOpBack;
-
-    // These are grid mappings of a buttons
-    private List<List<Tuple<Animator, Action>>> startMenuButtons, optionButtons, fileButtons;
-    
     [Header("Control")]
     public bool forceLockInput;
-    private Vector2 cursor;
+    private ThreeDButton cursor;
     private float buttonDelay;
     private float transitionDelay;
 
     private bool IsLocked => transitionDelay > 0;
-
-    /// <summary> The cursor boundaries of the current menu </summary>
-    public Vector2 CursorBounds => new Vector2(Menu.Count, Menu[(int)cursor.x].Count);
-    public List<List<Tuple<Animator, Action>>> Menu {
+    
+    public ThreeDButton Menu {
         get {
             switch (menuState) {
-                case MenuState.Options:
-                    return optionButtons;
-                case MenuState.Files:
-                    return fileButtons;
-                default: return startMenuButtons;
+                case MenuState.Options: return optionMenu;
+                case MenuState.Files: return fileMenu;
+                default: return startMenu;
             }
         }
     }
@@ -58,38 +45,14 @@ public class MainMenuControl : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        cursor = Vector2.zero;
         anim = GetComponent<Animator>();
-        startMenuButtons = new List<List<Tuple<Animator, Action>>>();
-        optionButtons = new List<List<Tuple<Animator, Action>>>();
-        fileButtons = new List<List<Tuple<Animator, Action>>>();
-
-        // instantiate list of 3D buttons
-        List<Tuple<Animator, Action>> col = new List<Tuple<Animator, Action>>();
-        if (btnContinue) col.Add(new Tuple<Animator, Action>(btnContinue, ContinueLastSave));
-        if (btnNewGame) col.Add(new Tuple<Animator, Action>(btnNewGame, NewSave));
-        if (btnOptions) col.Add(new Tuple<Animator, Action>(btnOptions, OpenOptionsMenu));
-        if (btnQuit) col.Add(new Tuple<Animator, Action>(btnQuit, Quit));
-        startMenuButtons.Add(col);
-
-        col = new List<Tuple<Animator, Action>>();
-        if (btnAudio) col.Add(new Tuple<Animator, Action>(btnAudio, delegate { /*Do a thing*/ }));
-        optionButtons.Add(col);
         
-        col = new List<Tuple<Animator, Action>>();
-        if (btnVisual) col.Add(new Tuple<Animator, Action>(btnVisual, delegate { /*Do a thing*/ }));
-        optionButtons.Add(col);
-
-        col = new List<Tuple<Animator, Action>>();
-        if (btnControls) col.Add(new Tuple<Animator, Action>(btnControls, delegate { /*Do a thing*/ }));
-        optionButtons.Add(col);
-
-        col = new List<Tuple<Animator, Action>>();
-        if (btnOpBack) col.Add(new Tuple<Animator, Action>(btnOpBack, BackToStart));
-        optionButtons.Add(col);
-
         menuState = MenuState.Entry;
-        startMenuButtons[0][0].Item1.SetBool("Active", true);
+        cursor = Menu;
+        cursor.Activate();
+
+        forceLockInput = true;
+        FadeController.FadeInCompletedEvent += FinishEntry;
     }
 
     // Update is called once per frame
@@ -115,6 +78,7 @@ public class MainMenuControl : MonoBehaviour {
     }
 
     public void FinishEntry() {
+        FadeController.FadeInCompletedEvent -= FinishEntry;
         menuState = MenuState.Start;
         ReleaseLock();
     }
@@ -126,53 +90,45 @@ public class MainMenuControl : MonoBehaviour {
     public void HandleInput() {
         // navigate the menu
         if (buttonDelay == 0) {
-            Vector2 old;
-            if (Input.GetAxis("Horizontal") > 0) {
-                old = new Vector2(cursor.x, cursor.y);
+            if (Input.GetAxis("Horizontal") > 0 && cursor.right) {
                 // deactivate last button
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", false);
-                cursor.x = cursor.x < CursorBounds.x - 1 ? cursor.x + 1 : 0;
-                // activate last button
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", true);
-                if(old!=cursor) buttonDelay = BTN_DELAY;
-            } else if (Input.GetAxis("Horizontal") < 0) {
-                old = new Vector2(cursor.x, cursor.y);
-
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", false);
-                cursor.x = cursor.x >= 1 ? cursor.x - 1 : CursorBounds.x - 1;
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", true);
-                if (old != cursor) buttonDelay = BTN_DELAY;
+                cursor.Deactivate();
+                cursor = cursor.right;
+                // activate new button
+                cursor.Activate();
+                buttonDelay = BTN_DELAY;
+            } else if (Input.GetAxis("Horizontal") < 0 && cursor.left) {
+                cursor.Deactivate();
+                cursor = cursor.left;
+                cursor.Activate();
+                buttonDelay = BTN_DELAY;
             }
 
-            if (Input.GetAxis("Vertical") < 0) {
-                old = new Vector2(cursor.x, cursor.y);
-
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", false);
-                cursor.y = cursor.y < CursorBounds.y - 1 ? cursor.y + 1 : 0;
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", true);
-                if (old != cursor) buttonDelay = BTN_DELAY;
-            } else if (Input.GetAxis("Vertical") > 0) {
-                old = new Vector2(cursor.x, cursor.y);
-
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", false);
-                cursor.y = cursor.y >= 1 ? cursor.y - 1 : CursorBounds.y - 1;
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", true);
-                if (old != cursor) buttonDelay = BTN_DELAY;
+            if (Input.GetAxis("Vertical") < 0 && cursor.down) {
+                cursor.Deactivate();
+                cursor = cursor.down;
+                cursor.Activate();
+                buttonDelay = BTN_DELAY;
+            } else if (Input.GetAxis("Vertical") > 0 && cursor.up) {
+                cursor.Deactivate();
+                cursor = cursor.up;
+                cursor.Activate();
+                buttonDelay = BTN_DELAY;
             }
         }
 
         // activate button
         if (Input.GetButtonDown("Jump")) {
-            Menu[(int)cursor.x][(int)cursor.y].Item2.Invoke();
+            cursor.Invoke();
         }
 
     }
 
     private void ChangeState(MenuState newState) {
-        Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", false);
+        cursor.Deactivate();
         menuState = newState;
-        cursor = Vector2.zero;
-        Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", true);
+        cursor = Menu;
+        cursor.Activate() ;
 
         transitionDelay = TRA_DELAY;
     }
@@ -181,26 +137,46 @@ public class MainMenuControl : MonoBehaviour {
         ChangeState(MenuState.Start);
     }
 
-    public void ContinueLastSave() {
+    public void OpenContinueMenu() {
         ChangeState(MenuState.Files);
-
-    }
-
-    public void NewSave() {
-        //ChangeState(MenuState.Start);
-
     }
 
     public void OpenOptionsMenu() {
         ChangeState(MenuState.Options);
+    }
 
+    public void LoadSelectedSaveFile() {
+        FadeController.FadeOutCompletedEvent += CommitLoadSave;
+        FadeController.instance.FadeOut();
+    }
+
+    public void CommitLoadSave() {
+        FadeController.FadeOutCompletedEvent -= CommitLoadSave;
+
+        // load save file and start 
+    }
+
+    public void NewSave() {
+        ChangeState(MenuState.NewGame);
+        FadeController.FadeOutCompletedEvent += CommitNewGame;
+        FadeController.instance.DelayFadeOut(time: 0.5f);
+        forceLockInput = true;
+    }
+
+    public void CommitNewGame() {
+        FadeController.FadeOutCompletedEvent -= CommitNewGame;
+
+        // create a new save
     }
 
     public void Quit() {
-
+        forceLockInput = true;
+        FadeController.FadeOutCompletedEvent = CommitQuit;
+        FadeController.instance.FadeOut(Color.black);
     }
 
     public void CommitQuit() {
-
+        print("hufehiugfrhigfdsijefrsijgdrsij");
+        Application.Quit();
     }
 }
