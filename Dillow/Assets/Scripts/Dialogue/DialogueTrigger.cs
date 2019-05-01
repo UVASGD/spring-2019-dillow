@@ -65,6 +65,7 @@ public class DialogueTrigger : MonoBehaviour
         if (chart != null) {
             if (body) body.Talk();
             chart.ExecuteBlock("Trigger");
+            DillowController.instance.body.TransformToDillow();
             DillowController.instance.can_input = false;
             DillowController.instance.body.rb.isKinematic = true;
         }

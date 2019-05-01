@@ -14,6 +14,9 @@ public class FadeController : MonoBehaviour {
     public static FadeController instance;
     public Animator anim;
 
+    public bool startOpen;
+    public bool animateOnStart;
+
     public float speed = 1;
     public Color fadeColor = Color.black;
     public Image fadeImage;
@@ -42,9 +45,16 @@ public class FadeController : MonoBehaviour {
         DontDestroyOnLoad(transform.parent.gameObject);
     }
 
+    private int openHash, speedHash;
     void Start() {
         anim = GetComponent<Animator>();
         anim.updateMode = AnimatorUpdateMode.UnscaledTime;
+        openHash = Animator.StringToHash("Open");
+        speedHash = Animator.StringToHash("Speed");
+
+        anim.SetBool(openHash, startOpen);
+        anim.SetBool("AnimateOnStart", animateOnStart);
+        anim.SetFloat(speedHash, speed);
     }
 
     /// <summary>
@@ -55,8 +65,8 @@ public class FadeController : MonoBehaviour {
         if (faded) return;
         automatic = faded;
         faded = true;
-        anim.SetFloat("Speed", this.speed = speed);
-        anim.SetTrigger("Toggle");
+        anim.SetFloat(speedHash, this.speed = speed);
+        anim.SetBool(openHash, false);
         FadeOutStartedEvent?.Invoke();
     }
 
@@ -73,8 +83,8 @@ public class FadeController : MonoBehaviour {
     public void FadeIn(float speed) {
         if (!faded) return;
         faded = false;
-        anim.SetFloat("Speed", speed);
-        anim.SetTrigger("Toggle");
+        anim.SetFloat(speedHash, speed);
+        anim.SetBool(openHash, true);
         FadeInStartedEvent?.Invoke();
     }
 
