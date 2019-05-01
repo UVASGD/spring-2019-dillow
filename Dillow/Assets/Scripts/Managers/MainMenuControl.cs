@@ -26,10 +26,11 @@ public class MainMenuControl : MonoBehaviour {
     public ThreeDButton startMenu;
     public ThreeDButton optionMenu;
     public ThreeDButton fileMenu;
+    public ThreeDButton newMenu;
 
     [Header("Control")]
     public bool forceLockInput;
-    private ThreeDButton cursor;
+    public ThreeDButton cursor;
     private float buttonDelay;
     private float transitionDelay;
 
@@ -40,9 +41,14 @@ public class MainMenuControl : MonoBehaviour {
     private int fileCount;
 
     [Header("Defaults")]
+    public AudioClip menuSound;
+    public AudioClip badSound;
+    public AudioClip selectSound;
     public Sprite emptyFileSprite;
     public List<Sprite> saveFileSprites;
     public string FirstIsland;
+
+    private const string TEMP_FILE = "temporary.json";
 
     /// <summary>
     /// used for locking input between viewing transitions
@@ -57,13 +63,14 @@ public class MainMenuControl : MonoBehaviour {
             switch (menuState) {
                 case MenuState.Options: return optionMenu;
                 case MenuState.Files: return fileMenu;
+                case MenuState.NewGame: return newMenu;
                 default: return startMenu;
             }
         }
     }
 
     // delay constants
-    private const float BTN_DELAY = 0.35f;
+    private const float BTN_DELAY = 0.55f;
     private const float TRA_DELAY = 1.5f;
 
     private void Awake() {
@@ -131,6 +138,7 @@ public class MainMenuControl : MonoBehaviour {
     public void HandleInput() {
         // horizontal control
         if (buttonDelay == 0) {
+            var old = cursor;
             if (Input.GetAxis("Horizontal") > 0 && cursor.right) {
                 // deactivate last button
                 cursor.Deactivate();
@@ -157,10 +165,14 @@ public class MainMenuControl : MonoBehaviour {
                 cursor.Activate();
                 buttonDelay = BTN_DELAY;
             }
+
+            if(cursor!= old && menuSound)
+                AudioManager.instance.PlaySound(menuSound, 1f);
         }
 
         // activate button
         if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Submit")) {
+            if(selectSound) AudioManager.instance.PlaySound(selectSound, 1f);
             cursor.Invoke();
         }
 
@@ -219,12 +231,15 @@ public class MainMenuControl : MonoBehaviour {
             if (datas.Count == 0) option.SetAsEmpty();
             else {
                 try {
-                    option.SetSaveData((SaveData)JsonUtility.FromJson(datas[0].FullName,
-                        typeof(SaveData)));
+                    SaveData data = (SaveData)JsonUtility.FromJson(datas[0].FullName,
+                        typeof(SaveData));
+                    data.fileName = datas[0].FullName;
+                    option.SetSaveData(data);
                     datas.RemoveAt(0);
                     fileCount++;
                 } catch(Exception e) {
                     print("Error on Loading: " + datas[0]);
+                    Debug.LogError(e);
                     datas.RemoveAt(0);
                 }
             }
@@ -235,16 +250,42 @@ public class MainMenuControl : MonoBehaviour {
         ChangeState(MenuState.Files);
     }
 
+    /// <summary>
+    /// set the current save data to active,
+    /// play the cannon animation
+    /// </summary>
+    /// <param name="option"></param>
     public void LoadSelectedSaveFile(FileOption option) {
+        if (option.data == null) {
+            if (badSound) AudioManager.instance.PlaySound(badSound, 1f);
+            return;
+        }
+
+        forceLockInput = true;
+        if (selectSound) AudioManager.instance.PlaySound(selectSound, 1f);
         FadeController.FadeOutCompletedEvent += CommitLoadSave;
         dataToLoad = option.data;
-        FadeController.instance.DelayFadeOut(time:1f);
+        FadeController.instance.DelayFadeOut(time:1f, speed:1/6f);
+        StartCoroutine(DelayedFadeOut(1f, 2f));
+        GameManager.instance.currentSaveFile = dataToLoad.fileName;
     }
 
+    /// <summary>
+    /// delay fading out the music
+    /// </summary>
+    private IEnumerator DelayedFadeOut(float delay, float time) {
+        yield return new WaitForSeconds(delay);
+        AudioManager.PlayMusic("", fadeDuration: time);
+    }
+
+    /// <summary>
+    /// loads the save file when the animation and fade have completed
+    /// </summary>
     public void CommitLoadSave() {
         FadeController.FadeOutCompletedEvent -= CommitLoadSave;
 
         // load save file and start 
+        SceneManager.LoadScene(dataToLoad.currentScene);
     }
 
     #endregion
@@ -277,16 +318,15 @@ public class MainMenuControl : MonoBehaviour {
         dat.saveIconIndex = UnityEngine.Random.Range(0, saveFileSprites.Count);
         
         string jsonData = JsonUtility.ToJson(dat);
-        string filePath = Application.dataPath + GameManager.SAVE_FOLDER 
-            + "temporary";
+        string filePath = Application.dataPath + GameManager.SAVE_FOLDER + "/"
+            + TEMP_FILE;
+        File.WriteAllText(filePath, jsonData);
 
+        GameManager.instance.currentSaveFile = TEMP_FILE;
     }
 
     public void CommitNewGame() {
         FadeController.FadeOutCompletedEvent -= CommitNewGame;
-
-        // Initialize Proper GameKit
-
 
         // Load Scene
         SceneManager.LoadScene(FirstIsland);
@@ -300,8 +340,8 @@ public class MainMenuControl : MonoBehaviour {
     public void Quit() {
         forceLockInput = true;
         FadeController.FadeOutCompletedEvent = CommitQuit;
-        FadeController.instance.FadeOut(Color.black);
-        AudioManager.PlayMusic("", fadeDuration: 1f);
+        FadeController.instance.FadeOut(Color.black, 1/6f);
+        AudioManager.PlayMusic("", fadeDuration: 3f);
     }
 
     public void CommitQuit() {

@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public class SaveData {
     //TODO: Fungus data
 
-    public string fileName;
+    [NonSerialized] public string fileName;
     public Vector3 playerSpawnLocation;
     public string currentScene;
     public string targetScene;
@@ -39,8 +40,9 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance;
 
     public static readonly string SAVE_FOLDER = "/Saves";
-    public static string currentSaveFile = "data.json";
-    private static string DataSubpath => SAVE_FOLDER + "/" + currentSaveFile;
+    public static readonly string TEST_LOC = "data.json";
+    public string currentSaveFile = TEST_LOC;
+    private string DataSubpath => SAVE_FOLDER + "/" + instance.currentSaveFile;
 
     public GameObject player;
     public Vector3 playerSpawnLocation;
@@ -68,7 +70,7 @@ public class GameManager : MonoBehaviour {
         FadeController.FadeOutCompletedEvent += delegate { if (!spawned) StartCoroutine(RespawnCo()); };
     }
 
-    public static void Save () {
+    public void Save () {
         //print("Saving!");
         int N = Enum.GetValues(typeof(CollectibleType)).Cast<int>().Max() + 1;
         int[] saveCollectibleCounts = new int[N];
@@ -78,7 +80,7 @@ public class GameManager : MonoBehaviour {
         }
         SaveData saveData = new SaveData(
             instance.playerSpawnLocation,
-            null,
+            SceneManager.GetActiveScene().name,
             null,
             new List<ulong>(obtainedCollectibles),
             saveCollectibleCounts,
@@ -90,7 +92,7 @@ public class GameManager : MonoBehaviour {
         File.WriteAllText(filePath, jsonData);
     }
 
-    public static void Load () {
+    public void Load () {
         string filePath = Application.dataPath + DataSubpath;
         //print("Loading to: " + filePath);
 
@@ -129,13 +131,13 @@ public class GameManager : MonoBehaviour {
         );
 
         string jsonData = JsonUtility.ToJson(saveData);
-        string filePath = Application.dataPath + DataSubpath;
+        string filePath = Application.dataPath + SAVE_FOLDER + "/" + TEST_LOC;
         File.WriteAllText(filePath, jsonData);
     }
 #endif
 
     public static SaveData PreLoad() {
-        string filePath = Application.dataPath + DataSubpath;
+        string filePath = Application.dataPath + SAVE_FOLDER + "/" + TEST_LOC;
         return File.Exists(filePath) ? JsonUtility.FromJson<SaveData>(File.ReadAllText(filePath)) 
             : new SaveData();
     }
@@ -144,7 +146,7 @@ public class GameManager : MonoBehaviour {
     {
         obtainedCollectibles.Add(collectible.id);
         collectibleCounts[collectible.type]++;
-        Save();
+        instance.Save();
 
         switch (collectible.type) {
             case CollectibleType.Gear:
