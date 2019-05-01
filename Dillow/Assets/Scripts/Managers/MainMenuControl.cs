@@ -118,7 +118,7 @@ public class MainMenuControl : MonoBehaviour {
         }
 
         // activate button
-        if (Input.GetButtonDown("Jump")) {
+        if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Submit")) {
             cursor.Invoke();
         }
 
