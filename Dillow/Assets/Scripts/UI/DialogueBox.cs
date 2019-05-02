@@ -28,7 +28,6 @@ public class DialogueBox : MonoBehaviour {
         // Disable itself
         if (!_wasDialogShown)
             gameObject.SetActive(false);
-
     }
 
     public void SubscribeToEvents() {
@@ -37,7 +36,8 @@ public class DialogueBox : MonoBehaviour {
 
         HasSubscribedToEvents = true;
 
-        //Msf.Events.Subscribe(Msf.EventNames.ShowDialogBox, OnDialogEvent);
+        GameManager.Events.Subscribe(GameManager.EventNames.ShowDialogBox, 
+            OnDialogEvent);
     }
 
     private void AfterHandlingClick() {
@@ -141,15 +141,8 @@ public class DialogueBox : MonoBehaviour {
         Input.gameObject.SetActive(false);
     }
 
-    private void CloseDialog() {
+    public void CloseDialog() {
         gameObject.SetActive(false);
-    }
-
-    public static void ShowError(string error) {
-        // Fire an event to display a dialog box.
-        // We're not opening it directly, in case there's a custom 
-        // dialog box event handler
-        //Msf.Events.Fire(Msf.EventNames.ShowDialogBox, DialogBoxData.CreateError(error));
     }
 }
 

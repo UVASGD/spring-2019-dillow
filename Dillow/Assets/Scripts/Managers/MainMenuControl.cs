@@ -291,7 +291,7 @@ public class MainMenuControl : MonoBehaviour {
         FadeController.FadeOutCompletedEvent -= CommitLoadSave;
 
         // load save file and start 
-        SceneManager.LoadScene(dataToLoad.currentScene);
+        GameManager.LoadLevel(dataToLoad.currentScene);
     }
 
     #endregion
@@ -335,7 +335,7 @@ public class MainMenuControl : MonoBehaviour {
         FadeController.FadeOutCompletedEvent -= CommitNewGame;
 
         // Load Scene
-        SceneManager.LoadScene(FirstIsland);
+        GameManager.LoadLevel(FirstIsland);
     }
 
     #endregion

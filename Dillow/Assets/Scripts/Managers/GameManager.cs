@@ -35,6 +35,8 @@ public class SaveData {
     }
 }
 
+public delegate void ManagementEvent();
+
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
 
@@ -52,6 +54,11 @@ public class GameManager : MonoBehaviour {
     public static HashSet<ulong> obtainedCollectibles = new HashSet<ulong>();
     public static Dictionary<CollectibleType, int> collectibleCounts = new Dictionary<CollectibleType, int>();
 
+    public DialogueBox dialogue;
+    public Animator LoadingScreen;
+    public static ManagementEvent StartReturnToMenu;
+    public static bool loadingFile;
+
     private void Awake () {
         if (null == instance) {
             instance = this;
@@ -68,9 +75,21 @@ public class GameManager : MonoBehaviour {
 
         FadeController.FadeInStartedEvent += delegate { spawned = true; };
         FadeController.FadeOutCompletedEvent += delegate { if (!spawned) StartCoroutine(RespawnCo()); };
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        EventNames = new EventNames();
     }
 
-    public static void Save () {
+    public static void OnSceneLoaded(Scene level, LoadSceneMode mode) {
+        if (loadingFile) {
+            HideLoading();
+        } else {
+
+        }
+    }
+
+    public static IEnumerator Save () {
+        yield return null;
         //print("Saving!");
         int N = Enum.GetValues(typeof(CollectibleType)).Cast<int>().Max() + 1;
         int[] saveCollectibleCounts = new int[N];
@@ -110,6 +129,22 @@ public class GameManager : MonoBehaviour {
             //print("New Game");
             Save();
         }
+    }
+
+    /// <summary>
+    /// Load the next scene
+    /// </summary>
+    /// <param name="levelName"></param>
+    public static void LoadLevel(string levelName) {
+        if (instance.LoadingScreen)
+            instance.LoadingScreen.SetBool("Open", true);
+        SceneManager.LoadSceneAsync(levelName);
+        loadingFile = true;
+    }
+
+    public static void HideLoading() {
+        if (instance.LoadingScreen)
+            instance.LoadingScreen.SetBool("Open", false);
     }
 
 #if UNITY_EDITOR
@@ -185,17 +220,34 @@ public class GameManager : MonoBehaviour {
     #region ================= RETURN TO MENU =================
 
     public static void ReturnToMenu() {
+        // dont judge me
+        YesNoMaybe("Do you want to save first?", ConfirmReturnToMenuSave, ConfirmReturnToMenu,
+            delegate { StartReturnToMenu = null; CloseDialog(); },txtMaybe:"No", txtOK:"Yes");
+    }
 
+    public static void ConfirmReturnToMenuSave() {
+        // save game first
+        if (currentSaveFile.Contains("Temp")) {
+            // the player needs to set the save file they want to overwrite
+        } else {
+            instance.StartCoroutine(Save());
+            ConfirmReturnToMenu();
+        }
     }
 
     public static void ConfirmReturnToMenu() {
         FadeController.FadeOutCompletedEvent = CommitToMenu;
         FadeController.instance.FadeOut(1 / 6f);
         AudioManager.PlayMusic("", fadeDuration: 3f);
+        StartReturnToMenu?.Invoke();
     }
 
+    /// <summary>
+    /// return to the main menu
+    /// </summary>
     public static void CommitToMenu() {
         FadeController.FadeOutCompletedEvent -= CommitToMenu;
+        loadingFile = false;
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -220,4 +272,69 @@ public class GameManager : MonoBehaviour {
     }
 
     #endregion
+
+
+    #region ================= MSF DIALOG BOX =================
+
+    /// <summary>
+    /// Show a yes no dialog box
+    /// </summary>
+    /// <param name="msg"></param>
+    /// <param name="ok"></param>
+    public static void YesNo(string msg, Action ok, string txtOK="Yes", string txtNO="No") {
+        DialogBoxData dat = new DialogBoxData(msg);
+        dat.LeftButtonAction = instance.dialogue.CloseDialog;
+        dat.LeftButtonText = txtNO;
+        dat.RightButtonAction = ok;
+        dat.RightButtonText = txtOK;
+
+        instance.dialogue.ShowDialog(dat);
+    }
+
+    public static void YesNoMaybe(string msg, Action ok, Action maybe,
+        string txtOK = "OK", string txtMaybe = "Um", string txtNO = "Cancel") {
+        YesNoMaybe(msg, ok, maybe, CloseDialog, txtOK, txtMaybe, txtNO);
+    }
+
+    /// <summary>
+    /// Show a yes no maybe dialog box. (basically yes no with an extra option)
+    /// </summary>
+    public static void YesNoMaybe(string msg, Action ok, Action maybe, Action cancel, 
+        string txtOK="OK", string txtMaybe="Um", string txtNO = "Cancel") {
+        DialogBoxData dat = new DialogBoxData(msg);
+        dat.LeftButtonAction = cancel;
+        dat.LeftButtonText = txtNO;
+
+        dat.MiddleButtonAction = maybe;
+        dat.MiddleButtonText = txtMaybe;
+
+        dat.RightButtonAction = ok;
+        dat.RightButtonText = txtOK;
+
+        instance.dialogue.ShowDialog(dat);
+    }
+
+    public static void CloseDialog() {
+        instance.dialogue.CloseDialog();
+    }
+
+    /// <summary>
+    /// Default events channel
+    /// </summary>
+    public static EventsChannel Events { get; private set; }
+
+    /// <summary>
+    /// List of event names, used within the framework
+    /// </summary>
+    public static EventNames EventNames { get; private set; }
 }
+
+/// <summary>
+/// List of event names, used within the framework
+/// </summary>
+public class EventNames {
+    public string ShowLoading { get { return "gm.loading"; } }
+    public string ShowDialogBox { get { return "gm.showDialog"; } }
+}
+    #endregion
+

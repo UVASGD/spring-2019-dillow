@@ -10,9 +10,12 @@ public class PauseMenu : MonoBehaviour
 
     [Header("Menus")]
     public Animator pauseMenuUI;
+    public Animator savesMenu;
 
     AudioLowPassFilter af;
     float filter_level, pause_level = 1000;
+
+    private bool InSavesMenu => savesMenu? savesMenu.gameObject.activeSelf : false;
 
     private void Start()
     {
@@ -35,6 +38,16 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    public void ReturnToMenu() {
+        GameManager.StartReturnToMenu += CommitReturn;
+    }
+
+    public void CommitReturn() {
+        GameManager.StartReturnToMenu -= CommitReturn;
+        Resume();
+
+    }
+
     public void Resume()
     {
         af.cutoffFrequency = filter_level;
@@ -49,6 +62,14 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetTrigger("Toggle");
         Time.timeScale = 0f;
         gameIsPaused = true;
+    }
+
+    public void ShowSaves() {
+        savesMenu.SetBool("Open", true);
+    }
+
+    public void HideSaves() {
+        savesMenu.SetBool("Open", false);
     }
 
     public void Quit()
