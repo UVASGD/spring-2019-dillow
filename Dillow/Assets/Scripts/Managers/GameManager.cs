@@ -181,4 +181,43 @@ public class GameManager : MonoBehaviour {
         yield return new WaitForSeconds(1.5f);
         FadeController.instance.FadeIn();
     }
+
+    #region ================= RETURN TO MENU =================
+
+    public static void ReturnToMenu() {
+
+    }
+
+    public static void ConfirmReturnToMenu() {
+        FadeController.FadeOutCompletedEvent = CommitToMenu;
+        FadeController.instance.FadeOut(1 / 6f);
+        AudioManager.PlayMusic("", fadeDuration: 3f);
+    }
+
+    public static void CommitToMenu() {
+        FadeController.FadeOutCompletedEvent -= CommitToMenu;
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    #endregion
+
+
+    #region ================= QUIT =================
+
+    public static void Quit() {
+        FadeController.FadeOutCompletedEvent = CommitQuit;
+        FadeController.instance.FadeOut(Color.black, 1 / 6f);
+        AudioManager.PlayMusic("", fadeDuration: 3f);
+    }
+
+    public static void CommitQuit() {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+#if UNITY_STANDALONE
+        Application.Quit();
+#endif
+    }
+
+    #endregion
 }

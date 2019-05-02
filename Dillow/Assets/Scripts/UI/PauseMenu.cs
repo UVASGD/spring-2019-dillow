@@ -7,7 +7,9 @@ using System.Collections;
 public class PauseMenu : MonoBehaviour 
 {
     public static bool gameIsPaused = false;
-    public GameObject pauseMenuUI;
+
+    [Header("Menus")]
+    public Animator pauseMenuUI;
 
     AudioLowPassFilter af;
     float filter_level, pause_level = 1000;
@@ -36,7 +38,7 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         af.cutoffFrequency = filter_level;
-        pauseMenuUI.SetActive(false);
+        pauseMenuUI.gameObject.SetActive(false);
         Time.timeScale = 1f;
         gameIsPaused = false;
     }
@@ -44,14 +46,14 @@ public class PauseMenu : MonoBehaviour
     void Pause()
     {
         af.cutoffFrequency = pause_level;
-        pauseMenuUI.SetActive(true);
+        pauseMenuUI.SetTrigger("Toggle");
         Time.timeScale = 0f;
         gameIsPaused = true;
     }
 
     public void Quit()
     {
-        Application.Quit();
+        GameManager.Quit();
     }
 
 }

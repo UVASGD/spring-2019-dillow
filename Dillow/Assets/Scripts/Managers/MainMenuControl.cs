@@ -340,24 +340,8 @@ public class MainMenuControl : MonoBehaviour {
 
     #endregion
 
-
-    #region ================= QUIT =================
-
     public void Quit() {
         forceLockInput = true;
-        FadeController.FadeOutCompletedEvent = CommitQuit;
-        FadeController.instance.FadeOut(Color.black, 1/6f);
-        AudioManager.PlayMusic("", fadeDuration: 3f);
+        GameManager.Quit();
     }
-
-    public void CommitQuit() {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
-#if UNITY_STANDALONE
-        Application.Quit();
-#endif
-    }
-
-    #endregion
 }
