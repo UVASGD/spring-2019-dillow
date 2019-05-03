@@ -4811,10 +4811,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1504475950}
   - {fileID: 1306779009}
   - {fileID: 822398035}
   - {fileID: 1387337757}
-  - {fileID: 1504475950}
   - {fileID: 794953593}
   m_Father: {fileID: 868343153}
   m_RootOrder: 1
@@ -4843,10 +4843,10 @@ MonoBehaviour:
   m_LayerIndex: 0
   m_ShowDebugText: 0
   m_ChildCameras:
+  - {fileID: 1504475951}
   - {fileID: 1306779010}
   - {fileID: 822398036}
   - {fileID: 1387337758}
-  - {fileID: 1504475951}
   - {fileID: 794953594}
   m_Instructions:
   - m_FullHash: 1873608182
@@ -5611,7 +5611,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 10
-    NearClipPlane: 0.1
+    NearClipPlane: 0.11
     FarClipPlane: 5000
     Dutch: 0
     LensShift: {x: 0, y: 0}
@@ -5846,7 +5846,7 @@ Transform:
   m_Children:
   - {fileID: 669390895}
   m_Father: {fileID: 726522937}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 10.829, y: -76.329, z: -2.9410002}
 --- !u!114 &822398036
 MonoBehaviour:
@@ -5871,7 +5871,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 10
-    NearClipPlane: 0.1
+    NearClipPlane: 0.11
     FarClipPlane: 5000
     Dutch: 0
     LensShift: {x: 0, y: 0}
@@ -8348,7 +8348,7 @@ Transform:
   m_Children:
   - {fileID: 1733147149}
   m_Father: {fileID: 726522937}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1306779010
 MonoBehaviour:
@@ -8373,7 +8373,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 10
-    NearClipPlane: 0.1
+    NearClipPlane: 0.11
     FarClipPlane: 5000
     Dutch: 0
     LensShift: {x: 0, y: 0}
@@ -13542,7 +13542,7 @@ Transform:
   m_Children:
   - {fileID: 799571711}
   m_Father: {fileID: 726522937}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 15.858, y: -128.316, z: 0}
 --- !u!114 &1387337758
 MonoBehaviour:
@@ -13567,7 +13567,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 10
-    NearClipPlane: 0.1
+    NearClipPlane: 0.11
     FarClipPlane: 5000
     Dutch: 0
     LensShift: {x: 0, y: 0}
@@ -14983,7 +14983,7 @@ Transform:
   m_Children:
   - {fileID: 1205212420}
   m_Father: {fileID: 726522937}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -5.664, y: -128.31601, z: 0}
 --- !u!114 &1504475951
 MonoBehaviour:
@@ -15008,7 +15008,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 10
-    NearClipPlane: 0.1
+    NearClipPlane: 0.11
     FarClipPlane: 5000
     Dutch: 0
     LensShift: {x: 0, y: 0}
@@ -17791,7 +17791,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.11
   far clip plane: 5000
   field of view: 40
   orthographic: 0

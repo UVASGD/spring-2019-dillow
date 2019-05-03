@@ -267,6 +267,7 @@ public class MainMenuControl : MonoBehaviour {
         FadeController.instance.DelayFadeOut(time:1f, speed:1/6f);
         StartCoroutine(DelayedFadeOut(1f, 2f));
         GameManager.currentSaveFile = dataToLoad.fileName;
+        StartCoroutine(GameManager.Load());
     }
 
     /// <summary>

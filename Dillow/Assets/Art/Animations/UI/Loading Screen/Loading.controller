@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44eb19643bf4b24293f92b8e0ffcb93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleRange: {x: 6, y: 6}
+  idleRange: {x: 1.5, y: 1.5}
   TriggerName: Idle
 --- !u!1101 &1101021317003394632
 AnimatorStateTransition:

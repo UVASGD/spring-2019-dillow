@@ -21,7 +21,6 @@ public class FadeController : MonoBehaviour {
     public Color fadeColor = Color.black;
     public Image fadeImage;
     private bool automatic;
-    private float delayFade;
 
     public static FadeEvent FadeOutCompletedEvent, FadeInCompletedEvent, 
         FadeInStartedEvent, FadeOutStartedEvent;
@@ -106,13 +105,13 @@ public class FadeController : MonoBehaviour {
     /// </summary>
     /// <param name="time">time in seconds to delay</param>
     /// <param name="speed"></param>
-    public void DelayFadeOut(float time = 1f, float speed = 1f) {
-        StartCoroutine(DelayFadeOutCoroutine(time, speed));
+    public void DelayFadeOut(float time = 1f, float speed = 1f, bool auto = false) {
+        StartCoroutine(DelayFadeOutCoroutine(time, speed, auto));
     }
 
-    private IEnumerator DelayFadeOutCoroutine(float time, float speed) {
+    private IEnumerator DelayFadeOutCoroutine(float time, float speed, bool auto) {
         yield return new WaitForSeconds(time);
-        FadeOut(speed: speed);
+        FadeOut(speed: speed, auto: auto);
     }
 
     /// <summary>

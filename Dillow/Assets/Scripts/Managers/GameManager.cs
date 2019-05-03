@@ -98,9 +98,17 @@ public class GameManager : MonoBehaviour {
 
     public static void OnSceneLoaded(Scene level, LoadSceneMode mode) {
         if (loadingFile) {
+            // Loading a game/scene
             HideLoading();
+            FadeController.instance.FadeIn(1 / 3f);
+            if(!instance.player)
+                instance.player = GameObject.FindWithTag("Player");
+            GameObject spawn = GameObject.FindGameObjectWithTag("Respawn");
+            instance.playerSpawnLocation = (spawn) ? spawn.transform.position : 
+                instance.player.transform.position;
         } else {
-
+            // Returning to menu
+            FadeController.instance.FadeIn(1 / 10f);
         }
     }
 
@@ -127,7 +135,12 @@ public class GameManager : MonoBehaviour {
         File.WriteAllText(filePath, jsonData);
     }
 
-    public static void Load () {
+    /// <summary>
+    /// Load data into the stat of the game
+    /// </summary>
+    /// <returns></returns>
+    public static IEnumerator Load () {
+        yield return null;
         string filePath = Application.dataPath + DataSubpath;
         //print("Loading to: " + filePath);
 
@@ -229,7 +242,7 @@ public class GameManager : MonoBehaviour {
     public void Respawn()
     {
         spawned = false;
-        FadeController.instance.FadeOut(0.1f);
+        FadeController.instance.FadeOut(0.1f, true);
     }
 
     IEnumerator RespawnCo()
