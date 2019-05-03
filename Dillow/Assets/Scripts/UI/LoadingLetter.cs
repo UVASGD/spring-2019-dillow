@@ -5,16 +5,16 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(TextMeshProUGUI))]
+[RequireComponent(typeof(Text))]
 public class LoadingLetter : MonoBehaviour {
 
     public Image fadeImage;
 
-    private TextMeshProUGUI txt;
+    private Text txt;
 
     // Start is called before the first frame update
     void Start() {
-        txt = GetComponent<TextMeshProUGUI>();
+        txt = GetComponent<Text>();
         GameManager.StartSceneChange += FixColor;
     }
 
