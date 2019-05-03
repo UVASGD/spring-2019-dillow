@@ -1,95 +1,92 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
 public class MainMenuControl : MonoBehaviour {
+
+    public static MainMenuControl instance;
 
     public enum MenuState {
         Start,
         Options,
         Files,
+        NewGame,
         Entry,
     }
 
     public MenuState menuState;
     private Animator anim;
 
-    [Header("Start Menu items")]
-    public Animator btnContinue;
-    public Animator btnNewGame;
-    public Animator btnOptions;
-    public Animator btnQuit;
+    [Header("Root Menu Buttons")]
+    public ThreeDButton startMenu;
+    public ThreeDButton optionMenu;
+    public ThreeDButton fileMenu;
 
-    [Header("Options Menu Items")]
-    public Animator btnAudio;
-    public Animator btnVisual;
-    public Animator btnControls;
-    public Animator btnOpBack;
-
-    // These are grid mappings of a buttons
-    private List<List<Tuple<Animator, Action>>> startMenuButtons, optionButtons, fileButtons;
-    
     [Header("Control")]
     public bool forceLockInput;
-    private Vector2 cursor;
+    private ThreeDButton cursor;
     private float buttonDelay;
     private float transitionDelay;
 
-    private bool IsLocked => transitionDelay > 0;
+    [Header("Save Menu")]
+    public List<FileOption> fileOptions;
 
-    /// <summary> The cursor boundaries of the current menu </summary>
-    public Vector2 CursorBounds => new Vector2(Menu.Count, Menu[(int)cursor.x].Count);
-    public List<List<Tuple<Animator, Action>>> Menu {
+    /// <summary> deprecate ME! </summary>
+    private int fileCount;
+
+    [Header("Defaults")]
+    public Sprite emptyFileSprite;
+    public List<Sprite> saveFileSprites;
+    public string FirstIsland;
+
+    /// <summary>
+    /// used for locking input between viewing transitions
+    /// </summary>
+    private bool IsLocked => transitionDelay > 0;
+    
+    /// <summary>
+    /// The start button for the current menu
+    /// </summary>
+    public ThreeDButton Menu {
         get {
             switch (menuState) {
-                case MenuState.Options:
-                    return optionButtons;
-                case MenuState.Files:
-                    return fileButtons;
-                default: return startMenuButtons;
+                case MenuState.Options: return optionMenu;
+                case MenuState.Files: return fileMenu;
+                default: return startMenu;
             }
         }
     }
 
+    // delay constants
     private const float BTN_DELAY = 0.35f;
     private const float TRA_DELAY = 1.5f;
 
-    // Start is called before the first frame update
+    private void Awake() {
+        if (null == instance) {
+            instance = this;
+        } else {
+            Destroy(gameObject);
+        }
+
+        instance = this;
+        StartCoroutine(LoadSaveFiles());
+    }
+    
     void Start() {
-        cursor = Vector2.zero;
         anim = GetComponent<Animator>();
-        startMenuButtons = new List<List<Tuple<Animator, Action>>>();
-        optionButtons = new List<List<Tuple<Animator, Action>>>();
-        fileButtons = new List<List<Tuple<Animator, Action>>>();
-
-        // instantiate list of 3D buttons
-        List<Tuple<Animator, Action>> col = new List<Tuple<Animator, Action>>();
-        if (btnContinue) col.Add(new Tuple<Animator, Action>(btnContinue, ContinueLastSave));
-        if (btnNewGame) col.Add(new Tuple<Animator, Action>(btnNewGame, NewSave));
-        if (btnOptions) col.Add(new Tuple<Animator, Action>(btnOptions, OpenOptionsMenu));
-        if (btnQuit) col.Add(new Tuple<Animator, Action>(btnQuit, Quit));
-        startMenuButtons.Add(col);
-
-        col = new List<Tuple<Animator, Action>>();
-        if (btnAudio) col.Add(new Tuple<Animator, Action>(btnAudio, delegate { /*Do a thing*/ }));
-        optionButtons.Add(col);
         
-        col = new List<Tuple<Animator, Action>>();
-        if (btnVisual) col.Add(new Tuple<Animator, Action>(btnVisual, delegate { /*Do a thing*/ }));
-        optionButtons.Add(col);
-
-        col = new List<Tuple<Animator, Action>>();
-        if (btnControls) col.Add(new Tuple<Animator, Action>(btnControls, delegate { /*Do a thing*/ }));
-        optionButtons.Add(col);
-
-        col = new List<Tuple<Animator, Action>>();
-        if (btnOpBack) col.Add(new Tuple<Animator, Action>(btnOpBack, BackToStart));
-        optionButtons.Add(col);
-
         menuState = MenuState.Entry;
-        startMenuButtons[0][0].Item1.SetBool("Active", true);
+        cursor = Menu;
+
+        AudioManager.PlayMusic("Main Menu", fadeDuration:10f/3f);
+        forceLockInput = true;
+        // make sure to unlock input by the time the game has finished fading in
+        FadeController.FadeInCompletedEvent += FinishEntry;
     }
 
     // Update is called once per frame
@@ -110,12 +107,20 @@ public class MainMenuControl : MonoBehaviour {
         if (!forceLockInput && !IsLocked) HandleInput();
     }
 
+
+    #region ================= UNIVERSAL =================
+
+    /// <summary>
+    /// releases a manual lock
+    /// </summary>
     public void ReleaseLock() {
         forceLockInput = false;
     }
 
     public void FinishEntry() {
+        FadeController.FadeInCompletedEvent -= FinishEntry;
         menuState = MenuState.Start;
+        cursor.Activate();
         ReleaseLock();
     }
 
@@ -124,55 +129,53 @@ public class MainMenuControl : MonoBehaviour {
     /// this is handled largely by keyboard/controller input
     /// </summary>
     public void HandleInput() {
-        // navigate the menu
+        // horizontal control
         if (buttonDelay == 0) {
-            Vector2 old;
-            if (Input.GetAxis("Horizontal") > 0) {
-                old = new Vector2(cursor.x, cursor.y);
+            if (Input.GetAxis("Horizontal") > 0 && cursor.right) {
                 // deactivate last button
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", false);
-                cursor.x = cursor.x < CursorBounds.x - 1 ? cursor.x + 1 : 0;
-                // activate last button
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", true);
-                if(old!=cursor) buttonDelay = BTN_DELAY;
-            } else if (Input.GetAxis("Horizontal") < 0) {
-                old = new Vector2(cursor.x, cursor.y);
-
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", false);
-                cursor.x = cursor.x >= 1 ? cursor.x - 1 : CursorBounds.x - 1;
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", true);
-                if (old != cursor) buttonDelay = BTN_DELAY;
+                cursor.Deactivate();
+                cursor = cursor.right;
+                // activate new button
+                cursor.Activate();
+                buttonDelay = BTN_DELAY;
+            } else if (Input.GetAxis("Horizontal") < 0 && cursor.left) {
+                cursor.Deactivate();
+                cursor = cursor.left;
+                cursor.Activate();
+                buttonDelay = BTN_DELAY;
             }
 
-            if (Input.GetAxis("Vertical") < 0) {
-                old = new Vector2(cursor.x, cursor.y);
-
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", false);
-                cursor.y = cursor.y < CursorBounds.y - 1 ? cursor.y + 1 : 0;
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", true);
-                if (old != cursor) buttonDelay = BTN_DELAY;
-            } else if (Input.GetAxis("Vertical") > 0) {
-                old = new Vector2(cursor.x, cursor.y);
-
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", false);
-                cursor.y = cursor.y >= 1 ? cursor.y - 1 : CursorBounds.y - 1;
-                Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", true);
-                if (old != cursor) buttonDelay = BTN_DELAY;
+            // vertical control
+            if (Input.GetAxis("Vertical") < 0 && cursor.down) {
+                cursor.Deactivate();
+                cursor = cursor.down;
+                cursor.Activate();
+                buttonDelay = BTN_DELAY;
+            } else if (Input.GetAxis("Vertical") > 0 && cursor.up) {
+                cursor.Deactivate();
+                cursor = cursor.up;
+                cursor.Activate();
+                buttonDelay = BTN_DELAY;
             }
         }
 
         // activate button
-        if (Input.GetButtonDown("Jump")) {
-            Menu[(int)cursor.x][(int)cursor.y].Item2.Invoke();
+        if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Submit")) {
+            cursor.Invoke();
         }
 
     }
 
+    /// <summary>
+    /// Switch the submenu; basically triggers the cinemachine to move to
+    /// the new state and activates/deactivates the proper buttons
+    /// </summary>
+    /// <param name="newState"></param>
     private void ChangeState(MenuState newState) {
-        Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", false);
+        cursor.Deactivate();
         menuState = newState;
-        cursor = Vector2.zero;
-        Menu[(int)cursor.x][(int)cursor.y].Item1.SetBool("Active", true);
+        cursor = Menu;
+        cursor.Activate() ;
 
         transitionDelay = TRA_DELAY;
     }
@@ -181,26 +184,134 @@ public class MainMenuControl : MonoBehaviour {
         ChangeState(MenuState.Start);
     }
 
-    public void ContinueLastSave() {
-        ChangeState(MenuState.Files);
+    #endregion
 
-    }
 
-    public void NewSave() {
-        //ChangeState(MenuState.Start);
-
-    }
+    #region ================= OPTIONS =================
 
     public void OpenOptionsMenu() {
         ChangeState(MenuState.Options);
+    }
+
+    #endregion
+
+
+    #region ================= LOAD MENU =================
+
+    private SaveData dataToLoad;
+
+    /// <summary>
+    /// preload all save data files and set the File Options to them;
+    /// this is pretty trivial since there is a max number of files
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator LoadSaveFiles() {
+        yield return null;
+
+        List<FileInfo> datas = new List<FileInfo>();
+        DirectoryInfo dir = new DirectoryInfo(Application.dataPath + GameManager.SAVE_FOLDER);
+        foreach(FileInfo file in dir.GetFiles()) {
+            if (file.Extension.ToLower() == ".json" && !file.Name.Contains("temp"))
+                datas.Add(file);
+        }
+
+        foreach(FileOption option in fileOptions) {
+            if (datas.Count == 0) option.SetAsEmpty();
+            else {
+                try {
+                    option.SetSaveData((SaveData)JsonUtility.FromJson(datas[0].FullName,
+                        typeof(SaveData)));
+                    datas.RemoveAt(0);
+                    fileCount++;
+                } catch(Exception e) {
+                    print("Error on Loading: " + datas[0]);
+                    datas.RemoveAt(0);
+                }
+            }
+        }
+    }
+
+    public void OpenContinueMenu() {
+        ChangeState(MenuState.Files);
+    }
+
+    public void LoadSelectedSaveFile(FileOption option) {
+        FadeController.FadeOutCompletedEvent += CommitLoadSave;
+        dataToLoad = option.data;
+        FadeController.instance.DelayFadeOut(time:1f);
+    }
+
+    public void CommitLoadSave() {
+        FadeController.FadeOutCompletedEvent -= CommitLoadSave;
+
+        // load save file and start 
+    }
+
+    #endregion
+
+
+    #region ================= NEW SAVE =================
+
+    /// <summary>
+    /// Creates a temporary save file 
+    /// </summary>
+    public void NewSave() {
+        ChangeState(MenuState.NewGame);
+        FadeController.FadeOutCompletedEvent += CommitNewGame;
+        FadeController.instance.DelayFadeOut(time: 1f, speed:1/6f);
+        AudioManager.PlayMusic("", fadeDuration: 3f);
+        forceLockInput = true;
+
+        int N = Enum.GetValues(typeof(CollectibleType)).Cast<int>().Max() + 1;
+        int[] saveCollectibleCounts = new int[N];
+        SaveData dat = new SaveData(
+            Vector3.zero,
+            FirstIsland,
+            null,
+            new List<ulong>(),
+            saveCollectibleCounts,
+            new List<int>()
+        );
+
+        // TODO: allow the player to choose the icon for their game!
+        dat.saveIconIndex = UnityEngine.Random.Range(0, saveFileSprites.Count);
+        
+        string jsonData = JsonUtility.ToJson(dat);
+        string filePath = Application.dataPath + GameManager.SAVE_FOLDER 
+            + "temporary";
 
     }
 
-    public void Quit() {
+    public void CommitNewGame() {
+        FadeController.FadeOutCompletedEvent -= CommitNewGame;
 
+        // Initialize Proper GameKit
+
+
+        // Load Scene
+        SceneManager.LoadScene(FirstIsland);
+    }
+
+    #endregion
+
+
+    #region ================= QUIT =================
+
+    public void Quit() {
+        forceLockInput = true;
+        FadeController.FadeOutCompletedEvent = CommitQuit;
+        FadeController.instance.FadeOut(Color.black);
+        AudioManager.PlayMusic("", fadeDuration: 1f);
     }
 
     public void CommitQuit() {
-
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+#if UNITY_STANDALONE
+        Application.Quit();
+#endif
     }
+
+    #endregion
 }
