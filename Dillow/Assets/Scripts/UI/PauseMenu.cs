@@ -4,6 +4,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class PauseMenu : MonoBehaviour 
 {
@@ -16,19 +17,23 @@ public class PauseMenu : MonoBehaviour
     public Animator pauseMenuUI;
     public Animator savesMenu;
 
-    private Selectable cursor;
+    [Header("Control")]
+    public Selectable cursor;
     private float buttonDelay;
 
     AudioLowPassFilter af;
     float filter_level, pause_level = 1000;
-    private const float BTN_DELAY = 0.55f;
+    private const float BTN_DELAY = 0.25f;
 
+    private EventSystem ev;
     private bool InSavesMenu => savesMenu? savesMenu.gameObject.activeSelf : false;
+    private bool InDialogMenu => GameManager.instance.dialogue.DialogueShown;
 
     private void Start()
     {
         af = Camera.main.GetComponent<AudioLowPassFilter>();
         filter_level = af.cutoffFrequency;
+        ev = FindObjectOfType<EventSystem>();
     }
 
     private void Update()
@@ -37,12 +42,20 @@ public class PauseMenu : MonoBehaviour
         {
             if(gameIsPaused)
             {
-                Resume();
+                if (InDialogMenu)
+                    GameManager.instance.dialogue.CloseDialog();
+                else
+                    Resume();
             }
             else
             {
                 Pause();
             }
+        }
+
+        if (buttonDelay > 0) {
+            buttonDelay -= Time.fixedDeltaTime;
+            if (buttonDelay <= 0) buttonDelay = 0;
         }
 
         HandleInput();
@@ -53,50 +66,59 @@ public class PauseMenu : MonoBehaviour
     /// </summary>
     private void HandleInput() {
         if (gameIsPaused) {
-            print("but " + buttonDelay);
             // horizontal control
             if (buttonDelay == 0) {
-                var old = cursor;
-                if ((Input.GetAxis(GameManager.HorizontalAxis1) > 0
-                    || Input.GetAxis(GameManager.HorizontalAxis2) > 0) && cursor.FindSelectableOnRight()) {
-                    cursor = cursor.FindSelectableOnRight();
-                    cursor.Select();
+                if ((Input.GetAxisRaw(GameManager.HorizontalAxis1) > 0
+                    || Input.GetAxisRaw(GameManager.HorizontalAxis2) > 0) && cursor.FindSelectableOnRight()) {
+                    Highlight(cursor = cursor.FindSelectableOnRight());
                     buttonDelay = BTN_DELAY;
-                } else if ((Input.GetAxis(GameManager.HorizontalAxis1) < 0
-                    || Input.GetAxis(GameManager.HorizontalAxis2) < 0) && cursor.FindSelectableOnLeft()) {
-                    cursor = cursor.FindSelectableOnLeft();
-                    cursor.Select();
+                } else if ((Input.GetAxisRaw(GameManager.HorizontalAxis1) < 0
+                    || Input.GetAxisRaw(GameManager.HorizontalAxis2) < 0) && cursor.FindSelectableOnLeft()) {
+
+                    Highlight(cursor.FindSelectableOnLeft());
                     buttonDelay = BTN_DELAY;
                 }
 
                 // vertical control
-                if ((Input.GetAxis(GameManager.VerticalAxis1) < 0
-                    || Input.GetAxis(GameManager.VerticalAxis2) < 0) && cursor.FindSelectableOnDown()) {
-                    cursor = cursor.FindSelectableOnDown();
-                    cursor.Select();
-                    buttonDelay = BTN_DELAY;
-                } else if ((Input.GetAxis(GameManager.VerticalAxis1) > 0
-                    || Input.GetAxis(GameManager.VerticalAxis2) > 0) && cursor.FindSelectableOnUp()) {
-                    cursor = cursor.FindSelectableOnUp();
-                    cursor.Select();
+                if ((Input.GetAxisRaw(GameManager.VerticalAxis1) < 0
+                    || Input.GetAxisRaw(GameManager.VerticalAxis2) < 0)) {
+                    if (cursor.FindSelectableOnDown()) {
+                        
+                        Highlight(cursor.FindSelectableOnDown());
+                        buttonDelay = BTN_DELAY;
+                    }
+                } else if ((Input.GetAxisRaw(GameManager.VerticalAxis1) > 0
+                    || Input.GetAxisRaw(GameManager.VerticalAxis2) > 0) && cursor.FindSelectableOnUp()) {
+
+                    Highlight(cursor.FindSelectableOnUp());
                     buttonDelay = BTN_DELAY;
                 }
 
                 // keyboard controller input for selecting button
                 if (cursor && (Input.GetButtonDown("Jump") || Input.GetButtonDown("Submit"))) {
-                    if (cursor is Button)
+                    if (cursor is Button) {
                         ((Button)cursor).onClick?.Invoke();
+                    }
                 }
             }
         }
     }
 
     public void OnMouseOver(Selectable item) {
+        ev.SetSelectedGameObject(null);
         cursor = item;
+    }
+
+    private void Highlight(Selectable item) {
+        ev.SetSelectedGameObject(null);
+        cursor = item;
+        cursor.Select();
     }
 
     public void ReturnToMenu() {
         GameManager.StartReturnToMenu += CommitReturn;
+        Highlight(GameManager.instance.dialogue.GetFirstButton());
+        GameManager.ReturnToMenu();
     }
 
     public void CommitReturn() {
@@ -124,14 +146,29 @@ public class PauseMenu : MonoBehaviour
         cursor.Select();
     }
 
+    /// <summary>
+    /// Opens save file window to allowplayer to choose save file location
+    /// </summary>
     public void ShowSaves() {
-        savesMenu.SetBool("Open", true);
-        cursor = defaultSaveCursor;
-        cursor.Select();
+        //savesMenu.SetBool("Open", true);
+        //savesMenu.gameObject.SetActive(true);
+        //ev.SetSelectedGameObject(null);
+        //cursor = defaultSaveCursor;
+        //cursor.Select();
+
+        // TODO: Fix save file window
+        if (GameManager.currentSaveFile.Contains("temp")) {
+            GameManager.currentSaveFile = "save " + GameManager.fileCount;
+        }
+
+        StartCoroutine(GameManager.Save());
+        Resume();
     }
 
     public void HideSaves() {
-        savesMenu.SetBool("Open", false);
+        //savesMenu.SetBool("Open", false);
+        savesMenu.gameObject.SetActive(false);
+        ev.SetSelectedGameObject(null);
         cursor = defaultCursor;
         cursor.Select();
     }
@@ -140,8 +177,8 @@ public class PauseMenu : MonoBehaviour
 
     }
 
-    public void Quit()
-    {
+    public void Quit() {
+        Resume();
         GameManager.Quit();
     }
 

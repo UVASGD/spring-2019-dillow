@@ -85,7 +85,6 @@ public class MainMenuControl : MonoBehaviour {
         menuState = MenuState.Entry;
         cursor = Menu;
 
-        AudioManager.PlayMusic("Main Menu", fadeDuration:10f/3f);
         forceLockInput = true;
         // make sure to unlock input by the time the game has finished fading in
         FadeController.FadeInCompletedEvent += FinishEntry;

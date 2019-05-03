@@ -48,8 +48,11 @@ public class GameManager : MonoBehaviour {
     public static string currentSaveFile = TEST_LOC;
     private static string DataSubpath => SAVE_FOLDER + "/" + currentSaveFile;
 
-    [Tooltip("These objects get unloaded when returning to the Main Menu")]
-    public List<GameObject> ObjectsToKill;
+    [Tooltip("For Display Only")]
+    public string saveeFile;
+
+    //[Tooltip("These objects get unloaded when returning to the Main Menu")]
+    //public List<GameObject> ObjectsToKill;
 
     [Header("Player Stuff")]
     public GameObject player;
@@ -111,13 +114,17 @@ public class GameManager : MonoBehaviour {
         EventNames = new EventNames();
     }
 
+    private void Update() {
+        saveeFile = currentSaveFile;
+    }
+
     /// <summary>
     /// Set some initial stuff we can only do when the level is fully loaded
     /// </summary>
     public static void OnSceneLoaded(Scene level, LoadSceneMode mode) {
+            HideLoading();
         if (loadingFile) {
             // Loading a game/scene
-            HideLoading();
 
             current = FindObjectOfType<Island>();
             if (current) {
@@ -132,12 +139,30 @@ public class GameManager : MonoBehaviour {
                 instance.player.transform.position;
         } else {
             // Returning to menu
+            
+#if UNITY_EDITOR
+            // this shouldn't happen in game time
+            if (!SceneManager.GetActiveScene().name.ToLower().Contains("mainmenu")) {
+                return;
+            }
+#endif
+
+            // unload persistant objects that shouldn't be in MM
+            var list = FindObjectsOfType<TagHandler>();
+            foreach (var tag in list) {
+                if (tag.tagList.Contains(Tag.DeleteOnMenu))
+                    Destroy(tag.gameObject);
+            }
+
+            AudioManager.ForceStopMusic();
+            AudioManager.PlayMusic("Main Menu", fadeDuration: 10f / 3f);
             FadeController.instance.FadeIn(1 / 10f);
         }
     }
 
     public static IEnumerator Save () {
         yield return null;
+
         //print("Saving!");
         int N = Enum.GetValues(typeof(CollectibleType)).Cast<int>().Max() + 1;
         int[] saveCollectibleCounts = new int[N];
@@ -205,7 +230,7 @@ public class GameManager : MonoBehaviour {
 
         while (!instance.loadOp.isDone) {
             float progress = Mathf.Clamp01(instance.loadOp.progress / 0.9f);
-            Debug.Log("Load Progress: "+ progress);
+            //Debug.Log("Load Progress: "+ progress);
             if (instance.progressSlider) instance.progressSlider.value = progress;
             yield return null;
         }
@@ -291,24 +316,48 @@ public class GameManager : MonoBehaviour {
     public static void ReturnToMenu() {
         // dont judge me
         YesNoMaybe("Do you maybe want to save first?", ConfirmReturnToMenuSave, ConfirmReturnToMenu,
-            delegate { StartReturnToMenu = null; CloseDialog(); },txtMaybe:"No", txtOK:"Yes");
+            delegate { RTTPM(); CloseDialog(); },txtMaybe:"No", txtOK:"Yes");
     }
 
+    /// <summary>
+    /// make sure the pause menu's cursor is reset
+    /// </summary>
+    private static void RTTPM() {
+        StartReturnToMenu = null;
+        PauseMenu pm = FindObjectOfType<PauseMenu>();
+        pm.cursor = pm.defaultCursor;
+    }
+
+    /// <summary>
+    /// player has decided to save before leaving
+    /// </summary>
     public static void ConfirmReturnToMenuSave() {
         // save game first
         if (currentSaveFile.Contains("Temp")) {
-            // the player needs to set the save file they want to overwrite
-        } else {
-            // unload persistant objects that shouldn't be in MM
-            foreach (GameObject go in instance.ObjectsToKill)
-                Destroy(go);
+            // TODO: the player needs to set the save file they want to overwrite
 
+
+            // everything in this block is temporary
+            {
+                if (currentSaveFile.Contains("temp")) {
+                    currentSaveFile = "save " + fileCount;
+                }
+
+                instance.StartCoroutine(Save());
+                ConfirmReturnToMenu();
+            }
+        } else {
             instance.StartCoroutine(Save());
             ConfirmReturnToMenu();
         }
     }
 
+    /// <summary>
+    /// begin transition to return to the Main Menu
+    /// </summary>
     public static void ConfirmReturnToMenu() {
+        ForceStopAllCoroutines();
+
         FadeController.FadeOutCompletedEvent = CommitToMenu;
         FadeController.instance.FadeOut(1 / 6f);
         AudioManager.PlayMusic("", fadeDuration: 3f);
@@ -317,12 +366,25 @@ public class GameManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// return to the main menu
+    /// return to the main menu by loading it in async
     /// </summary>
     public static void CommitToMenu() {
+        instance.LoadingScreen.SetBool("Open", true);
         FadeController.FadeOutCompletedEvent -= CommitToMenu;
         loadingFile = false;
-        SceneManager.LoadScene("MainMenu");
+        instance.StartCoroutine(AsyncLoadMenu());
+    }
+
+    public static IEnumerator AsyncLoadMenu() {
+        yield return null;
+        instance.loadOp = SceneManager.LoadSceneAsync("MainMenu");
+
+        while (!instance.loadOp.isDone) {
+            float progress = Mathf.Clamp01(instance.loadOp.progress / 0.9f);
+            //Debug.Log("Load Progress: " + progress);
+            if (instance.progressSlider) instance.progressSlider.value = progress;
+            yield return null;
+        }
     }
 
     #endregion
@@ -330,9 +392,19 @@ public class GameManager : MonoBehaviour {
 
     #region ================= QUIT =================
 
+    public static void ForceStopAllCoroutines() {
+        // force stop EVERYTHING
+        foreach (var ob in FindObjectsOfType<MonoBehaviour>()) {
+            if (!ob.ToString().ToLower().Contains("unityengine")){
+                ob.StopAllCoroutines();
+            }
+        }
+    }
+
     public static void Quit() {
+        ForceStopAllCoroutines();
         FadeController.FadeOutCompletedEvent = CommitQuit;
-        FadeController.instance.FadeOut(Color.black, 1 / 6f);
+        FadeController.instance.FadeOut(Color.black, 1 / 9f);
         AudioManager.PlayMusic("", fadeDuration: 3f);
     }
 

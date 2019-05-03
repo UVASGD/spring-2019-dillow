@@ -21,6 +21,7 @@ public class FadeController : MonoBehaviour {
     public Color fadeColor = Color.black;
     public Image fadeImage;
     private bool automatic;
+    private readonly float ANIM_LENGTH = 1 / 3f;
 
     public static FadeEvent FadeOutCompletedEvent, FadeInCompletedEvent, 
         FadeInStartedEvent, FadeOutStartedEvent;
@@ -54,6 +55,8 @@ public class FadeController : MonoBehaviour {
         anim.SetFloat(speedHash, speed);
     }
 
+    #region ================= Fade Out =================
+
     /// <summary>
     /// Start the fade out animation. Default transition lasts 1/3 s
     /// </summary>
@@ -62,9 +65,11 @@ public class FadeController : MonoBehaviour {
         if (faded) return;
         automatic = faded;
         faded = true;
+        fadeImage.color = fadeColor;
         anim.SetFloat(speedHash, this.speed = speed);
         anim.SetBool(openHash, false);
         FadeOutStartedEvent?.Invoke();
+        StartCoroutine(HandleFadeOut());
     }
 
     /// <summary>
@@ -74,30 +79,9 @@ public class FadeController : MonoBehaviour {
     /// <param name="auto">Whether or not to start fading in automatically</param>
     public void FadeOut(Color fadeColor, float speed = 1f, bool auto = false) {
         lastColor = this.fadeColor;
-        fadeImage.color = this.fadeColor = fadeColor;
+        this.fadeColor = fadeColor;
         
         FadeOut(speed, auto);
-    }
-
-    /// <summary>
-    /// Start the fade in animation. Default transition lasts 1/3 s
-    /// </summary>
-    public void FadeIn() {
-        FadeIn(1f);
-    }
-
-    /// <summary>
-    /// Fade in after a delay
-    /// </summary>
-    /// <param name="time">time in seconds to delay</param>
-    /// <param name="speed"></param>
-    public void DelayFadeIn(float time = 1f, float speed = 1f) {
-        StartCoroutine(DelayFadeInCoroutine(time, speed));
-    }
-
-    private IEnumerator DelayFadeInCoroutine(float time, float speed) {
-        yield return new WaitForSeconds(time);
-        FadeIn(speed: speed);
     }
 
     /// <summary>
@@ -115,32 +99,55 @@ public class FadeController : MonoBehaviour {
     }
 
     /// <summary>
-    /// Start the fade in animation with a speed
-    /// </summary>
-    public void FadeIn(float speed) {
-        if (!faded) return;
-        faded = false;
-        anim.SetFloat(speedHash, speed);
-        anim.SetBool(openHash, true);
-        FadeInStartedEvent?.Invoke();
-    }
-
-    /// <summary>
     /// Method Called by animation event when screen has completely faded to black;
     /// Triggers FadeOut Event
     /// </summary>
-    public void HandleFadeOut() {
+    public IEnumerator HandleFadeOut() {
+        yield return new WaitForSeconds(ANIM_LENGTH / speed);
         FadeOutCompletedEvent?.Invoke();
         if (automatic) FadeIn();
     }
+    #endregion
+
+    #region ================= Fade In =================
+
+    /// <summary>
+    /// Start the fade in animation with a speed
+    /// </summary>
+    public void FadeIn(float speed = 1f) {
+        if (!faded) return;
+        faded = false;
+        fadeImage.color = fadeColor;
+        anim.SetFloat(speedHash, speed);
+        anim.SetBool(openHash, true);
+        FadeInStartedEvent?.Invoke();
+        StartCoroutine(HandleFadedIn());
+    }
+
+    /// <summary>
+    /// Fade in after a delay
+    /// </summary>
+    /// <param name="time">time in seconds to delay</param>
+    /// <param name="speed"></param>
+    public void DelayFadeIn(float time = 1f, float speed = 1f) {
+        StartCoroutine(DelayFadeInCoroutine(time, speed));
+    }
+
+    private IEnumerator DelayFadeInCoroutine(float time, float speed) {
+        yield return new WaitForSeconds(time);
+        FadeIn(speed: speed);
+    }
+
 
     /// <summary>
     /// Triggered when animation has completely faded in
     /// </summary>
-    public void HandleFadedIn() {
+    public IEnumerator HandleFadedIn() {
+        yield return new WaitForSeconds(ANIM_LENGTH / speed);
         if (OverrideColor) {
             fadeImage.color = fadeColor = (Color)lastColor;
         }
         FadeInCompletedEvent?.Invoke();
     }
+    #endregion
 }

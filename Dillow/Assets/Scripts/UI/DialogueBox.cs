@@ -17,7 +17,7 @@ public class DialogueBox : MonoBehaviour {
     public TMP_InputField Input;
     public TextMeshProUGUI PlaceholderText;
     public TextMeshProUGUI Text;
-    private bool _wasDialogShown;
+    public bool DialogueShown { private set; get; }
 
     private bool HasSubscribedToEvents;
 
@@ -26,7 +26,7 @@ public class DialogueBox : MonoBehaviour {
         _queue = new Queue<DialogBoxData>();
 
         // Disable itself
-        if (!_wasDialogShown)
+        if (!DialogueShown)
             gameObject.SetActive(false);
     }
 
@@ -47,6 +47,12 @@ public class DialogueBox : MonoBehaviour {
         }
 
         CloseDialog();
+    }
+
+    public Button GetFirstButton() {
+        if (Button1.gameObject.activeSelf) return Button1;
+        if (Button2.gameObject.activeSelf) return Button2;
+        return Button3;
     }
 
     public void OnLeftClick() {
@@ -74,7 +80,7 @@ public class DialogueBox : MonoBehaviour {
     }
 
     public void ShowDialog(DialogBoxData data) {
-        _wasDialogShown = true;
+        DialogueShown = true;
         ResetAll();
 
         _data = data;

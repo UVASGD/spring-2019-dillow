@@ -12,6 +12,7 @@ public enum Tag
     Marine,
     Dashing,
     Invincible,
+    DeleteOnMenu,
 }
 
 public class TagHandler : MonoBehaviour

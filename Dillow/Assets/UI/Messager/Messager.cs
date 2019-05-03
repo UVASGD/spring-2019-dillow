@@ -9,7 +9,7 @@ public class Messager : MonoBehaviour
 {
     public static Messager instance;
 
-    Animator anim;
+    [HideInInspector] public Animator anim;
     int intro_hash, fadeOut_hash;
 
     public Text text;
@@ -24,32 +24,32 @@ public class Messager : MonoBehaviour
             instance = this;
         else
             Destroy(gameObject);
+        anim = GetComponent<Animator>();
     }
 
     void Start()
     {
-        anim = GetComponent<Animator>();
         intro_hash = Animator.StringToHash("Show");
         fadeOut_hash = Animator.StringToHash("FadeOut");
     }
 
     public IEnumerator DisplayMessage(string message)
     {
-        print("DisplayMessage");
+        //print("DisplayMessage");
         while (displaying)
         {
-            print("Queued...");
+            //print("Queued...");
             yield return null;
         }
-        print("Displaying message: " + message);
+        //print("Displaying message: " + message);
         displaying = true;
         anim.SetBool(intro_hash, true);
         text.text = message;
         yield return new WaitForSeconds(message_time);
-        print("Fading out");
+        //print("Fading out");
         anim.SetBool(intro_hash, false);
         anim.SetTrigger(fadeOut_hash);
-        print("Done");
+        //print("Done");
         yield return new WaitForSeconds(wait_time);
         displaying = false;
     }

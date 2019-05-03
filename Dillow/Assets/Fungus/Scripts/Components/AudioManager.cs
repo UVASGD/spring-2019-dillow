@@ -21,7 +21,8 @@ public class AudioManager : MonoBehaviour
 
 	private float timeSinceActive;
 
-	private bool switchingMusic;
+	private bool SwitchingMusic => switcher != null;
+    private Coroutine switcher;
 
 
     protected virtual void Awake()
@@ -29,7 +30,7 @@ public class AudioManager : MonoBehaviour
 		if (instance == null) {
 			instance = this;
 		} else {
-            Destroy(this);
+            Destroy(gameObject);
             return;
 		}
 
@@ -37,8 +38,6 @@ public class AudioManager : MonoBehaviour
 
 		timeSinceActive = 0f;
 		sourceNum = 0;
-
-		switchingMusic = false;
 
 		audioSource = new AudioSource[2];
 		audioSource[0] = gameObject.GetComponent<AudioSource>();
@@ -68,7 +67,10 @@ public class AudioManager : MonoBehaviour
 
 	public static void PlayMusic (string name, bool loop = true, bool crossfade = true, 
         bool fadein = true, float fadeDuration = 2f, bool syncTimes = false) {
-		if (true == instance.switchingMusic) return;
+        if (instance.SwitchingMusic) {
+            print("Can't play music while switching!");
+            return;
+        }
 
 		AudioClip clip;
 
@@ -83,14 +85,30 @@ public class AudioManager : MonoBehaviour
 
     public static void PlayMusic(AudioClip clip, bool loop = true, bool crossfade = true,
         bool fadein = true, float fadeDuration = 2f, bool syncTimes = false) {
-
+        if (instance.SwitchingMusic) return;
         AudioSource[] sources = instance.GetAudioSources();
-        instance.StartCoroutine(instance.MusicCoroutine(clip, sources[0], sources[1], loop, crossfade, fadein, fadeDuration, syncTimes));
+        instance.switcher = instance.StartCoroutine(
+            instance.MusicCoroutine(clip, sources[0], sources[1], 
+            loop, crossfade, fadein, fadeDuration, syncTimes));
+    }
+
+
+    /// <summary>
+    /// Forces the current switcher to stop as well as stops playing music
+    /// </summary>
+    public static void ForceStopMusic() {
+        if (!instance.SwitchingMusic) return;
+        instance.StopCoroutine(instance.switcher);
+        instance.switcher = null;
+        instance.StopMusic();
+
+        var sources = instance.GetAudioSources();
+        foreach (var s in sources) s.volume = 1;
     }
 
 	public IEnumerator MusicCoroutine (AudioClip clip, AudioSource current, AudioSource previous, 
 										bool loop, bool crossfade, bool fadein, float fadeDuration, bool syncTimes) {
-		switchingMusic = true;
+		
 		current.loop = loop;
 
 		bool revertMusic;
@@ -152,7 +170,7 @@ public class AudioManager : MonoBehaviour
 			current.volume = previousStartVolume;
 		}
 
-		switchingMusic = false;
+        switcher = null ;
 	}
 
     /// <summary>
