@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [Serializable]
 public class SaveData {
@@ -53,11 +54,13 @@ public class GameManager : MonoBehaviour {
     [Header("Player Stuff")]
     public GameObject player;
     public Vector3 playerSpawnLocation;
+    public static Island current;
     bool spawned;
 
     [Header("Global UI shit")]
     public DialogueBox dialogue;
     public Animator LoadingScreen;
+    public Slider progressSlider;
     public static ManagementEvent StartReturnToMenu, StartSceneChange;
     public static bool loadingFile;
 
@@ -74,6 +77,7 @@ public class GameManager : MonoBehaviour {
     public static readonly string HorizontalAxis2 = "Camera X";
     public static readonly string VerticalAxis1 = "Vertical";
     public static readonly string VerticalAxis2 = "Camera Y";
+    private AsyncOperation loadOp;
 
     private void Awake () {
         if (null == instance) {
@@ -89,6 +93,17 @@ public class GameManager : MonoBehaviour {
         GameObject spawn = GameObject.FindGameObjectWithTag("Respawn");
         playerSpawnLocation = (spawn) ? spawn.transform.position : player.transform.position;
 
+#if UNITY_EDITOR
+        // play the island's theme if we are not starting from the menu
+        // this shouldn't happen in game time
+        if (!SceneManager.GetActiveScene().name.ToLower().Contains("mainmenu")) {
+            current = FindObjectOfType<Island>();
+            if (current) {
+                AudioManager.PlayMusic(current.IdleMusic, fadeDuration: 1f);
+            }
+        }
+#endif
+
         FadeController.FadeInStartedEvent += delegate { spawned = true; };
         FadeController.FadeOutCompletedEvent += delegate { if (!spawned) StartCoroutine(RespawnCo()); };
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -96,10 +111,19 @@ public class GameManager : MonoBehaviour {
         EventNames = new EventNames();
     }
 
+    /// <summary>
+    /// Set some initial stuff we can only do when the level is fully loaded
+    /// </summary>
     public static void OnSceneLoaded(Scene level, LoadSceneMode mode) {
         if (loadingFile) {
             // Loading a game/scene
             HideLoading();
+
+            current = FindObjectOfType<Island>();
+            if (current) {
+                AudioManager.PlayMusic(current.IdleMusic, fadeDuration: 1f);
+            }
+
             FadeController.instance.FadeIn(1 / 3f);
             if(!instance.player)
                 instance.player = GameObject.FindWithTag("Player");
@@ -166,18 +190,25 @@ public class GameManager : MonoBehaviour {
     /// <param name="levelName"></param>
     public static void LoadLevel(string levelName) {
         instance.LoadingScreen.SetBool("Open", true);
-        instance.StartCoroutine(ActualLevelLoad(levelName));
+        loadingFile = true;
+        instance.StartCoroutine(AsyncronousLoad(levelName));
     }
 
     /// <summary>
     /// We want to bake some time into loading so the loading screen doesn't show for
     /// a split second
     /// </summary>
-    private static IEnumerator ActualLevelLoad(string levelName) {
+    private static IEnumerator AsyncronousLoad(string levelName) {
         yield return new WaitForSeconds(bakedLoadTime);
-        SceneManager.LoadSceneAsync(levelName);
+        instance.loadOp = SceneManager.LoadSceneAsync(levelName);
         StartSceneChange?.Invoke();
-        loadingFile = true;
+
+        while (!instance.loadOp.isDone) {
+            float progress = Mathf.Clamp01(instance.loadOp.progress / 0.9f);
+            Debug.Log("Load Progress: "+ progress);
+            if (instance.progressSlider) instance.progressSlider.value = progress;
+            yield return null;
+        }
     }
 
     public static void HideLoading() {

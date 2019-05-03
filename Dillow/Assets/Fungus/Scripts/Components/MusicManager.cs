@@ -27,8 +27,9 @@ namespace Fungus
 			if (instance == null) {
 				instance = this;
 			} else {
-				Destroy(gameObject);
-			}
+                Destroy(this);
+                return;
+            }
 
 			audioSource = GetComponent<AudioSource>();            
         }

@@ -45,8 +45,15 @@ public class PauseMenu : MonoBehaviour
             }
         }
 
-        // handle Input based on pause Input
+        HandleInput();
+    }
+
+    /// <summary>
+    /// handle Input based on pause screen
+    /// </summary>
+    private void HandleInput() {
         if (gameIsPaused) {
+            print("but " + buttonDelay);
             // horizontal control
             if (buttonDelay == 0) {
                 var old = cursor;
@@ -112,6 +119,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0f;
         gameIsPaused = true;
 
+        buttonDelay = 0;
         cursor = defaultCursor;
         cursor.Select();
     }

@@ -29,7 +29,8 @@ public class AudioManager : MonoBehaviour
 		if (instance == null) {
 			instance = this;
 		} else {
-			Destroy(gameObject);
+            Destroy(this);
+            return;
 		}
 
 		musicList.Init();
@@ -65,10 +66,10 @@ public class AudioManager : MonoBehaviour
 
 	#region Public members
 
-	public static void PlayMusic (string name, bool loop = true, bool crossfade = true, bool fadein = true, float fadeDuration = 2f, bool syncTimes = false) {
+	public static void PlayMusic (string name, bool loop = true, bool crossfade = true, 
+        bool fadein = true, float fadeDuration = 2f, bool syncTimes = false) {
 		if (true == instance.switchingMusic) return;
 
-		AudioSource[] sources = instance.GetAudioSources ();
 		AudioClip clip;
 
 		if (name == "") {
@@ -77,11 +78,15 @@ public class AudioManager : MonoBehaviour
 			clip = instance.musicList.GetMusic(name);
 		}
 
-
-		//if (null != clip) {
-		instance.StartCoroutine(instance.MusicCoroutine(clip, sources[0], sources[1], loop, crossfade, fadein, fadeDuration, syncTimes));
-		//}
+        PlayMusic(clip, loop, crossfade, fadein, fadeDuration, syncTimes);
 	}
+
+    public static void PlayMusic(AudioClip clip, bool loop = true, bool crossfade = true,
+        bool fadein = true, float fadeDuration = 2f, bool syncTimes = false) {
+
+        AudioSource[] sources = instance.GetAudioSources();
+        instance.StartCoroutine(instance.MusicCoroutine(clip, sources[0], sources[1], loop, crossfade, fadein, fadeDuration, syncTimes));
+    }
 
 	public IEnumerator MusicCoroutine (AudioClip clip, AudioSource current, AudioSource previous, 
 										bool loop, bool crossfade, bool fadein, float fadeDuration, bool syncTimes) {
