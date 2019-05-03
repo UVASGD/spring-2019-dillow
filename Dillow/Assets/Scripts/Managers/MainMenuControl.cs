@@ -314,6 +314,11 @@ public class MainMenuControl : MonoBehaviour {
             new List<int>()
         );
 
+        // simplify Scene name
+        var key = dat.currentScene.Contains("/") ? "/" : "\\";
+        int d = dat.currentScene.Length - dat.currentScene.IndexOf(".unity") - 1;
+        dat.currentScene = dat.currentScene.Substring(dat.currentScene.LastIndexOf(key) + 1, d);
+
         // TODO: allow the player to choose the icon for their game!
         dat.saveIconIndex = UnityEngine.Random.Range(0, GameManager.instance.saveFileSprites.Count);
         
