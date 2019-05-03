@@ -34,11 +34,6 @@ public class MainMenuControl : MonoBehaviour {
     private float buttonDelay;
     private float transitionDelay;
 
-    private const string HorizontalAxis1 = "Horizontal";
-    private const string HorizontalAxis2 = "Camera X";
-    private const string VerticalAxis1 = "Vertical";
-    private const string VerticalAxis2 = "Camera Y";
-
     [Header("Save Menu")]
     public List<FileOption> fileOptions;
 
@@ -46,8 +41,6 @@ public class MainMenuControl : MonoBehaviour {
     public AudioClip menuSound;
     public AudioClip badSound;
     public AudioClip selectSound;
-    public Sprite emptyFileSprite;
-    public List<Sprite> saveFileSprites;
     public string FirstIsland;
 
     private const string TEMP_FILE = "temporary.json";
@@ -141,16 +134,16 @@ public class MainMenuControl : MonoBehaviour {
         // horizontal control
         if (buttonDelay == 0) {
             var old = cursor;
-            if ((Input.GetAxis(HorizontalAxis1) > 0
-                || Input.GetAxis(HorizontalAxis2) > 0) && cursor.right) {
+            if ((Input.GetAxis(GameManager.HorizontalAxis1) > 0
+                || Input.GetAxis(GameManager.HorizontalAxis2) > 0) && cursor.right) {
                 // deactivate last button
                 cursor.Deactivate();
                 cursor = cursor.right;
                 // activate new button
                 cursor.Activate();
                 buttonDelay = BTN_DELAY;
-            } else if ((Input.GetAxis(HorizontalAxis1) < 0
-                || Input.GetAxis(HorizontalAxis2) < 0) && cursor.left) {
+            } else if ((Input.GetAxis(GameManager.HorizontalAxis1) < 0
+                || Input.GetAxis(GameManager.HorizontalAxis2) < 0) && cursor.left) {
                 cursor.Deactivate();
                 cursor = cursor.left;
                 cursor.Activate();
@@ -158,14 +151,14 @@ public class MainMenuControl : MonoBehaviour {
             }
 
             // vertical control
-            if ((Input.GetAxis(VerticalAxis1) < 0
-                || Input.GetAxis(VerticalAxis2) < 0) && cursor.down) {
+            if ((Input.GetAxis(GameManager.VerticalAxis1) < 0
+                || Input.GetAxis(GameManager.VerticalAxis2) < 0) && cursor.down) {
                 cursor.Deactivate();
                 cursor = cursor.down;
                 cursor.Activate();
                 buttonDelay = BTN_DELAY;
-            } else if ((Input.GetAxis(VerticalAxis1) > 0
-                || Input.GetAxis(VerticalAxis2) > 0) && cursor.up) {
+            } else if ((Input.GetAxis(GameManager.VerticalAxis1) > 0
+                || Input.GetAxis(GameManager.VerticalAxis2) > 0) && cursor.up) {
                 cursor.Deactivate();
                 cursor = cursor.up;
                 cursor.Activate();
@@ -321,7 +314,7 @@ public class MainMenuControl : MonoBehaviour {
         );
 
         // TODO: allow the player to choose the icon for their game!
-        dat.saveIconIndex = UnityEngine.Random.Range(0, saveFileSprites.Count);
+        dat.saveIconIndex = UnityEngine.Random.Range(0, GameManager.instance.saveFileSprites.Count);
         
         string jsonData = JsonUtility.ToJson(dat);
         string filePath = Application.dataPath + GameManager.SAVE_FOLDER + "/"

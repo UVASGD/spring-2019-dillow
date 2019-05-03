@@ -40,24 +40,40 @@ public delegate void ManagementEvent();
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
 
+    // File stuff
     public static int fileCount;
     public static readonly string SAVE_FOLDER = "/Saves";
     public static readonly string TEST_LOC = "data.json";
     public static string currentSaveFile = TEST_LOC;
     private static string DataSubpath => SAVE_FOLDER + "/" + currentSaveFile;
 
+    [Tooltip("These objects get unloaded when returning to the Main Menu")]
+    public List<GameObject> ObjectsToKill;
+
+    [Header("Player Stuff")]
     public GameObject player;
     public Vector3 playerSpawnLocation;
     bool spawned;
+
+    [Header("Global UI shit")]
+    public DialogueBox dialogue;
+    public Animator LoadingScreen;
+    public static ManagementEvent StartReturnToMenu, StartSceneChange;
+    public static bool loadingFile;
+
+    [Header("Defaults")]
+    public Sprite emptyFileSprite;
+    public List<Sprite> saveFileSprites;
 
     public static SaveData saveData;
     public static HashSet<ulong> obtainedCollectibles = new HashSet<ulong>();
     public static Dictionary<CollectibleType, int> collectibleCounts = new Dictionary<CollectibleType, int>();
 
-    public DialogueBox dialogue;
-    public Animator LoadingScreen;
-    public static ManagementEvent StartReturnToMenu;
-    public static bool loadingFile;
+    public static readonly float bakedLoadTime = 1.5f;
+    public static readonly string HorizontalAxis1 = "Horizontal";
+    public static readonly string HorizontalAxis2 = "Camera X";
+    public static readonly string VerticalAxis1 = "Vertical";
+    public static readonly string VerticalAxis2 = "Camera Y";
 
     private void Awake () {
         if (null == instance) {
@@ -136,9 +152,18 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     /// <param name="levelName"></param>
     public static void LoadLevel(string levelName) {
-        if (instance.LoadingScreen)
-            instance.LoadingScreen.SetBool("Open", true);
+        instance.LoadingScreen.SetBool("Open", true);
+        instance.StartCoroutine(ActualLevelLoad(levelName));
+    }
+
+    /// <summary>
+    /// We want to bake some time into loading so the loading screen doesn't show for
+    /// a split second
+    /// </summary>
+    private static IEnumerator ActualLevelLoad(string levelName) {
+        yield return new WaitForSeconds(bakedLoadTime);
         SceneManager.LoadSceneAsync(levelName);
+        StartSceneChange?.Invoke();
         loadingFile = true;
     }
 
@@ -221,7 +246,7 @@ public class GameManager : MonoBehaviour {
 
     public static void ReturnToMenu() {
         // dont judge me
-        YesNoMaybe("Do you want to save first?", ConfirmReturnToMenuSave, ConfirmReturnToMenu,
+        YesNoMaybe("Do you maybe want to save first?", ConfirmReturnToMenuSave, ConfirmReturnToMenu,
             delegate { StartReturnToMenu = null; CloseDialog(); },txtMaybe:"No", txtOK:"Yes");
     }
 
@@ -230,6 +255,10 @@ public class GameManager : MonoBehaviour {
         if (currentSaveFile.Contains("Temp")) {
             // the player needs to set the save file they want to overwrite
         } else {
+            // unload persistant objects that shouldn't be in MM
+            foreach (GameObject go in instance.ObjectsToKill)
+                Destroy(go);
+
             instance.StartCoroutine(Save());
             ConfirmReturnToMenu();
         }
@@ -240,6 +269,7 @@ public class GameManager : MonoBehaviour {
         FadeController.instance.FadeOut(1 / 6f);
         AudioManager.PlayMusic("", fadeDuration: 3f);
         StartReturnToMenu?.Invoke();
+        StartSceneChange?.Invoke();
     }
 
     /// <summary>

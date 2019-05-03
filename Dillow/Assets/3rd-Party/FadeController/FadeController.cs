@@ -41,12 +41,6 @@ public class FadeController : MonoBehaviour {
         }
 
         instance = this;
-
-        // Default layout:
-        //- FadeCanvas
-        // - FadeControlller <--
-        //  - Image
-        DontDestroyOnLoad(transform.parent.gameObject);
     }
 
     private int openHash, speedHash;

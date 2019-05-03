@@ -24,15 +24,15 @@ public class FileOption : MonoBehaviour {
 
     public void SetSaveData(SaveData dat) {
         data = dat;
-        icon.sprite = MainMenuControl.instance.saveFileSprites[data.saveIconIndex];
+        icon.sprite = GameManager.instance.saveFileSprites[data.saveIconIndex];
         levelText.text = data.currentScene;
         var key = data.fileName.Contains("/") ? "/" : "\\";
-        fileText.text = data.fileName.Substring(data.fileName.LastIndexOf(key) + 1,
-            data.fileName.IndexOf(".json"));
+        int d = data.fileName.Length - data.fileName.IndexOf(".json")-1;
+        fileText.text = data.fileName.Substring(data.fileName.LastIndexOf(key) + 1, d);
     }
 
     public void SetAsEmpty() {
-        icon.sprite = MainMenuControl.instance.emptyFileSprite;
+        icon.sprite = GameManager.instance.emptyFileSprite;
         levelText.text = "Empty";
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
+[RequireComponent(typeof(Animator))]
 public class Messager : MonoBehaviour
 {
     public static Messager instance;
