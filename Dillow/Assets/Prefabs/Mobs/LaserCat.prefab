@@ -408,7 +408,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.0015
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6212029574437067423
 MonoBehaviour:
@@ -1205,8 +1205,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62720878c45cab449b7573e185b5243d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  push_force: 10
-  up_force: 20
+  push_force: 50
+  up_force: 100
   StunTime: 0
   DamageTime: 0
   EndTime: 4
@@ -1314,6 +1314,10 @@ PrefabInstance:
     - target: {fileID: 100002, guid: ea98945145b82894da6f4c41e0d1a4eb, type: 3}
       propertyPath: m_Name
       value: Root
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: ea98945145b82894da6f4c41e0d1a4eb, type: 3}
+      propertyPath: m_TagString
+      value: MainBody
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ea98945145b82894da6f4c41e0d1a4eb, type: 3}
       propertyPath: m_LocalRotation.x
