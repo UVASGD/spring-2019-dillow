@@ -13,10 +13,11 @@ public class MainMenuControl : MonoBehaviour {
 
     public enum MenuState {
         Start,
-        Options,
+        Credits,
         Files,
         NewGame,
         Entry,
+        Options,
     }
 
     public MenuState menuState;
@@ -37,6 +38,12 @@ public class MainMenuControl : MonoBehaviour {
     [Header("Save Menu")]
     public List<FileOption> fileOptions;
 
+    [Header("Credits")]
+    public Transform credits;
+    private Rigidbody c_rb;
+    private Vector3 creditsStart;
+    public float MoveSpeed;
+
     [Header("Defaults")]
     public AudioClip menuSound;
     public AudioClip badSound;
@@ -56,7 +63,7 @@ public class MainMenuControl : MonoBehaviour {
     public ThreeDButton Menu {
         get {
             switch (menuState) {
-                case MenuState.Options: return optionMenu;
+                case MenuState.Credits: return optionMenu;
                 case MenuState.Files: return fileMenu;
                 case MenuState.NewGame: return newMenu;
                 default: return startMenu;
@@ -85,6 +92,11 @@ public class MainMenuControl : MonoBehaviour {
         menuState = MenuState.Entry;
         cursor = Menu;
 
+        if (credits) {
+            creditsStart = credits.transform.position;
+            c_rb = credits.GetComponent<Rigidbody>();
+        }
+
         forceLockInput = true;
         // make sure to unlock input by the time the game has finished fading in
         FadeController.FadeInCompletedEvent += FinishEntry;
@@ -94,6 +106,8 @@ public class MainMenuControl : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         anim.SetInteger("State", (int)menuState);
+
+        c_rb.velocity = new Vector3(0, MoveSpeed, 0);
 
         // update delayed timers
         if (buttonDelay > 0) {
@@ -198,10 +212,11 @@ public class MainMenuControl : MonoBehaviour {
     #endregion
 
 
-    #region ================= OPTIONS =================
+    #region ================= CREDITS =================
 
-    public void OpenOptionsMenu() {
-        ChangeState(MenuState.Options);
+    public void OpenCreditsMenu() {
+        ChangeState(MenuState.Credits);
+        if (credits) credits.transform.position = creditsStart;
     }
 
     #endregion

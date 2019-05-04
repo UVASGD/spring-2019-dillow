@@ -46,7 +46,6 @@ public class FadeController : MonoBehaviour {
         anim = GetComponent<Animator>();
         anim.updateMode = AnimatorUpdateMode.UnscaledTime;
         faded = (startOpen && animateOnStart) || (!startOpen && !animateOnStart);
-        print(faded);
         openHash = Animator.StringToHash("Open");
         speedHash = Animator.StringToHash("Speed");
 
@@ -116,9 +115,7 @@ public class FadeController : MonoBehaviour {
     /// Start the fade in animation with a speed
     /// </summary>
     public void FadeIn(float speed = 1f) {
-        print("In SCRIPT:"+faded);
         if (!faded) return;
-        print("kjhfrskjhfdlkuhgfdkuf");
         faded = false;
         fadeImage.color = fadeColor;
         anim.SetFloat(speedHash, speed);
@@ -146,7 +143,6 @@ public class FadeController : MonoBehaviour {
     /// Triggered when animation has completely faded in
     /// </summary>
     public IEnumerator HandleFadedIn() {
-        print("joweufs");
         yield return new WaitForSeconds(ANIM_LENGTH / speed);
         if (OverrideColor) {
             fadeImage.color = fadeColor = (Color)lastColor;
