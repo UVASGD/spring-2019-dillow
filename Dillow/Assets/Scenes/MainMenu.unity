@@ -898,7 +898,7 @@ GameObject:
   m_Component:
   - component: {fileID: 174654213}
   m_Layer: 0
-  m_Name: Options View Focus
+  m_Name: Credits View Focus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2187,7 +2187,7 @@ GameObject:
   - component: {fileID: 378049912}
   - component: {fileID: 378049911}
   m_Layer: 0
-  m_Name: Options
+  m_Name: Credits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13536,7 +13536,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1387337756}
-  m_LocalRotation: {x: -0.09261852, y: 0.8833651, z: -0.1971498, w: -0.41499394}
+  m_LocalRotation: {x: -0.09261853, y: 0.8833651, z: -0.19714981, w: -0.41499397}
   m_LocalPosition: {x: -167.37, y: 55.35, z: 444.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -15032,7 +15032,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1506359325}
   m_Layer: 0
-  m_Name: Options Menu
+  m_Name: Credits Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26436,6 +26436,16 @@ PrefabInstance:
     - target: {fileID: 7710440218465744383, guid: 82687f1d33d854a748512d3c2807d57a,
         type: 3}
       propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8189482877144503098, guid: 82687f1d33d854a748512d3c2807d57a,
+        type: 3}
+      propertyPath: startOpen
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8189482877144503098, guid: 82687f1d33d854a748512d3c2807d57a,
+        type: 3}
+      propertyPath: animateOnStart
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
