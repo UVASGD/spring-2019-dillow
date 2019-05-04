@@ -28,7 +28,7 @@ public class LaserGun : MonoBehaviour {
         aim_laser.enabled = false;
         aim_laser.useWorldSpace = true;
 
-        hit_tags = new List<Tag>() { Tag.SuperDamage };
+        hit_tags = new List<Tag>() { Tag.Damage };
 
         //InvokeRepeating("HipFire", 1f, 1f);
     }
