@@ -90,13 +90,17 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
         }
 
+        // initialize game information
+        
+        foreach (CollectibleType colType in Enum.GetValues(typeof(CollectibleType)))
+            collectibleCounts.Add(colType, 0);
         Load();
 
+#if UNITY_EDITOR
         player = GameObject.FindWithTag("Player");
         GameObject spawn = GameObject.FindGameObjectWithTag("Respawn");
         playerSpawnLocation = (spawn) ? spawn.transform.position : player.transform.position;
 
-#if UNITY_EDITOR
         // play the island's theme if we are not starting from the menu
         // this shouldn't happen in game time
         if (!SceneManager.GetActiveScene().name.ToLower().Contains("mainmenu")) { 
