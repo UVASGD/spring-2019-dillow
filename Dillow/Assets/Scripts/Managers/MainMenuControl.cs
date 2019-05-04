@@ -100,7 +100,6 @@ public class MainMenuControl : MonoBehaviour {
         forceLockInput = true;
         // make sure to unlock input by the time the game has finished fading in
         FadeController.FadeInCompletedEvent += FinishEntry;
-        FadeController.instance.FadeIn(1 / 10f);
     }
 
     // Update is called once per frame

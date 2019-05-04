@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour {
     public Animator LoadingScreen;
     public Slider progressSlider;
     public static ManagementEvent StartReturnToMenu, StartSceneChange;
-    public static bool loadingFile;
+    public static bool loadingLevel;
 
     [Header("Defaults")]
     public Sprite emptyFileSprite;
@@ -99,12 +99,14 @@ public class GameManager : MonoBehaviour {
 #if UNITY_EDITOR
         // play the island's theme if we are not starting from the menu
         // this shouldn't happen in game time
-        if (!SceneManager.GetActiveScene().name.ToLower().Contains("mainmenu")) {
+        if (!SceneManager.GetActiveScene().name.ToLower().Contains("mainmenu")) { 
+            loadingLevel = true;
             current = FindObjectOfType<Island>();
             if (current) {
                 AudioManager.PlayMusic(current.IdleMusic, fadeDuration: 1f);
             }
         }
+
 #endif
 
         FadeController.FadeInStartedEvent += delegate { spawned = true; };
@@ -123,7 +125,7 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public static void OnSceneLoaded(Scene level, LoadSceneMode mode) {
             HideLoading();
-        if (loadingFile) {
+        if (loadingLevel) {
             // Loading a game/scene
 
             current = FindObjectOfType<Island>();
@@ -139,13 +141,6 @@ public class GameManager : MonoBehaviour {
                 instance.player.transform.position;
         } else {
             // Returning to menu
-            
-#if UNITY_EDITOR
-            // this shouldn't happen in game time
-            if (!SceneManager.GetActiveScene().name.ToLower().Contains("mainmenu")) {
-                return;
-            }
-#endif
 
             // unload persistant objects that shouldn't be in MM
             var list = FindObjectsOfType<TagHandler>();
@@ -157,6 +152,7 @@ public class GameManager : MonoBehaviour {
             AudioManager.ForceStopMusic();
             AudioManager.PlayMusic("Main Menu", fadeDuration: 10f / 3f);
         }
+        FadeController.instance.FadeIn(1 / 10f);
     }
 
     public static IEnumerator Save () {
@@ -214,7 +210,7 @@ public class GameManager : MonoBehaviour {
     /// <param name="levelName"></param>
     public static void LoadLevel(string levelName) {
         instance.LoadingScreen.SetBool("Open", true);
-        loadingFile = true;
+        loadingLevel = true;
         instance.StartCoroutine(AsyncronousLoad(levelName));
     }
 
@@ -297,7 +293,8 @@ public class GameManager : MonoBehaviour {
     public void Respawn()
     {
         spawned = false;
-        FadeController.instance.FadeOut(0.1f, true);
+        print("we should be fading out");
+        FadeController.instance.FadeOut(0.1f);
     }
 
     IEnumerator RespawnCo()
@@ -370,7 +367,7 @@ public class GameManager : MonoBehaviour {
     public static void CommitToMenu() {
         instance.LoadingScreen.SetBool("Open", true);
         FadeController.FadeOutCompletedEvent -= CommitToMenu;
-        loadingFile = false;
+        loadingLevel = false;
         instance.StartCoroutine(AsyncLoadMenu());
     }
 

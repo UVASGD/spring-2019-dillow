@@ -62,8 +62,10 @@ public class FadeController : MonoBehaviour {
     /// </summary>
     /// <param name="auto">Whether or not to start fading in automatically</param>
     public void FadeOut(float speed = 1f, bool auto = false) {
+        print("Fading: " + speed);
         if (faded) return;
-        automatic = faded;
+        print("Fading out");
+        automatic = auto;
         faded = true;
         fadeImage.color = fadeColor;
         anim.SetFloat(speedHash, this.speed = speed);
@@ -118,7 +120,7 @@ public class FadeController : MonoBehaviour {
         if (!faded) return;
         faded = false;
         fadeImage.color = fadeColor;
-        anim.SetFloat(speedHash, speed);
+        anim.SetFloat(speedHash, this.speed = speed);
         anim.SetBool(openHash, true);
         FadeInStartedEvent?.Invoke();
         StartCoroutine(HandleFadedIn());

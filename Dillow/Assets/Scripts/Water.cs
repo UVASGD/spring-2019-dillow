@@ -10,6 +10,7 @@ public class Water : MonoBehaviour
     private void Start()
     {
         coll = GetComponent<Collider>();
+        print("Hey, " + coll);
     }
 
     // Update is called once per frame
@@ -22,6 +23,7 @@ public class Water : MonoBehaviour
             {
                 if (!victim.HasTag(Tag.Marine))
                 {
+                    print("Victim should die... " + victim.GetComponent<IMortal>());
                     victim.GetComponent<IMortal>().Die();
                     removed.Add(victim);
                 }
@@ -41,8 +43,10 @@ public class Water : MonoBehaviour
 
     public void AddVictim(GameObject victim, Collider drowning_collider)
     {
+        print("someone fell in");
         if (victim.GetComponent<IMortal>() != null && !victims.ContainsKey(victim))
         {
+            print("adding a victim");
             victims.Add(victim, drowning_collider);
             Physics.IgnoreCollision(coll, drowning_collider);
         }

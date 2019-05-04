@@ -256,6 +256,7 @@ public class DillowBody : Body
     {
         if (!dead)
         {
+            print("I'm dead");
             jump_dectector.ResetJump();
             dead = true;
             next_hit_kills = false;
