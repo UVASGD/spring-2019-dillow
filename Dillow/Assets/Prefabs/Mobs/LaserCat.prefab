@@ -1205,8 +1205,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62720878c45cab449b7573e185b5243d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  push_force: 50
-  up_force: 100
+  push_force: 100
+  up_force: 200
   StunTime: 0
   DamageTime: 0
   EndTime: 4
