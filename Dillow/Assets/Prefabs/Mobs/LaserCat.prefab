@@ -408,8 +408,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25149575
-  m_Center: {x: 0, y: 0.25149575, z: 0}
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6212029574437067423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1315,6 +1315,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Root
       objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: ea98945145b82894da6f4c41e0d1a4eb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 1.078587e-14
+      objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: ea98945145b82894da6f4c41e0d1a4eb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.205
@@ -1367,10 +1371,6 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: e4b5b844c007e463bab7d0246b893519, type: 2}
-    - target: {fileID: 400000, guid: ea98945145b82894da6f4c41e0d1a4eb, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 1.078587e-14
-      objectReference: {fileID: 0}
     - target: {fileID: 13700000, guid: ea98945145b82894da6f4c41e0d1a4eb, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
