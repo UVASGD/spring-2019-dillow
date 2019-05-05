@@ -34,15 +34,18 @@ ModelImporter:
     2300002: Body
     2300004: Pedestal
     2300006: Teeth
+    2300008: //RootNode
     3300000: Arms
     3300002: Body
     3300004: Pedestal
     3300006: Teeth
+    3300008: //RootNode
     4300000: Arms
     4300002: Body
     4300004: Teeth
     4300006: Pedestal
     10800000: Sun
+    2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
     importMaterials: 0
@@ -81,7 +84,7 @@ ModelImporter:
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
-    importLights: 1
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 1
     useFileUnits: 1
@@ -98,10 +101,10 @@ ModelImporter:
     previousCalculatedGlobalScale: 1
     hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
-    normalSmoothAngle: 60
-    normalImportMode: 0
+    normalSmoothAngle: 131
+    normalImportMode: 1
     tangentImportMode: 3
-    normalCalculationMode: 4
+    normalCalculationMode: 3
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
