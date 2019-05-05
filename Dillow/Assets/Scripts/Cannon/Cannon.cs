@@ -5,7 +5,7 @@ public class Cannon : MonoBehaviour {
 
 	#region VARIABLES
 	//Calculation Info
-	Transform barrel;
+	public Transform barrel;
     Vector3 origin;
     Vector3 target;
     Vector3 apex;
@@ -54,7 +54,6 @@ public class Cannon : MonoBehaviour {
 			return;
 		}
 
-		barrel = transform.Find("Barrel");
 		if (null == barrel) {
 			inoperable = true;
 		}
@@ -72,10 +71,10 @@ public class Cannon : MonoBehaviour {
 
 		aimAngle = 90f - Vector3.Angle(shotVector, Vector3.ProjectOnPlane(shotVector, Vector3.up));
 
-        rotateAngle = Vector3.Angle(new Vector3(transform.forward.x, 0f, transform.forward.z),
+        rotateAngle = Vector3.Angle(new Vector3(transform.up.x, 0f, transform.up.z),
                                     new Vector3(target.x, 0f, target.z) - new Vector3(origin.x, 0f, origin.z));
 
-        cross = Vector3.Cross(new Vector3(transform.forward.x, 0f, transform.forward.z),
+        cross = Vector3.Cross(new Vector3(transform.up.x, 0f, transform.up.z),
                               new Vector3(target.x, 0f, target.z) - new Vector3(origin.x, 0f, origin.z));
 
         if (cross.y < 0f) {
@@ -90,6 +89,10 @@ public class Cannon : MonoBehaviour {
 	#region UPDATE
 	private void Update () {
 		TriggerHandler();
+
+		if (aiming && !firing) {
+			DillowController.instance.body.transform.position = barrel.position;
+		}
 	}
 
 	void TriggerHandler () {
@@ -100,10 +103,6 @@ public class Cannon : MonoBehaviour {
 		if (firingTriggered && !firing) {
 			Fire();
 		}
-		
-		if (expressingTriggered && !expressing) {
-			SetExpression(MouthController.MouthState.smile);
-		}
 	}
 	#endregion
 	
@@ -111,7 +110,7 @@ public class Cannon : MonoBehaviour {
 	#region TRIGGERED EVENTS
 	IEnumerator Aim (Rigidbody projectile = null) {
         aiming = true;
-
+		DillowController.instance.can_input = false;
 		if (null == projectile) {
 			projectile = GameManager.instance.player.GetComponent<Rigidbody>();
 		}
@@ -121,8 +120,9 @@ public class Cannon : MonoBehaviour {
         angleTraversed = 0;
 
         while (angleTraversed < rotateAngle) {
-            transform.Rotate(transform.up, (clockwise ? 1 : -1) * rotateSpeed * Time.deltaTime);
-            angleTraversed += rotateSpeed * Time.deltaTime;
+            //transform.Rotate(transform.up, (clockwise ? 1 : -1) * rotateSpeed * Time.deltaTime);
+			transform.eulerAngles += Vector3.up * (clockwise ? 1 : -1) * rotateSpeed * Time.deltaTime;
+			angleTraversed += rotateSpeed * Time.deltaTime;
 
             projectile.position = barrel.position;
             projectile.velocity = Vector3.zero;
@@ -135,7 +135,7 @@ public class Cannon : MonoBehaviour {
         yield return new WaitForSeconds(3f);
         
         while (angleTraversed < aimAngle) {
-            barrel.localEulerAngles += Vector3.right * rotateSpeed * Time.deltaTime;
+            barrel.localEulerAngles -= Vector3.right * rotateSpeed * Time.deltaTime;
             angleTraversed += rotateSpeed * Time.deltaTime;
 
             projectile.position = barrel.position;
@@ -143,19 +143,22 @@ public class Cannon : MonoBehaviour {
 
             yield return new WaitForEndOfFrame();
         }
-    }
-
-	void SetExpression (MouthController.MouthState state) {
-		expressing = true;
-		GetComponentInChildren<MouthController>().SetExpression(state);
 	}
+
+	//void SetExpression (MouthController.MouthState state) {
+	//	expressing = true;
+	//	GetComponentInChildren<MouthController>().SetExpression(state);
+	//}
 	
 	void Fire (Rigidbody projectile = null) {
 		firing = true;
+		DillowController.instance.body.GetComponent<Rigidbody>().useGravity = true;
 		if (null == projectile) {
 			projectile = GameManager.instance.player.GetComponent<Rigidbody>();
 		}
 		projectile.gameObject.AddComponent<FollowPath>().SetPath(pathNodes, speed, true, pathSpeedMultiplier);
+		transform.GetComponent<Animator>().SetTrigger("Explode");
+		DillowController.instance.can_input = true;
 	}
 	#endregion
 }
