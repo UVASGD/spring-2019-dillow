@@ -1478,8 +1478,8 @@ CanvasGroup:
   m_GameObject: {fileID: 5671413737145992275}
   m_Enabled: 1
   m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!95 &6016981870236116764
 Animator:

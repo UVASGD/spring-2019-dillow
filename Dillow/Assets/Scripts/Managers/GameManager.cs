@@ -93,7 +93,8 @@ public class GameManager : MonoBehaviour {
         // initialize game information
         
         foreach (CollectibleType colType in Enum.GetValues(typeof(CollectibleType)))
-            collectibleCounts.Add(colType, 0);
+            if(!collectibleCounts.ContainsKey(colType))
+                collectibleCounts.Add(colType, 0);
         Load();
 
 #if UNITY_EDITOR
