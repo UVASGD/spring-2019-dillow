@@ -86,7 +86,7 @@ public class EnterCannon : MonoBehaviour {
 	}
 
     public void OnTriggerEnter (Collider other) {
-        if (other.CompareTag ("Player")) {
+        if (other.CompareTag ("Player") && enabled) {
             secondsInside = 0f;
             audioSource.clip = openSound;
             audioSource.Play ();
@@ -95,7 +95,7 @@ public class EnterCannon : MonoBehaviour {
     }
 
     private void OnTriggerStay (Collider other) {
-        if (other.CompareTag ("Player")) {
+        if (other.CompareTag ("Player") && enabled) {
             secondsInside += Time.deltaTime;
 			transform.GetComponentInParent<Animator>().SetBool("CloseBy", true);
             if (secondsInside >= 3f && !trigger) {
@@ -105,7 +105,7 @@ public class EnterCannon : MonoBehaviour {
     }
 
     private void OnTriggerExit (Collider other) {
-        if (other.CompareTag ("Player")) {
+        if (other.CompareTag ("Player") && enabled) {
 			transform.GetComponentInParent<Animator>().SetBool("CloseBy", false);
 			secondsInside = 0f;
             audioSource.clip = closeSound;

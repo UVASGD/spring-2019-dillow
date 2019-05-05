@@ -24,12 +24,13 @@ public class CollectibleChecker : MonoBehaviour
             {
                 enter.enabled = true;
                 enter.OnTriggerEnter(other);
-                Messager.instance.DisplayMessage(threshold + "/" + threshold + " (" + type.ToString() + ") Collected!");
+                StartCoroutine(Messager.instance.DisplayMessage(threshold + "/" + threshold + " (" + type.ToString() + ") Collected!"));
+
                 enabled = false;
             }
             else
             {
-                Messager.instance.DisplayMessage(GameManager.collectibleCounts[type] + "/" + threshold + " (" + type.ToString() + ") Collected...");
+                StartCoroutine(Messager.instance.DisplayMessage(GameManager.collectibleCounts[type] + "/" + threshold + " (" + type.ToString() + ") Collected..."));
             }
         }
     }
