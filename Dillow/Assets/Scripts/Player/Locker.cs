@@ -84,7 +84,7 @@ public class Locker : MonoBehaviour {
             locked = null;
         } else {
             GameObject best_lock = locked;
-            Vector3 target = (locked) ? locked.transform.position : Vector3.zero;
+            //Vector3 target = (locked) ? locked.transform.position : Vector3.zero;
             float best_angle = float.PositiveInfinity;
             for (int i = lockables.Count - 1; i >= 0; i--) {
                 GameObject lockable = lockables[i];

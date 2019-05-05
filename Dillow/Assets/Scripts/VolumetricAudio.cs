@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VolmetricAudio : MonoBehaviour
+public class VolumetricAudio : MonoBehaviour
 {
     public GameObject aud;
     List<Collider> bounds;
+
+    public bool occlude;
+    public float occlude_dist;
+
+    float range = 10000;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +22,14 @@ public class VolmetricAudio : MonoBehaviour
     void Update()
     {
         aud.transform.position = GetClosestPoint(DillowController.instance.body.transform.position);
+        if (occlude && Physics.Raycast(aud.transform.position, (DillowController.instance.body.transform.position - aud.transform.position).normalized,
+            out RaycastHit hit, range, LayerMask.GetMask("Ground"), queryTriggerInteraction: QueryTriggerInteraction.Ignore))
+            if (Vector3.Distance(DillowController.instance.body.transform.position, hit.point) > occlude_dist)
+            {
+                aud.SetActive(false);
+                return;
+            }
+        aud.SetActive(true);
     }
 
     Vector3 GetClosestPoint(Vector3 point)
