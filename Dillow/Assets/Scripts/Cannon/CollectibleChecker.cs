@@ -11,6 +11,7 @@ public class CollectibleChecker : MonoBehaviour
 
     private void Start()
     {
+        enter = GetComponent<EnterCannon>();
         enter.enabled = false;
     }
 
