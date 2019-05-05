@@ -299,7 +299,7 @@ public class MainMenuControl : MonoBehaviour {
         FadeController.FadeOutCompletedEvent -= CommitLoadSave;
 
         // load save file and start 
-        GameManager.LoadLevel(dataToLoad.currentScene);
+        GameManager.LoadLevel(dataToLoad.currentScene, true);
     }
 
     #endregion
@@ -329,9 +329,9 @@ public class MainMenuControl : MonoBehaviour {
         );
 
         // simplify Scene name
-        var key = dat.currentScene.Contains("/") ? "/" : "\\";
-        int d = dat.currentScene.Length - dat.currentScene.IndexOf(".unity") - 1;
-        dat.currentScene = dat.currentScene.Substring(dat.currentScene.LastIndexOf(key) + 1, d);
+        //var key = dat.currentScene.Contains("/") ? "/" : "\\";
+        //int d = dat.currentScene.Length - dat.currentScene.IndexOf(".unity") - 1;
+        //dat.currentScene = dat.currentScene.Substring(dat.currentScene.LastIndexOf(key) + 1, d);
 
         // TODO: allow the player to choose the icon for their game!
         dat.saveIconIndex = UnityEngine.Random.Range(0, GameManager.instance.saveFileSprites.Count);
@@ -348,7 +348,7 @@ public class MainMenuControl : MonoBehaviour {
         FadeController.FadeOutCompletedEvent -= CommitNewGame;
 
         // Load Scene
-        GameManager.LoadLevel(FirstIsland);
+        GameManager.LoadLevel(FirstIsland, true);
     }
 
     #endregion
