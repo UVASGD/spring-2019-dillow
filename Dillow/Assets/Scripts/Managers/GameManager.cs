@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [Serializable]
 public class SaveData {
     //TODO: Fungus data
 
-    public string fileName;
+    [NonSerialized] public string fileName;
     public Vector3 playerSpawnLocation;
     public string currentScene;
     public string targetScene;
@@ -21,8 +23,7 @@ public class SaveData {
     public List<ulong> obtainedCollectibles;
     public int[] collectibleCounts;
     public List<int> abilities;
-
-    public SaveData() { }
+    
     public SaveData (Vector3 playerSpawnLocation, string currentScene, string targetScene, 
                      List<ulong> obtainedCollectibles, int[] collectibleCounts,
                      List<int> abilities) {
@@ -35,20 +36,51 @@ public class SaveData {
     }
 }
 
+public delegate void ManagementEvent();
+
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
 
+    // File stuff
+    public static int fileCount;
     public static readonly string SAVE_FOLDER = "/Saves";
-    public static string currentSaveFile = "data.json";
+    public static readonly string TEST_LOC = "data.json";
+    public static string currentSaveFile = TEST_LOC;
     private static string DataSubpath => SAVE_FOLDER + "/" + currentSaveFile;
 
+    [Tooltip("For Display Only")]
+    public string saveeFile;
+
+    //[Tooltip("These objects get unloaded when returning to the Main Menu")]
+    //public List<GameObject> ObjectsToKill;
+
+    [Header("Player Stuff")]
     public GameObject player;
     public Vector3 playerSpawnLocation;
+    public static Island current;
     bool spawned;
+
+    [Header("Global UI shit")]
+    public DialogueBox dialogue;
+    public Animator LoadingScreen;
+    public Slider progressSlider;
+    public static ManagementEvent StartReturnToMenu, StartSceneChange;
+    public static bool loadingLevel;
+
+    [Header("Defaults")]
+    public Sprite emptyFileSprite;
+    public List<Sprite> saveFileSprites;
 
     public static SaveData saveData;
     public static HashSet<ulong> obtainedCollectibles = new HashSet<ulong>();
     public static Dictionary<CollectibleType, int> collectibleCounts = new Dictionary<CollectibleType, int>();
+
+    public static readonly float bakedLoadTime = 1.5f;
+    public static readonly string HorizontalAxis1 = "Horizontal";
+    public static readonly string HorizontalAxis2 = "Camera X";
+    public static readonly string VerticalAxis1 = "Vertical";
+    public static readonly string VerticalAxis2 = "Camera Y";
+    private AsyncOperation loadOp;
 
     private void Awake () {
         if (null == instance) {
@@ -58,17 +90,81 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
         }
 
+        // initialize game information
+        
+        foreach (CollectibleType colType in Enum.GetValues(typeof(CollectibleType)))
+            if(!collectibleCounts.ContainsKey(colType))
+                collectibleCounts.Add(colType, 0);
         Load();
 
+#if UNITY_EDITOR
         player = GameObject.FindWithTag("Player");
         GameObject spawn = GameObject.FindGameObjectWithTag("Respawn");
         playerSpawnLocation = (spawn) ? spawn.transform.position : player.transform.position;
 
+        // play the island's theme if we are not starting from the menu
+        // this shouldn't happen in game time
+        if (!SceneManager.GetActiveScene().name.ToLower().Contains("mainmenu")) { 
+            loadingLevel = true;
+            /*
+            current = FindObjectOfType<Island>();
+            if (current) {
+                AudioManager.PlayMusic(current.IdleMusic, fadeDuration: 1f);
+            }
+            */
+        }
+
+#endif
+
         FadeController.FadeInStartedEvent += delegate { spawned = true; };
         FadeController.FadeOutCompletedEvent += delegate { if (!spawned) StartCoroutine(RespawnCo()); };
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        EventNames = new EventNames();
     }
 
-    public static void Save () {
+    private void Update() {
+        saveeFile = currentSaveFile;
+    }
+
+    /// <summary>
+    /// Set some initial stuff we can only do when the level is fully loaded
+    /// </summary>
+    public static void OnSceneLoaded(Scene level, LoadSceneMode mode) {
+            HideLoading();
+        if (loadingLevel) {
+            // Loading a game/scene
+
+            current = FindObjectOfType<Island>();
+            if (current) {
+                AudioManager.PlayMusic(current.IdleMusic, fadeDuration: 1f);
+            }
+
+            FadeController.instance.FadeIn(1 / 3f);
+            if(!instance.player)
+                instance.player = GameObject.FindWithTag("Player");
+            GameObject spawn = GameObject.FindGameObjectWithTag("Respawn");
+            instance.playerSpawnLocation = (spawn) ? spawn.transform.position : 
+                instance.player.transform.position;
+        } else {
+            // Returning to menu
+
+            // unload persistant objects that shouldn't be in MM
+            var list = FindObjectsOfType<TagHandler>();
+            foreach (var tag in list) {
+                if (tag.tagList.Contains(Tag.DeleteOnMenu))
+                    Destroy(tag.gameObject);
+            }
+
+            AudioManager.ForceStopMusic();
+            AudioManager.PlayMusic("Main Menu", fadeDuration: 10f / 3f);
+        }
+        FadeController.instance.FadeIn(1 / 10f);
+    }
+
+    public static IEnumerator Save () {
+        yield return null;
+
         //print("Saving!");
         int N = Enum.GetValues(typeof(CollectibleType)).Cast<int>().Max() + 1;
         int[] saveCollectibleCounts = new int[N];
@@ -78,7 +174,7 @@ public class GameManager : MonoBehaviour {
         }
         SaveData saveData = new SaveData(
             instance.playerSpawnLocation,
-            null,
+            SceneManager.GetActiveScene().name,
             null,
             new List<ulong>(obtainedCollectibles),
             saveCollectibleCounts,
@@ -90,7 +186,12 @@ public class GameManager : MonoBehaviour {
         File.WriteAllText(filePath, jsonData);
     }
 
-    public static void Load () {
+    /// <summary>
+    /// Load data into the stat of the game
+    /// </summary>
+    /// <returns></returns>
+    public static IEnumerator Load () {
+        yield return null;
         string filePath = Application.dataPath + DataSubpath;
         //print("Loading to: " + filePath);
 
@@ -108,6 +209,38 @@ public class GameManager : MonoBehaviour {
             //print("New Game");
             Save();
         }
+    }
+
+    /// <summary>
+    /// Load the next scene
+    /// </summary>
+    /// <param name="levelName"></param>
+    public static void LoadLevel(string levelName) {
+        instance.LoadingScreen.SetBool("Open", true);
+        loadingLevel = true;
+        instance.StartCoroutine(AsyncronousLoad(levelName));
+    }
+
+    /// <summary>
+    /// We want to bake some time into loading so the loading screen doesn't show for
+    /// a split second
+    /// </summary>
+    private static IEnumerator AsyncronousLoad(string levelName) {
+        yield return new WaitForSeconds(bakedLoadTime);
+        instance.loadOp = SceneManager.LoadSceneAsync(levelName);
+        StartSceneChange?.Invoke();
+
+        while (!instance.loadOp.isDone) {
+            float progress = Mathf.Clamp01(instance.loadOp.progress / 0.9f);
+            //Debug.Log("Load Progress: "+ progress);
+            if (instance.progressSlider) instance.progressSlider.value = progress;
+            yield return null;
+        }
+    }
+
+    public static void HideLoading() {
+        if (instance.LoadingScreen)
+            instance.LoadingScreen.SetBool("Open", false);
     }
 
 #if UNITY_EDITOR
@@ -129,15 +262,15 @@ public class GameManager : MonoBehaviour {
         );
 
         string jsonData = JsonUtility.ToJson(saveData);
-        string filePath = Application.dataPath + DataSubpath;
+        string filePath = Application.dataPath + SAVE_FOLDER + "/" + TEST_LOC;
         File.WriteAllText(filePath, jsonData);
     }
 #endif
 
     public static SaveData PreLoad() {
-        string filePath = Application.dataPath + DataSubpath;
+        string filePath = Application.dataPath + SAVE_FOLDER + "/" + TEST_LOC;
         return File.Exists(filePath) ? JsonUtility.FromJson<SaveData>(File.ReadAllText(filePath)) 
-            : new SaveData();
+            : new SaveData(Vector3.zero, "","", null,null, null);
     }
 
     public static void AddCollectible(Collectible collectible)
@@ -159,12 +292,15 @@ public class GameManager : MonoBehaviour {
     }
 
     public static bool RemoveCollectible(Collectible collectible) {
-        return obtainedCollectibles.Remove(collectible.id);
+        bool success =  obtainedCollectibles.Remove(collectible.id);
+        if(success) collectibleCounts[collectible.type]--;
+        return success;
     }
 
     public void Respawn()
     {
         spawned = false;
+        print("we should be fading out");
         FadeController.instance.FadeOut(0.1f);
     }
 
@@ -177,4 +313,177 @@ public class GameManager : MonoBehaviour {
         yield return new WaitForSeconds(1.5f);
         FadeController.instance.FadeIn();
     }
+
+    #region ================= RETURN TO MENU =================
+
+    public static void ReturnToMenu() {
+        // dont judge me
+        YesNoMaybe("Do you maybe want to save first?", ConfirmReturnToMenuSave, ConfirmReturnToMenu,
+            delegate { RTTPM(); CloseDialog(); },txtMaybe:"No", txtOK:"Yes");
+    }
+
+    /// <summary>
+    /// make sure the pause menu's cursor is reset
+    /// </summary>
+    private static void RTTPM() {
+        StartReturnToMenu = null;
+        PauseMenu pm = FindObjectOfType<PauseMenu>();
+        pm.cursor = pm.defaultCursor;
+    }
+
+    /// <summary>
+    /// player has decided to save before leaving
+    /// </summary>
+    public static void ConfirmReturnToMenuSave() {
+        // save game first
+        if (currentSaveFile.Contains("Temp")) {
+            // TODO: the player needs to set the save file they want to overwrite
+
+
+            // everything in this block is temporary
+            {
+                if (currentSaveFile.Contains("temp")) {
+                    currentSaveFile = "save " + fileCount;
+                }
+
+                instance.StartCoroutine(Save());
+                ConfirmReturnToMenu();
+            }
+        } else {
+            instance.StartCoroutine(Save());
+            ConfirmReturnToMenu();
+        }
+    }
+
+    /// <summary>
+    /// begin transition to return to the Main Menu
+    /// </summary>
+    public static void ConfirmReturnToMenu() {
+        ForceStopAllCoroutines();
+
+        FadeController.FadeOutCompletedEvent = CommitToMenu;
+        FadeController.instance.FadeOut(1 / 6f);
+        AudioManager.PlayMusic("", fadeDuration: 3f);
+        StartReturnToMenu?.Invoke();
+        StartSceneChange?.Invoke();
+    }
+
+    /// <summary>
+    /// return to the main menu by loading it in async
+    /// </summary>
+    public static void CommitToMenu() {
+        instance.LoadingScreen.SetBool("Open", true);
+        FadeController.FadeOutCompletedEvent -= CommitToMenu;
+        loadingLevel = false;
+        instance.StartCoroutine(AsyncLoadMenu());
+    }
+
+    public static IEnumerator AsyncLoadMenu() {
+        yield return null;
+        instance.loadOp = SceneManager.LoadSceneAsync("MainMenu");
+
+        while (!instance.loadOp.isDone) {
+            float progress = Mathf.Clamp01(instance.loadOp.progress / 0.9f);
+            //Debug.Log("Load Progress: " + progress);
+            if (instance.progressSlider) instance.progressSlider.value = progress;
+            yield return null;
+        }
+    }
+
+    #endregion
+
+
+    #region ================= QUIT =================
+
+    public static void ForceStopAllCoroutines() {
+        // force stop EVERYTHING
+        foreach (var ob in FindObjectsOfType<MonoBehaviour>()) {
+            if (!ob.ToString().ToLower().Contains("unityengine")){
+                ob.StopAllCoroutines();
+            }
+        }
+    }
+
+    public static void Quit() {
+        ForceStopAllCoroutines();
+        FadeController.FadeOutCompletedEvent = CommitQuit;
+        FadeController.instance.FadeOut(Color.black, 1 / 9f);
+        AudioManager.PlayMusic("", fadeDuration: 3f);
+    }
+
+    public static void CommitQuit() {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+#if UNITY_STANDALONE
+        Application.Quit();
+#endif
+    }
+
+    #endregion
+
+
+    #region ================= MSF DIALOG BOX =================
+
+    /// <summary>
+    /// Show a yes no dialog box
+    /// </summary>
+    /// <param name="msg"></param>
+    /// <param name="ok"></param>
+    public static void YesNo(string msg, Action ok, string txtOK="Yes", string txtNO="No") {
+        DialogBoxData dat = new DialogBoxData(msg);
+        dat.LeftButtonAction = instance.dialogue.CloseDialog;
+        dat.LeftButtonText = txtNO;
+        dat.RightButtonAction = ok;
+        dat.RightButtonText = txtOK;
+
+        instance.dialogue.ShowDialog(dat);
+    }
+
+    public static void YesNoMaybe(string msg, Action ok, Action maybe,
+        string txtOK = "OK", string txtMaybe = "Um", string txtNO = "Cancel") {
+        YesNoMaybe(msg, ok, maybe, CloseDialog, txtOK, txtMaybe, txtNO);
+    }
+
+    /// <summary>
+    /// Show a yes no maybe dialog box. (basically yes no with an extra option)
+    /// </summary>
+    public static void YesNoMaybe(string msg, Action ok, Action maybe, Action cancel, 
+        string txtOK="OK", string txtMaybe="Um", string txtNO = "Cancel") {
+        DialogBoxData dat = new DialogBoxData(msg);
+        dat.LeftButtonAction = cancel;
+        dat.LeftButtonText = txtNO;
+
+        dat.MiddleButtonAction = maybe;
+        dat.MiddleButtonText = txtMaybe;
+
+        dat.RightButtonAction = ok;
+        dat.RightButtonText = txtOK;
+
+        instance.dialogue.ShowDialog(dat);
+    }
+
+    public static void CloseDialog() {
+        instance.dialogue.CloseDialog();
+    }
+
+    /// <summary>
+    /// Default events channel
+    /// </summary>
+    public static EventsChannel Events { get; private set; }
+
+    /// <summary>
+    /// List of event names, used within the framework
+    /// </summary>
+    public static EventNames EventNames { get; private set; }
 }
+
+/// <summary>
+/// List of event names, used within the framework
+/// </summary>
+public class EventNames {
+    public string ShowLoading { get { return "gm.loading"; } }
+    public string ShowDialogBox { get { return "gm.showDialog"; } }
+}
+    #endregion
+

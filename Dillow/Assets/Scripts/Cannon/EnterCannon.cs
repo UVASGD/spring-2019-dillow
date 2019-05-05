@@ -7,8 +7,9 @@ public class EnterCannon : MonoBehaviour {
     [SerializeField] AudioClip openSound;
     [SerializeField] AudioClip closeSound;
     [SerializeField] AudioClip eatSound;
+	[SerializeField] AudioClip music;
 
-    [SerializeField] bool enteringCannon;
+	[SerializeField] bool enteringCannon;
 
     [SerializeField] float secondsInside;
 
@@ -55,6 +56,8 @@ public class EnterCannon : MonoBehaviour {
                 audioSource.clip = eatSound;
                 audioSource.Play ();
                 trigger = true;
+				DillowController.instance.body.GetComponent<Rigidbody>().useGravity = false;
+				DillowController.instance.body.TransformToBall();
             }
 
             player.transform.position = Vector3.SmoothDamp (player.transform.position, transform.position, ref velocity, 0.5f);
@@ -70,6 +73,8 @@ public class EnterCannon : MonoBehaviour {
 				enteringCannon = false;
 				mouth.SetExpression(MouthController.MouthState.close);
 				transform.parent.GetComponent<UnityEngine.Playables.PlayableDirector>().Play();
+				DillowController.instance.body.GetComponent<Rigidbody>().useGravity = true;
+				AudioManager.PlayMusic(music, false, false, false, 0f, false);
 				//transform.parent.GetComponent<Cannon>().Aim(player.GetComponent<Rigidbody>());
 			}
         }

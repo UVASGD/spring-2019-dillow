@@ -21,7 +21,7 @@ public class FadeController : MonoBehaviour {
     public Color fadeColor = Color.black;
     public Image fadeImage;
     private bool automatic;
-    private float delayFade;
+    private readonly float ANIM_LENGTH = 1 / 3f;
 
     public static FadeEvent FadeOutCompletedEvent, FadeInCompletedEvent, 
         FadeInStartedEvent, FadeOutStartedEvent;
@@ -33,6 +33,7 @@ public class FadeController : MonoBehaviour {
     /// Whether the fade controller has completely faded out
     /// </summary>
     private bool faded;
+    private int openHash, speedHash;
 
     void Awake() {
         if (instance != null) {
@@ -42,17 +43,9 @@ public class FadeController : MonoBehaviour {
 
         instance = this;
 
-        // Default layout:
-        //- FadeCanvas
-        // - FadeControlller <--
-        //  - Image
-        DontDestroyOnLoad(transform.parent.gameObject);
-    }
-
-    private int openHash, speedHash;
-    void Start() {
         anim = GetComponent<Animator>();
         anim.updateMode = AnimatorUpdateMode.UnscaledTime;
+        faded = (startOpen && animateOnStart) || (!startOpen && !animateOnStart);
         openHash = Animator.StringToHash("Open");
         speedHash = Animator.StringToHash("Speed");
 
@@ -61,17 +54,24 @@ public class FadeController : MonoBehaviour {
         anim.SetFloat(speedHash, speed);
     }
 
+
+    #region ================= Fade Out =================
+
     /// <summary>
     /// Start the fade out animation. Default transition lasts 1/3 s
     /// </summary>
     /// <param name="auto">Whether or not to start fading in automatically</param>
     public void FadeOut(float speed = 1f, bool auto = false) {
+        print("Fading: " + speed);
         if (faded) return;
-        automatic = faded;
+        print("Fading out");
+        automatic = auto;
         faded = true;
+        fadeImage.color = fadeColor;
         anim.SetFloat(speedHash, this.speed = speed);
         anim.SetBool(openHash, false);
         FadeOutStartedEvent?.Invoke();
+        StartCoroutine(HandleFadeOut());
     }
 
     /// <summary>
@@ -81,16 +81,49 @@ public class FadeController : MonoBehaviour {
     /// <param name="auto">Whether or not to start fading in automatically</param>
     public void FadeOut(Color fadeColor, float speed = 1f, bool auto = false) {
         lastColor = this.fadeColor;
-        fadeImage.color = this.fadeColor = fadeColor;
+        this.fadeColor = fadeColor;
         
         FadeOut(speed, auto);
     }
 
     /// <summary>
-    /// Start the fade in animation. Default transition lasts 1/3 s
+    /// Fade out after a delay
     /// </summary>
-    public void FadeIn() {
-        FadeIn(1f);
+    /// <param name="time">time in seconds to delay</param>
+    /// <param name="speed"></param>
+    public void DelayFadeOut(float time = 1f, float speed = 1f, bool auto = false) {
+        StartCoroutine(DelayFadeOutCoroutine(time, speed, auto));
+    }
+
+    private IEnumerator DelayFadeOutCoroutine(float time, float speed, bool auto) {
+        yield return new WaitForSeconds(time);
+        FadeOut(speed: speed, auto: auto);
+    }
+
+    /// <summary>
+    /// Method Called by animation event when screen has completely faded to black;
+    /// Triggers FadeOut Event
+    /// </summary>
+    public IEnumerator HandleFadeOut() {
+        yield return new WaitForSeconds(ANIM_LENGTH / speed);
+        FadeOutCompletedEvent?.Invoke();
+        if (automatic) FadeIn();
+    }
+    #endregion
+
+    #region ================= Fade In =================
+
+    /// <summary>
+    /// Start the fade in animation with a speed
+    /// </summary>
+    public void FadeIn(float speed = 1f) {
+        if (!faded) return;
+        faded = false;
+        fadeImage.color = fadeColor;
+        anim.SetFloat(speedHash, this.speed = speed);
+        anim.SetBool(openHash, true);
+        FadeInStartedEvent?.Invoke();
+        StartCoroutine(HandleFadedIn());
     }
 
     /// <summary>
@@ -107,47 +140,17 @@ public class FadeController : MonoBehaviour {
         FadeIn(speed: speed);
     }
 
-    /// <summary>
-    /// Fade out after a delay
-    /// </summary>
-    /// <param name="time">time in seconds to delay</param>
-    /// <param name="speed"></param>
-    public void DelayFadeOut(float time = 1f, float speed = 1f) {
-        StartCoroutine(DelayFadeOutCoroutine(time, speed));
-    }
-
-    private IEnumerator DelayFadeOutCoroutine(float time, float speed) {
-        yield return new WaitForSeconds(time);
-        FadeOut(speed: speed);
-    }
-
-    /// <summary>
-    /// Start the fade in animation with a speed
-    /// </summary>
-    public void FadeIn(float speed) {
-        if (!faded) return;
-        faded = false;
-        anim.SetFloat(speedHash, speed);
-        anim.SetBool(openHash, true);
-        FadeInStartedEvent?.Invoke();
-    }
-
-    /// <summary>
-    /// Method Called by animation event when screen has completely faded to black;
-    /// Triggers FadeOut Event
-    /// </summary>
-    public void HandleFadeOut() {
-        FadeOutCompletedEvent?.Invoke();
-        if (automatic) FadeIn();
-    }
 
     /// <summary>
     /// Triggered when animation has completely faded in
     /// </summary>
-    public void HandleFadedIn() {
+    public IEnumerator HandleFadedIn() {
+        yield return new WaitForSeconds(ANIM_LENGTH / speed);
         if (OverrideColor) {
             fadeImage.color = fadeColor = (Color)lastColor;
         }
+
         FadeInCompletedEvent?.Invoke();
     }
+    #endregion
 }

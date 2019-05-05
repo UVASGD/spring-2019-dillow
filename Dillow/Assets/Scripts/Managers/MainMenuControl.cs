@@ -13,10 +13,11 @@ public class MainMenuControl : MonoBehaviour {
 
     public enum MenuState {
         Start,
-        Options,
+        Credits,
         Files,
         NewGame,
         Entry,
+        Options,
     }
 
     public MenuState menuState;
@@ -26,23 +27,30 @@ public class MainMenuControl : MonoBehaviour {
     public ThreeDButton startMenu;
     public ThreeDButton optionMenu;
     public ThreeDButton fileMenu;
+    public ThreeDButton newMenu;
 
     [Header("Control")]
     public bool forceLockInput;
-    private ThreeDButton cursor;
+    public ThreeDButton cursor;
     private float buttonDelay;
     private float transitionDelay;
 
     [Header("Save Menu")]
     public List<FileOption> fileOptions;
 
-    /// <summary> deprecate ME! </summary>
-    private int fileCount;
+    [Header("Credits")]
+    public Transform credits;
+    private Rigidbody c_rb;
+    private Vector3 creditsStart;
+    public float MoveSpeed;
 
     [Header("Defaults")]
-    public Sprite emptyFileSprite;
-    public List<Sprite> saveFileSprites;
+    public AudioClip menuSound;
+    public AudioClip badSound;
+    public AudioClip selectSound;
     public string FirstIsland;
+
+    private const string TEMP_FILE = "temporary.json";
 
     /// <summary>
     /// used for locking input between viewing transitions
@@ -55,15 +63,16 @@ public class MainMenuControl : MonoBehaviour {
     public ThreeDButton Menu {
         get {
             switch (menuState) {
-                case MenuState.Options: return optionMenu;
+                case MenuState.Credits: return optionMenu;
                 case MenuState.Files: return fileMenu;
+                case MenuState.NewGame: return newMenu;
                 default: return startMenu;
             }
         }
     }
 
     // delay constants
-    private const float BTN_DELAY = 0.35f;
+    private const float BTN_DELAY = 0.55f;
     private const float TRA_DELAY = 1.5f;
 
     private void Awake() {
@@ -83,7 +92,11 @@ public class MainMenuControl : MonoBehaviour {
         menuState = MenuState.Entry;
         cursor = Menu;
 
-        AudioManager.PlayMusic("Main Menu", fadeDuration:10f/3f);
+        if (credits) {
+            creditsStart = credits.transform.position;
+            c_rb = credits.GetComponent<Rigidbody>();
+        }
+
         forceLockInput = true;
         // make sure to unlock input by the time the game has finished fading in
         FadeController.FadeInCompletedEvent += FinishEntry;
@@ -92,6 +105,8 @@ public class MainMenuControl : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         anim.SetInteger("State", (int)menuState);
+
+        c_rb.velocity = new Vector3(0, MoveSpeed, 0);
 
         // update delayed timers
         if (buttonDelay > 0) {
@@ -131,14 +146,17 @@ public class MainMenuControl : MonoBehaviour {
     public void HandleInput() {
         // horizontal control
         if (buttonDelay == 0) {
-            if (Input.GetAxis("Horizontal") > 0 && cursor.right) {
+            var old = cursor;
+            if ((Input.GetAxis(GameManager.HorizontalAxis1) > 0
+                || Input.GetAxis(GameManager.HorizontalAxis2) > 0) && cursor.right) {
                 // deactivate last button
                 cursor.Deactivate();
                 cursor = cursor.right;
                 // activate new button
                 cursor.Activate();
                 buttonDelay = BTN_DELAY;
-            } else if (Input.GetAxis("Horizontal") < 0 && cursor.left) {
+            } else if ((Input.GetAxis(GameManager.HorizontalAxis1) < 0
+                || Input.GetAxis(GameManager.HorizontalAxis2) < 0) && cursor.left) {
                 cursor.Deactivate();
                 cursor = cursor.left;
                 cursor.Activate();
@@ -146,21 +164,27 @@ public class MainMenuControl : MonoBehaviour {
             }
 
             // vertical control
-            if (Input.GetAxis("Vertical") < 0 && cursor.down) {
+            if ((Input.GetAxis(GameManager.VerticalAxis1) < 0
+                || Input.GetAxis(GameManager.VerticalAxis2) < 0) && cursor.down) {
                 cursor.Deactivate();
                 cursor = cursor.down;
                 cursor.Activate();
                 buttonDelay = BTN_DELAY;
-            } else if (Input.GetAxis("Vertical") > 0 && cursor.up) {
+            } else if ((Input.GetAxis(GameManager.VerticalAxis1) > 0
+                || Input.GetAxis(GameManager.VerticalAxis2) > 0) && cursor.up) {
                 cursor.Deactivate();
                 cursor = cursor.up;
                 cursor.Activate();
                 buttonDelay = BTN_DELAY;
             }
+
+            if(cursor!= old && menuSound)
+                AudioManager.instance.PlaySound(menuSound, 1f);
         }
 
         // activate button
         if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Submit")) {
+            if(selectSound) AudioManager.instance.PlaySound(selectSound, 1f);
             cursor.Invoke();
         }
 
@@ -187,10 +211,11 @@ public class MainMenuControl : MonoBehaviour {
     #endregion
 
 
-    #region ================= OPTIONS =================
+    #region ================= CREDITS =================
 
-    public void OpenOptionsMenu() {
-        ChangeState(MenuState.Options);
+    public void OpenCreditsMenu() {
+        ChangeState(MenuState.Credits);
+        if (credits) credits.transform.position = creditsStart;
     }
 
     #endregion
@@ -219,12 +244,15 @@ public class MainMenuControl : MonoBehaviour {
             if (datas.Count == 0) option.SetAsEmpty();
             else {
                 try {
-                    option.SetSaveData((SaveData)JsonUtility.FromJson(datas[0].FullName,
-                        typeof(SaveData)));
+                    SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(datas[0].ToString()));
+                    data.fileName = datas[0].FullName;
+                    option.SetSaveData(data);
                     datas.RemoveAt(0);
-                    fileCount++;
+                    GameManager.fileCount++;
                 } catch(Exception e) {
-                    print("Error on Loading: " + datas[0]);
+                    print("Error on Loading: " + datas[0].ToString());
+                    Debug.LogError(e);
+                    option.SetAsEmpty();
                     datas.RemoveAt(0);
                 }
             }
@@ -235,16 +263,43 @@ public class MainMenuControl : MonoBehaviour {
         ChangeState(MenuState.Files);
     }
 
+    /// <summary>
+    /// set the current save data to active,
+    /// play the cannon animation
+    /// </summary>
+    /// <param name="option"></param>
     public void LoadSelectedSaveFile(FileOption option) {
+        if (option.data == null) {
+            if (badSound) AudioManager.instance.PlaySound(badSound, 1f);
+            return;
+        }
+
+        forceLockInput = true;
+        if (selectSound) AudioManager.instance.PlaySound(selectSound, 1f);
         FadeController.FadeOutCompletedEvent += CommitLoadSave;
         dataToLoad = option.data;
-        FadeController.instance.DelayFadeOut(time:1f);
+        FadeController.instance.DelayFadeOut(time:1f, speed:1/6f);
+        StartCoroutine(DelayedFadeOut(1f, 2f));
+        GameManager.currentSaveFile = dataToLoad.fileName;
+        StartCoroutine(GameManager.Load());
     }
 
+    /// <summary>
+    /// delay fading out the music
+    /// </summary>
+    private IEnumerator DelayedFadeOut(float delay, float time) {
+        yield return new WaitForSeconds(delay);
+        AudioManager.PlayMusic("", fadeDuration: time);
+    }
+
+    /// <summary>
+    /// loads the save file when the animation and fade have completed
+    /// </summary>
     public void CommitLoadSave() {
         FadeController.FadeOutCompletedEvent -= CommitLoadSave;
 
         // load save file and start 
+        GameManager.LoadLevel(dataToLoad.currentScene);
     }
 
     #endregion
@@ -273,45 +328,33 @@ public class MainMenuControl : MonoBehaviour {
             new List<int>()
         );
 
+        // simplify Scene name
+        var key = dat.currentScene.Contains("/") ? "/" : "\\";
+        int d = dat.currentScene.Length - dat.currentScene.IndexOf(".unity") - 1;
+        dat.currentScene = dat.currentScene.Substring(dat.currentScene.LastIndexOf(key) + 1, d);
+
         // TODO: allow the player to choose the icon for their game!
-        dat.saveIconIndex = UnityEngine.Random.Range(0, saveFileSprites.Count);
+        dat.saveIconIndex = UnityEngine.Random.Range(0, GameManager.instance.saveFileSprites.Count);
         
         string jsonData = JsonUtility.ToJson(dat);
-        string filePath = Application.dataPath + GameManager.SAVE_FOLDER 
-            + "temporary";
+        string filePath = Application.dataPath + GameManager.SAVE_FOLDER + "/"
+            + TEMP_FILE;
+        File.WriteAllText(filePath, jsonData);
 
+        GameManager.currentSaveFile = TEMP_FILE;
     }
 
     public void CommitNewGame() {
         FadeController.FadeOutCompletedEvent -= CommitNewGame;
 
-        // Initialize Proper GameKit
-
-
         // Load Scene
-        SceneManager.LoadScene(FirstIsland);
+        GameManager.LoadLevel(FirstIsland);
     }
 
     #endregion
-
-
-    #region ================= QUIT =================
 
     public void Quit() {
         forceLockInput = true;
-        FadeController.FadeOutCompletedEvent = CommitQuit;
-        FadeController.instance.FadeOut(Color.black);
-        AudioManager.PlayMusic("", fadeDuration: 1f);
+        GameManager.Quit();
     }
-
-    public void CommitQuit() {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
-#if UNITY_STANDALONE
-        Application.Quit();
-#endif
-    }
-
-    #endregion
 }

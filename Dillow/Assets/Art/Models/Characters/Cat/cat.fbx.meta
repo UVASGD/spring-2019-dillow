@@ -51,6 +51,12 @@ ModelImporter:
     100090: mixamorig:Spine1
     100092: mixamorig:Spine2
     100094: polySurface2
+    100096: mixamorig:HeadTop_End_end_end
+    100098: mixamorig:Hips.006_end_end
+    100100: mixamorig:LeftHandIndex4_end_end
+    100102: mixamorig:LeftToe_End_end_end
+    100104: mixamorig:RightHandIndex4_end_end
+    100106: mixamorig:RightToe_End_end_end
     400000: Armature
     400002: //RootNode
     400004: mixamorig:Head
@@ -99,6 +105,12 @@ ModelImporter:
     400090: mixamorig:Spine1
     400092: mixamorig:Spine2
     400094: polySurface2
+    400096: mixamorig:HeadTop_End_end_end
+    400098: mixamorig:Hips.006_end_end
+    400100: mixamorig:LeftHandIndex4_end_end
+    400102: mixamorig:LeftToe_End_end_end
+    400104: mixamorig:RightHandIndex4_end_end
+    400106: mixamorig:RightToe_End_end_end
     2100000: No Name
     4300000: polySurface2
     7400000: Armature|ArmatureAction
@@ -106,11 +118,16 @@ ModelImporter:
     7400004: Armature|Armature|mixamo.com|Layer0
     7400006: Armature|Armature|mixamo.com|Layer0.001
     7400008: Armature|Recoil
+    7400010: Armature|Armature|Armature|ArmatureAction.001|Armature|ArmatureAction.00
+    7400012: Armature|Armature|Armature|ArmatureAction|Armature|ArmatureAction
+    7400014: Armature|Armature|Armature|Armature|mixamo.com|Layer0.001|Armature|Armat
+    7400016: Armature|Armature|Armature|Armature|mixamo.com|Layer0|Armature|Armature|
+    7400018: Armature|Armature|Armature|Recoil|Armature|Recoil
     9500000: //RootNode
     13700000: polySurface2
   externalObjects: {}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
