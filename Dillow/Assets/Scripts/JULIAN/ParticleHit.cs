@@ -9,7 +9,7 @@ public class ParticleHit : MonoBehaviour {
 
     void Start() {
         part = GetComponent<ParticleSystem>();
-        hit_tags = new List<Tag>() { Tag.SuperDamage };
+        hit_tags = new List<Tag>() { Tag.Damage };
     }
 
     public void Hit(Collider collider, Vector3 position, Vector3 normal) {
