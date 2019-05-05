@@ -34,12 +34,12 @@ public class DialogueTrigger : MonoBehaviour
 
     private void ShowPrompt() {
         if (dialogSpin) dialogSpin.enabled = true;
-        interactPrompt?.Play();
+        if (interactPrompt) interactPrompt?.Play();
     }
 
     private void HidePrompt() {
         if (dialogSpin) dialogSpin.enabled = false;
-        interactPrompt?.Stop();
+        if (interactPrompt) interactPrompt?.Stop();
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -61,8 +61,10 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-    void DoTrigger() {
-        if (chart != null) {
+    void DoTrigger()
+    {
+        if (chart != null)
+        {
             if (body) body.Talk();
             chart.ExecuteBlock("Trigger");
             DillowController.instance.body.TransformToDillow();
@@ -79,7 +81,8 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-    public void FinishDialogue() {
+    public void FinishDialogue()
+    {
         if (body) body.StopTalk();
         DillowController.instance.body.locker.UnlockCamera();
         DillowController.instance.can_input = true;
