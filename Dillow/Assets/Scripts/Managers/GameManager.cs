@@ -139,12 +139,19 @@ public class GameManager : MonoBehaviour {
                 AudioManager.PlayMusic(current.IdleMusic, fadeDuration: 1f);
             }
 
+            // this is temporary, to fix locking between levels
+            var f = FindObjectOfType<FollowPath>();
+            if (f) f.traversing = false;
+
             FadeController.instance.FadeIn(1 / 3f);
             if(!instance.player)
                 instance.player = GameObject.FindWithTag("Player");
+            DillowController.instance.body.GetComponent<Rigidbody>().useGravity = true;
             GameObject spawn = GameObject.FindGameObjectWithTag("Respawn");
             instance.playerSpawnLocation = (spawn) ? spawn.transform.position : 
                 instance.player.transform.position;
+            //instance.player.transform.position = spawnLocation;
+
         } else {
             // Returning to menu
 
@@ -214,7 +221,11 @@ public class GameManager : MonoBehaviour {
     /// Load the next scene
     /// </summary>
     /// <param name="levelName"></param>
-    public static void LoadLevel(string levelName) {
+    public static void LoadLevel(string levelName, bool prefaded = false) {
+        if (!prefaded) {
+            FadeController.instance.FadeOut(speed: .1f);
+        }
+
         instance.LoadingScreen.SetBool("Open", true);
         loadingLevel = true;
         instance.StartCoroutine(AsyncronousLoad(levelName));
