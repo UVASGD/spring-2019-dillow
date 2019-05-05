@@ -8969,6 +8969,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1222451038}
   m_CullTransparentMesh: 0
+--- !u!1 &1224764473
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 2111559204}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1224764474}
+  m_Layer: 0
+  m_Name: Japanese_Temple_Blender (Missing Prefab)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1224764474
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 2111559204}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224764473}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1372068763}
+  m_Father: {fileID: 1294771251}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1229370072
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9331,7 +9362,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: "Ryan Kann\r\nJulian McClinton\r\nWyatt Soyner"
+  m_text: "Ryan Kann\r\nJulian McClinton\r\nWyatt Joyner"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2db6687735a6f84429e5124d78324b14, type: 2}
   m_sharedMaterial: {fileID: 21353647621750550, guid: 2db6687735a6f84429e5124d78324b14,
@@ -9601,7 +9632,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1372068763}
+  - {fileID: 1224764474}
   - {fileID: 644801472}
   - {fileID: 8424011}
   m_Father: {fileID: 1589203107}
@@ -9791,7 +9822,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1306779008}
-  m_LocalRotation: {x: 0.01243166, y: 0.9768175, z: -0.20536965, w: 0.059129816}
+  m_LocalRotation: {x: 0.012431667, y: 0.9768175, z: -0.20536962, w: 0.05912986}
   m_LocalPosition: {x: -159.10991, y: 50.44129, z: 390.2338}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -14852,9 +14883,9 @@ ParentConstraint:
   m_TranslationAtRest: {x: -242.7, y: 62.67, z: 400.2}
   m_RotationAtRest: {x: 0, y: -52.616013, z: 0}
   m_TranslationOffsets:
-  - {x: -102.003876, y: 0.3251953, z: -11.574799}
+  - {x: 14.655212, y: -46.692368, z: 74.45893}
   m_RotationOffsets:
-  - {x: -21.94087, y: 24.733177, z: -9.766167}
+  - {x: 6.9119983, y: 77.45084, z: 28.397614}
   m_AffectTranslationX: 1
   m_AffectTranslationY: 1
   m_AffectTranslationZ: 1
@@ -14955,12 +14986,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb2ffe1cc13f2840bd0da0bc02ad001, type: 3}
---- !u!4 &1372068763 stripped
+--- !u!4 &1372068763
 Transform:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 400000, guid: 6ef647989846a45c292dbd93e4cf0516,
     type: 3}
   m_PrefabInstance: {fileID: 2111559204}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938326668}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1224764474}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1387337756
 GameObject:
   m_ObjectHideFlags: 0
@@ -19367,8 +19407,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609086724}
-  m_LocalRotation: {x: 0.16389246, y: -0.59860355, z: 0.12678851, w: 0.7737815}
-  m_LocalPosition: {x: -227.1909, y: 57.68, z: 501.55798}
+  m_LocalRotation: {x: -0.10972198, y: -0.8710199, z: -0.22654681, w: 0.4218554}
+  m_LocalPosition: {x: -164.74689, y: 67.16687, z: 443.12054}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 868343153}
@@ -22859,6 +22899,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1933630711}
   m_Mesh: {fileID: 1101625260}
+--- !u!1 &1938326668
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 2111559204}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1372068763}
+  m_Layer: 0
+  m_Name: Missing Prefab (Dummy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1941436789
 GameObject:
   m_ObjectHideFlags: 0
@@ -23334,14 +23390,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1294771251}
     m_Modifications:
-    - target: {fileID: 100000, guid: 6ef647989846a45c292dbd93e4cf0516, type: 3}
-      propertyPath: m_Name
-      value: Japanese_Temple_Blender
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 6ef647989846a45c292dbd93e4cf0516, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 6ef647989846a45c292dbd93e4cf0516, type: 3}
       propertyPath: m_LocalPosition.x
       value: -459.80313
@@ -23397,6 +23445,14 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 6ef647989846a45c292dbd93e4cf0516, type: 3}
       propertyPath: m_LocalScale.z
       value: 3.439502
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 6ef647989846a45c292dbd93e4cf0516, type: 3}
+      propertyPath: m_Name
+      value: Japanese_Temple_Blender
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 6ef647989846a45c292dbd93e4cf0516, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ef647989846a45c292dbd93e4cf0516, type: 3}
