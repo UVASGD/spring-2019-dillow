@@ -9,8 +9,9 @@ public class CollectibleChecker : MonoBehaviour
 
     EnterCannon enter;
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return new WaitForSeconds(1f);
         enter = GetComponent<EnterCannon>();
         enter.enabled = false;
     }
