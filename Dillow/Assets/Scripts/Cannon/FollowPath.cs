@@ -4,7 +4,6 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class FollowPath : MonoBehaviour {
-
 	public float speed = 20f;
 	private Vector3 horizontalVelocity;
 	private float horizontalSpeed;
@@ -47,6 +46,7 @@ public class FollowPath : MonoBehaviour {
 		currentTarget = nodes[0];
 		rb = GetComponent<Rigidbody>();
 	}
+
 	public void SetPath (Vector3[] nodes, float speed, bool autoTraverse) {
 		currentIndex = 1;
 		this.speed = speed;
@@ -108,7 +108,7 @@ public class FollowPath : MonoBehaviour {
 
 			if (percentDone > 0.5f && !sceneChanged) {
 				sceneChanged = true;
-				StartCoroutine(LoadScene("Gaia Demo Terrain"));
+				GameManager.LoadLevel("MainMenu");
 			}
 
 			if (Physics.CheckSphere(rb.position, GetComponent<SphereCollider>().radius * 1.1f, LayerMask.GetMask("Default")) && percentDone > 0.5f) {
