@@ -157,7 +157,7 @@ public class GameManager : MonoBehaviour {
             }
 
             AudioManager.ForceStopMusic();
-            AudioManager.PlayMusic("Main Menu", fadeDuration: 10f / 3f);
+            AudioManager.PlayMusic("Main Menu", fadeDuration: 10/3f);
         }
         FadeController.instance.FadeIn(1 / 10f);
     }
