@@ -397,11 +397,11 @@ public class GameManager : MonoBehaviour {
 
     public static void ForceStopAllCoroutines() {
         // force stop EVERYTHING
-        foreach (var ob in FindObjectsOfType<MonoBehaviour>()) {
-            if (!ob.ToString().ToLower().Contains("unityengine")){
-                ob.StopAllCoroutines();
-            }
-        }
+        //foreach (var ob in FindObjectsOfType<MonoBehaviour>()) {
+        //    if (!ob.ToString().ToLower().Contains("unityengine")){
+        //        ob.StopAllCoroutines();
+        //    }
+        //}
     }
 
     public static void Quit() {
