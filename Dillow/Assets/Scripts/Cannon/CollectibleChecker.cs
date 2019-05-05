@@ -20,7 +20,7 @@ public class CollectibleChecker : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (GameManager.collectibleCounts[type] > threshold)
+            if (GameManager.collectibleCounts[type] >= threshold)
             {
                 enter.enabled = true;
                 enter.OnTriggerEnter(other);
