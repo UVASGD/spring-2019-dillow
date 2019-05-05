@@ -90,7 +90,7 @@ public class DillowBody : Body
     #endregion
 
     [HideInInspector] public bool ready;
-    private Locker locker;
+    [HideInInspector] public Locker locker;
 
     // Start is called before the first frame update
     protected override void Start()

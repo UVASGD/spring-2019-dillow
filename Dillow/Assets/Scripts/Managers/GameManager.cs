@@ -106,10 +106,12 @@ public class GameManager : MonoBehaviour {
         // this shouldn't happen in game time
         if (!SceneManager.GetActiveScene().name.ToLower().Contains("mainmenu")) { 
             loadingLevel = true;
+            /*
             current = FindObjectOfType<Island>();
             if (current) {
                 AudioManager.PlayMusic(current.IdleMusic, fadeDuration: 1f);
             }
+            */
         }
 
 #endif

@@ -66,6 +66,7 @@ public class DialogueTrigger : MonoBehaviour
             if (body) body.Talk();
             chart.ExecuteBlock("Trigger");
             DillowController.instance.body.TransformToDillow();
+            DillowController.instance.body.locker.LockCamera(gameObject);
             DillowController.instance.can_input = false;
             DillowController.instance.body.rb.isKinematic = true;
         }
@@ -80,6 +81,7 @@ public class DialogueTrigger : MonoBehaviour
 
     public void FinishDialogue() {
         if (body) body.StopTalk();
+        DillowController.instance.body.locker.UnlockCamera();
         DillowController.instance.can_input = true;
         DillowController.instance.body.rb.isKinematic = false;
         DillowController.instance.body.rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
