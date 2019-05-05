@@ -85,7 +85,7 @@ public class EnterCannon : MonoBehaviour {
         }
 	}
 
-    private void OnTriggerEnter (Collider other) {
+    public void OnTriggerEnter (Collider other) {
         if (other.CompareTag ("Player")) {
             secondsInside = 0f;
             audioSource.clip = openSound;

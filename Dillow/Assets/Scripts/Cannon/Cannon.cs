@@ -36,12 +36,17 @@ public class Cannon : MonoBehaviour {
 	//Path info
 	CannonPath path;
 	Vector3[] pathNodes;
+
+    //fx
+    CannonEffects fx;
 	#endregion
 
 
 	#region PREPROCESSING
 	// Use this for initialization
 	void Start () {
+        fx = GetComponent<CannonEffects>();
+
 		path = transform.Find("CannonPath").GetComponent<CannonPath>();
 		if (null == path) {
 			inoperable = true;
@@ -158,6 +163,7 @@ public class Cannon : MonoBehaviour {
 		}
 		projectile.gameObject.AddComponent<FollowPath>().SetPath(pathNodes, speed, true, pathSpeedMultiplier);
 		transform.GetComponent<Animator>().SetTrigger("Explode");
+        fx.Boom();
 		DillowController.instance.can_input = true;
 	}
 	#endregion
