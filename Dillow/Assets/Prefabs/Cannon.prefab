@@ -923,6 +923,8 @@ GameObject:
   - component: {fileID: 2033910029996653704}
   - component: {fileID: 761127091522592287}
   - component: {fileID: 1306559933376937780}
+  - component: {fileID: 6046509748505252995}
+  - component: {fileID: 6334999870776461676}
   m_Layer: 0
   m_Name: Cannon
   m_TagString: Untagged
@@ -1117,6 +1119,65 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: c9d63d40da4d48649b4617deb7914f87, type: 3}
+--- !u!114 &6046509748505252995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4497254524682369314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c01c6db1a3b134049a136f0143aefe90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flame_loc: {fileID: 2933504645757179306}
+  puff_loc: {fileID: 532882445108852263}
+  flame_fx: {fileID: 5222212822421226032, guid: 574b7eac083c36b49aa4f385aea41e40,
+    type: 3}
+  cannon_fx: {fileID: 6347181443202461274, guid: 443b5cd52cfcbdc42af8c8e9a100a0b8,
+    type: 3}
+--- !u!114 &6334999870776461676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4497254524682369314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: -1
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 20
+    m_FrequencyGain: 20
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 1
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 1000
 --- !u!1 &4497254524682369334
 GameObject:
   m_ObjectHideFlags: 0

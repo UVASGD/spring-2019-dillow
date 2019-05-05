@@ -24,7 +24,7 @@ public class CannonEffects : MonoBehaviour
 
     public void Boom()
     {
-        Fx_Spawner.instance.SpawnFX(flame_fx, flame_loc.transform.position, flame_loc.transform.forward);
+        Fx_Spawner.instance.SpawnFX(flame_fx, flame_loc.transform.position, -flame_loc.transform.up);
         Fx_Spawner.instance.SpawnFX(cannon_fx, puff_loc.transform.position, puff_loc.transform.up);
         if (imp) imp.GenerateImpulse();
     }
