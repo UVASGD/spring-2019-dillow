@@ -37,7 +37,8 @@ public class EnterCannon : MonoBehaviour {
 
         targetPosition = new Vector3 (startPosition.x, 0f, startPosition.z);
 
-		player = DillowController.instance.body;
+        if (DillowController.instance)
+		    player = DillowController.instance.body;
 		print("Dillow: " + player.name);
 
 		//mouth = transform.parent.gameObject.GetComponentInChildren<MouthController> ();
