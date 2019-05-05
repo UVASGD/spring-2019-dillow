@@ -22,7 +22,7 @@ public class Locker : MonoBehaviour {
     void Start() {
         main = Camera.main;
         free_cam = FindObjectOfType<CinemachineFreeLook>();
-        lock_cam = FindObjectOfType<CinemachineVirtualCamera>();
+        lock_cam = GameObject.FindGameObjectWithTag("LockCam").GetComponent<CinemachineVirtualCamera>();
         ctg = FindObjectOfType<CinemachineTargetGroup>();
 
         reticle = GameObject.FindGameObjectWithTag("Reticle").GetComponent<Reticle>();
