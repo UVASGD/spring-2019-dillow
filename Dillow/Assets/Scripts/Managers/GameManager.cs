@@ -80,7 +80,6 @@ public class GameManager : MonoBehaviour {
     public static readonly string HorizontalAxis2 = "Camera X";
     public static readonly string VerticalAxis1 = "Vertical";
     public static readonly string VerticalAxis2 = "Camera Y";
-    private AsyncOperation loadOp;
 
     private void Awake () {
         if (null == instance) {
@@ -227,11 +226,11 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     private static IEnumerator AsyncronousLoad(string levelName) {
         yield return new WaitForSeconds(bakedLoadTime);
-        instance.loadOp = SceneManager.LoadSceneAsync(levelName);
+        AsyncOperation loadOp = SceneManager.LoadSceneAsync(levelName);
         StartSceneChange?.Invoke();
-
-        while (!instance.loadOp.isDone) {
-            float progress = Mathf.Clamp01(instance.loadOp.progress / 0.9f);
+        
+        while (!loadOp.isDone) {
+            float progress = Mathf.Clamp01(loadOp.progress / 0.9f);
             //Debug.Log("Load Progress: "+ progress);
             if (instance.progressSlider) instance.progressSlider.value = progress;
             yield return null;
@@ -380,10 +379,10 @@ public class GameManager : MonoBehaviour {
 
     public static IEnumerator AsyncLoadMenu() {
         yield return null;
-        instance.loadOp = SceneManager.LoadSceneAsync("MainMenu");
+        AsyncOperation loadOp = SceneManager.LoadSceneAsync("MainMenu");
 
-        while (!instance.loadOp.isDone) {
-            float progress = Mathf.Clamp01(instance.loadOp.progress / 0.9f);
+        while (!loadOp.isDone) {
+            float progress = Mathf.Clamp01(loadOp.progress / 0.9f);
             //Debug.Log("Load Progress: " + progress);
             if (instance.progressSlider) instance.progressSlider.value = progress;
             yield return null;

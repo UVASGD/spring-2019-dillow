@@ -108,7 +108,7 @@ public class FollowPath : MonoBehaviour {
 
 			if (percentDone > 0.5f && !sceneChanged) {
 				sceneChanged = true;
-				GameManager.LoadLevel("MainMenu");
+				GameManager.LoadLevel(GameManager.current.NextLevel);
 			}
 
 			if (Physics.CheckSphere(rb.position, GetComponent<SphereCollider>().radius * 1.1f, LayerMask.GetMask("Default")) && percentDone > 0.5f) {

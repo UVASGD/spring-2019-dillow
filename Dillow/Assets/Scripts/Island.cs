@@ -24,4 +24,7 @@ public class Island : MonoBehaviour
     public AudioClip IdleMusic;
     [Tooltip("Music to play when entering a generic battle")]
     public AudioClip CombatMusic;
+
+    [Header("Navigation")]
+    public string NextLevel;
 }
