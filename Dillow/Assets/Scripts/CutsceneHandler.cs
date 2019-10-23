@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using Cinemachine.Timeline;
+//using Cinemachine.Timeline;
 using Cinemachine.Utility;
 
 public class CutsceneHandler : MonoBehaviour {
